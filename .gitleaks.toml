@@ -1,0 +1,19 @@
+﻿title = "Kintsugi secret scanner"
+[extend]
+useDefault = true
+
+[[rules]]
+id = "atlas-uri"
+description = "MongoDB Atlas URI with credentials"
+regex = '''mongodb(\+srv)?://[^:]+:[^@]+@'''
+tags = ["secret", "mongodb"]
+
+[[rules]]
+id = "google-api-key"
+description = "Google API key"
+regex = '''AIza[0-9A-Za-z\-_]{35}'''
+tags = ["secret", "google"]
+
+[allowlist]
+description = "Allow placeholder patterns in .env.example"
+paths = ['''\.env\.example$''']
