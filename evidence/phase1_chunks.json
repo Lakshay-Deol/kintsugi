@@ -1,0 +1,26 @@
+[
+  {
+    "manual_id": "man-001",
+    "brand": "Whirlpool",
+    "model": "WFW5620HW0",
+    "title": "Whirlpool WFW5620HW0 Front-Load Washer Service Manual & Tech Sheet",
+    "chunk_count": 12,
+    "page_count": 12
+  },
+  {
+    "manual_id": "man-002",
+    "brand": "GE",
+    "model": "GTW685BSLWS",
+    "title": "GE GTW685BSLWS Top-Load Washer Service Technical Sheet",
+    "chunk_count": 7,
+    "page_count": 7
+  },
+  {
+    "manual_id": "man-003",
+    "brand": "Bosch",
+    "model": "WAT28400UC",
+    "title": "Bosch WAT28400UC 300 Series Compact Washer Service Manual",
+    "chunk_count": 7,
+    "page_count": 7
+  }
+]
