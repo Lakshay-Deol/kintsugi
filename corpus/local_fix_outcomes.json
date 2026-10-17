@@ -5,5 +5,47 @@
     "symptom_category": "mechanical",
     "outcome": "fixed",
     "created_at": "2026-10-17T14:12:01.830910Z"
+  },
+  {
+    "_id": "d0089403-31d2-47dc-b3d1-b76730dfb6b0",
+    "model": "WFW5620HW0",
+    "symptom_category": "mechanical",
+    "outcome": "fixed",
+    "created_at": "2026-10-17T18:09:10.769038Z"
+  },
+  {
+    "_id": "ef8aaf9f-4e30-47c5-8409-acb9fdf4b9dc",
+    "model": "WFW5620HW0",
+    "symptom_category": "mechanical",
+    "outcome": "fixed",
+    "created_at": "2026-10-17T18:12:37.683338Z"
+  },
+  {
+    "_id": "59e7a892-0245-4bc8-be95-4be25c66b5e8",
+    "model": "WFW5620HW0",
+    "symptom_category": "mechanical",
+    "outcome": "fixed",
+    "created_at": "2026-10-17T18:54:14.998847Z"
+  },
+  {
+    "_id": "656dce01-c3fa-4ea8-bec6-5c4e00e52f0d",
+    "model": "WFW5620HW0",
+    "symptom_category": "mechanical",
+    "outcome": "fixed",
+    "created_at": "2026-10-17T19:15:36.351515Z"
+  },
+  {
+    "_id": "79800bdb-3947-4036-a27d-2563d6874eaa",
+    "model": "WFW5620HW0",
+    "symptom_category": "mechanical",
+    "outcome": "fixed",
+    "created_at": "2026-10-17T19:18:50.685718Z"
+  },
+  {
+    "_id": "67117179-924c-4d02-ad2f-68bd04590280",
+    "model": "WFW5620HW0",
+    "symptom_category": "mechanical",
+    "outcome": "fixed",
+    "created_at": "2026-10-17T19:35:05.735826Z"
   }
 ]

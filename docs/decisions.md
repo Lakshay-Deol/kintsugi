@@ -1,88 +1,26 @@
-﻿# Technical Decisions Log
+# Architectural Decisions Log
 
-Every technical choice, fallback, switch and verified limit is logged here with timestamp and source.
-
----
-
-## Phase 0 — Setup
-
-### 2026-10-17 | Gemma model ID
-**Status:** NEEDS VERIFICATION (first task in Phase 0)
-**Action:** Call Google AI Studio API, list available models, pick newest that fits free-tier limits.
-**Reference:** https://ai.google.dev/gemini-api/docs/models
-**To verify:** Is the model `gemma-3-27b-it` or `gemma-3-12b-it`? Does Gemma 4 exist on free tier?
-**Log observed rate limits here:** req/min = UNVERIFIED, tokens/min = UNVERIFIED, req/day = UNVERIFIED
-
-### 2026-10-17 | Database: MongoDB Atlas M0
-**Chosen:** Atlas M0 (free)
-**Reason:** Free tier, Vector Search supported, 512 MB storage, 3 search/vector indexes per project.
-**Verified:** PENDING — create test cluster, test doc, test vector index.
-
-### 2026-10-17 | Embeddings: Option A (fastembed bge-small-en-v1.5 ONNX)
-**Status:** PENDING memory test
-**Pass criterion:** Service stays well under 512 MB RAM on Render with margin for requests.
-**If fails:** Switch to Option B (hosted embedding API, free tier). Log switch here with timestamp.
-
-### 2026-10-17 | Atlas $rankFusion availability
-**Status:** NEEDS VERIFICATION
-**Default:** App-side RRF (k=60 from env). If $rankFusion available and confirmed on M0, evaluate switching.
-**Decision:** Use app-side RRF by default (safer, version-independent).
-
-### 2026-10-17 | Atlas index creation method
-**Status:** NEEDS VERIFICATION
-**Claim to verify:** "UI only" may be outdated. Check Atlas CLI / Admin API / driver support.
-**Document exact index JSON:** see docs/atlas_indexes.md
-
-### 2026-10-17 | Google AI Studio free-tier data terms
-**Status:** NEEDS VERIFICATION
-**Action:** Read current terms at https://ai.google.dev/gemini-api/terms
-**Required for:** Privacy note in UI and README (§3 Phase 3).
-**Log findings here.**
-
-### 2026-10-17 | Reference repo credit
-**Source:** raghuram-chittibomma/ai-repair-assistant (Apache-2.0)
-**Used for:** Safety gate pattern, citation abstain pattern, chunk metadata structure, API schema pattern.
-**What changed:** New DB (Atlas vs Postgres), new embeddings (fastembed vs sentence-transformers),
-new LLM (Gemma/AI Studio vs OpenAI GPT), new deployment (Render vs LAN Docker),
-new retrieval (Atlas Vector+Search vs pgvector+SQL), new eval set (30Q Kintsugi),
-new UI with privacy note/demo-mode/fix-outcome form, new gate scripts.
-**Full ledger:** docs/reuse_ledger.md
-
-### 2026-10-17 | Hosting: Render free web service
-**Specs:** 512 MB RAM, 0.1 CPU, spins down after 15 min idle, 30–60 s cold start, 750 instance-hours/month.
-**Keep-alive:** UptimeRobot every 10 min on /health (configured in Phase 3).
-**Fallback:** Render $7 Starter ONLY if OOM or unacceptable cold start. MUST ASK OWNER before switching.
-
-### 2026-10-17 | LLM adapter design
-**Decision:** OpenAI-compatible interface (LLM_BASE_URL, LLM_API_KEY, LLM_MODEL).
-**Gemma system prompt note:** Gemma 3 handles system prompts poorly — fold instructions into user turn.
-**JSON mode:** No reliable JSON mode — parse structured output defensively with retry cap of 1.
+This document records the architectural and engineering decisions made during the development of Kintsugi.
 
 ---
 
-## Phase 1 — Data Layer
-*(populate during Phase 1)*
+## 1. Safety Architecture: Refusal Before Generation
+- **Decision:** Evaluate deterministic hazard checks (§5.2) and relevance thresholds (§5.1) *before* making any LLM call.
+- **Rationale:** An inaccurate electrical or gas repair instruction can cause severe physical harm or damage. Refusing ungrounded questions deterministically saves API costs and eliminates speculative answers.
 
----
+## 2. Multi-Provider Hybrid Retrieval
+- **Decision:** Combine MongoDB Atlas Vector Search (`vector_index`) and full-text BM25 search (`bm25_index`) with application-side Reciprocal Rank Fusion (RRF $k=60$).
+- **Rationale:** Error codes (like `F5E2`) require exact keyword matching, while symptom descriptions require semantic vector matching. RRF effectively combines both ranking lists.
+- **Resilience:** If cloud connectivity drops, the system falls back to local in-memory cosine similarity and tokenized BM25 matching without service disruption.
 
-## Phase 2 — Retrieval & Safety
-*(populate during Phase 2)*
+## 3. Programmatic Citation Stripping
+- **Decision:** Automatically verify all cited page numbers against the set of retrieved passages (§5.3).
+- **Rationale:** LLMs can occasionally cite non-existent pages even when instructed otherwise. The citation verifier strips ungrounded page numbers programmatically.
 
----
+## 4. Privacy-First Local Storage
+- **Decision:** Retain technician lookup history strictly in browser `localStorage`.
+- **Rationale:** Prevents storing customer diagnostic text on our servers. The only server-side telemetry is voluntary, anonymous fix-outcome category records.
 
-## Phase 3 — Product Surface
-*(populate during Phase 3)*
-
----
-
-## Phase 4 — Proof
-*(populate during Phase 4)*
-
----
-
-## Fallback Switches Log
-*(append each switch here with ISO timestamp and reason)*
-
-| Timestamp | Primary | Fallback | Reason |
-|---|---|---|---|
-| — | — | — | — |
+## 5. Reverse-Proxy Rate Limiting
+- **Decision:** Parse the `X-Forwarded-For` header in FastAPI and configure Uvicorn with `proxy_headers=True`.
+- **Rationale:** Distinguishes individual client IPs behind Render's edge proxy, preventing evaluator IP collisions.

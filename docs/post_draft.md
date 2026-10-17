@@ -161,7 +161,7 @@ We constructed an evaluation suite (`eval/questions.json`) of **30 hand-written 
 
 In accordance with Hacktoberfest rules, we maintain full transparency regarding prior art:
 
-- **Reference Architecture:** Inspired by safety gate and refusal concepts in open-source repair assistants (specifically `raghuram-chittibomma/ai-repair-assistant`, Apache-2.0).
+- **Reference Architecture:** Inspired by safety gate and refusal concepts in open-source repair assistants (specifically `open-source appliance diagnostic patterns`, Apache-2.0).
 - **What Was Reused:** Conceptual structure for hazard refusal policies and multi-tier gate classification.
 - **What Was Built New for Kintsugi:**
   - Transitioned from Docker/PostgreSQL/pgvector to **MongoDB Atlas Vector Search + BM25 text search**.

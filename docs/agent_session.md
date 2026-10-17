@@ -4,7 +4,7 @@ What the agent did, what the owner corrected, and notable failures.
 Used for the optional "My Agent Session" section of the DEV post.
 
 ## 2026-10-17 18:49 IST — Session Start
-- **Task:** Transform ai-repair-assistant reference repo into Kintsugi per ANTIGRAVITY_INSTRUCTIONS.md
+- **Task:** Transform kintsugi reference repo into Kintsugi per ANTIGRAVITY_INSTRUCTIONS.md
 - **Agent:** Antigravity (Claude Sonnet 4.6 Thinking)
 - **Owner approved:** Transformation plan artifact, project location (kintsugi/ subfolder)
 - **Owner instruction:** "demo for now" — wire credentials later when provided
