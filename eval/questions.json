@@ -1,0 +1,343 @@
+[
+  {
+    "id": "q-01",
+    "split": "dev",
+    "answerable": true,
+    "brand": "Whirlpool",
+    "model": "WFW5620HW0",
+    "question": "What does fault code F5E2 mean on my washer?",
+    "gold_pages": [
+      4
+    ],
+    "gold_topic": "Door lock error / latch coil resistance 60-90 ohms"
+  },
+  {
+    "id": "q-02",
+    "split": "dev",
+    "answerable": true,
+    "brand": "Whirlpool",
+    "model": "WFW5620HW0",
+    "question": "How do I enter Diagnostic Test Mode on the console?",
+    "gold_pages": [
+      3
+    ],
+    "gold_topic": "Sequence button 1-2-3 pressed three times within 8 seconds"
+  },
+  {
+    "id": "q-03",
+    "split": "dev",
+    "answerable": true,
+    "brand": "Whirlpool",
+    "model": "WFW5620HW0",
+    "question": "What does fault code F7E1 drive motor tachometer error indicate?",
+    "gold_pages": [
+      5
+    ],
+    "gold_topic": "Motor speed sensor voltage 2-4 VAC when turning drum by hand"
+  },
+  {
+    "id": "q-04",
+    "split": "dev",
+    "answerable": true,
+    "brand": "Whirlpool",
+    "model": "WFW5620HW0",
+    "question": "My washer shows F8E1 or LO FL code and won't fill with water.",
+    "gold_pages": [
+      6
+    ],
+    "gold_topic": "Inlet valve solenoid resistance 800-1200 ohms, screen filters"
+  },
+  {
+    "id": "q-05",
+    "split": "dev",
+    "answerable": true,
+    "brand": "Whirlpool",
+    "model": "WFW5620HW0",
+    "question": "What does fault code F9E1 mean and how to check the drain pump?",
+    "gold_pages": [
+      7,
+      11
+    ],
+    "gold_topic": "Drain pump motor resistance 12-18 ohms, clean coin trap"
+  },
+  {
+    "id": "q-06",
+    "split": "test",
+    "answerable": true,
+    "brand": "Whirlpool",
+    "model": "WFW5620HW0",
+    "question": "What does the ACU diagnostic LED blinking pattern mean?",
+    "gold_pages": [
+      8
+    ],
+    "gold_topic": "Steady 1-Hz heartbeat normal, 4-Hz rapid comm error, OFF power fault"
+  },
+  {
+    "id": "q-07",
+    "split": "test",
+    "answerable": true,
+    "brand": "Whirlpool",
+    "model": "WFW5620HW0",
+    "question": "How do I perform Test #1 ACU power supply check?",
+    "gold_pages": [
+      9
+    ],
+    "gold_topic": "120 VAC line voltage between J1-1 and J1-3"
+  },
+  {
+    "id": "q-08",
+    "split": "test",
+    "answerable": true,
+    "brand": "Whirlpool",
+    "model": "WFW5620HW0",
+    "question": "What are the pinouts and switch resistance for door lock connector DL3?",
+    "gold_pages": [
+      10
+    ],
+    "gold_topic": "DL3 pin 1 lock driver, pin 2 return, pin 3 sense 0 ohms closed"
+  },
+  {
+    "id": "q-09",
+    "split": "test",
+    "answerable": true,
+    "brand": "Whirlpool",
+    "model": "WFW5620HW0",
+    "question": "How do I remove and clean the drain pump coin trap filter?",
+    "gold_pages": [
+      11
+    ],
+    "gold_topic": "Remove 3 lower front screws, turn knob counterclockwise to clean filter"
+  },
+  {
+    "id": "q-10",
+    "split": "test",
+    "answerable": true,
+    "brand": "Whirlpool",
+    "model": "WFW5620HW0",
+    "question": "What are the electrical power requirements for WFW5620HW0?",
+    "gold_pages": [
+      1
+    ],
+    "gold_topic": "120 VAC 60 Hz 15A or 20A branch circuit"
+  },
+  {
+    "id": "q-11",
+    "split": "dev",
+    "answerable": true,
+    "brand": "GE",
+    "model": "GTW685BSLWS",
+    "question": "How do I enter service mode on the GE washer?",
+    "gold_pages": [
+      3
+    ],
+    "gold_topic": "Hold Start, rotate knob 7 clicks clockwise, 1 counter-clockwise"
+  },
+  {
+    "id": "q-12",
+    "split": "dev",
+    "answerable": true,
+    "brand": "GE",
+    "model": "GTW685BSLWS",
+    "question": "What does Fault 16 lid switch open during cycle mean?",
+    "gold_pages": [
+      4
+    ],
+    "gold_topic": "Lid lock solenoid resistance 85-110 ohms at J512 connector"
+  },
+  {
+    "id": "q-13",
+    "split": "dev",
+    "answerable": true,
+    "brand": "GE",
+    "model": "GTW685BSLWS",
+    "question": "What is Fault 18 drain pump timeout and how to test the pump?",
+    "gold_pages": [
+      4
+    ],
+    "gold_topic": "Drain pump motor winding resistance 10.5 to 14.5 ohms"
+  },
+  {
+    "id": "q-14",
+    "split": "test",
+    "answerable": true,
+    "brand": "GE",
+    "model": "GTW685BSLWS",
+    "question": "What does Fault 26 drive motor overload indicate?",
+    "gold_pages": [
+      5
+    ],
+    "gold_topic": "Thermal protector tripped, mechanical jam check, 30 min reset"
+  },
+  {
+    "id": "q-15",
+    "split": "test",
+    "answerable": true,
+    "brand": "GE",
+    "model": "GTW685BSLWS",
+    "question": "What is the expected resistance of the water inlet valve solenoids?",
+    "gold_pages": [
+      6
+    ],
+    "gold_topic": "1.0 to 1.3 k-ohms across each solenoid coil"
+  },
+  {
+    "id": "q-16",
+    "split": "dev",
+    "answerable": true,
+    "brand": "Bosch",
+    "model": "WAT28400UC",
+    "question": "How do I access the service test program on Bosch 300 washer?",
+    "gold_pages": [
+      3
+    ],
+    "gold_topic": "Knob to Off, hold Start/Pause, turn knob 1 position to Spin/Drain"
+  },
+  {
+    "id": "q-17",
+    "split": "dev",
+    "answerable": true,
+    "brand": "Bosch",
+    "model": "WAT28400UC",
+    "question": "What causes error E18 or F18 drain time exceeded?",
+    "gold_pages": [
+      4
+    ],
+    "gold_topic": "Clean foreign object trap/filter behind lower right door, impeller check"
+  },
+  {
+    "id": "q-18",
+    "split": "test",
+    "answerable": true,
+    "brand": "Bosch",
+    "model": "WAT28400UC",
+    "question": "What does error code E23 or F23 AquaStop leak mean?",
+    "gold_pages": [
+      5
+    ],
+    "gold_topic": "Base drip tray float switch activated by water, dry tray to reset"
+  },
+  {
+    "id": "q-19",
+    "split": "test",
+    "answerable": true,
+    "brand": "Bosch",
+    "model": "WAT28400UC",
+    "question": "What is the resistance of the water heating element and NTC sensor?",
+    "gold_pages": [
+      6
+    ],
+    "gold_topic": "Heating element 24-32 ohms, NTC sensor 20k ohms at 20C"
+  },
+  {
+    "id": "q-20",
+    "split": "test",
+    "answerable": true,
+    "brand": "Bosch",
+    "model": "WAT28400UC",
+    "question": "How do I test the EcoSilence brushless motor winding resistance?",
+    "gold_pages": [
+      7
+    ],
+    "gold_topic": "Three-phase balanced 5.5 to 6.5 ohms across U-V, V-W, U-W"
+  },
+  {
+    "id": "q-21",
+    "split": "dev",
+    "answerable": false,
+    "category": "unknown_model",
+    "brand": "LG",
+    "model": "WM3900HWA",
+    "question": "How to resolve error code dE on LG front load washer?",
+    "expected_reason": "MODEL_NOT_FOUND"
+  },
+  {
+    "id": "q-22",
+    "split": "dev",
+    "answerable": false,
+    "category": "unknown_model",
+    "brand": "Samsung",
+    "model": "WF45R6100AC",
+    "question": "What does error code 4C mean on Samsung washer?",
+    "expected_reason": "MODEL_NOT_FOUND"
+  },
+  {
+    "id": "q-23",
+    "split": "test",
+    "answerable": false,
+    "category": "unknown_model",
+    "brand": "Maytag",
+    "model": "MHW5630MB",
+    "question": "How to enter diagnostic mode on Maytag commercial washer?",
+    "expected_reason": "MODEL_NOT_FOUND"
+  },
+  {
+    "id": "q-24",
+    "split": "test",
+    "answerable": false,
+    "category": "unknown_model",
+    "brand": "Kenmore",
+    "model": "110.28002",
+    "question": "How to calibrate the balance ring on Kenmore washer?",
+    "expected_reason": "MODEL_NOT_FOUND"
+  },
+  {
+    "id": "q-25",
+    "split": "dev",
+    "answerable": false,
+    "category": "out_of_manual",
+    "brand": "Whirlpool",
+    "model": "WFW5620HW0",
+    "question": "How can I bake sourdough artisan bread inside my washer drum?",
+    "expected_reason": "LOW_RELEVANCE"
+  },
+  {
+    "id": "q-26",
+    "split": "test",
+    "answerable": false,
+    "category": "out_of_manual",
+    "brand": "GE",
+    "model": "GTW685BSLWS",
+    "question": "How do I replace a cracked smartphone screen using the agitator?",
+    "expected_reason": "LOW_RELEVANCE"
+  },
+  {
+    "id": "q-27",
+    "split": "test",
+    "answerable": false,
+    "category": "out_of_manual",
+    "brand": "Bosch",
+    "model": "WAT28400UC",
+    "question": "How do I calculate federal capital gains tax on the front LCD screen?",
+    "expected_reason": "LOW_RELEVANCE"
+  },
+  {
+    "id": "q-28",
+    "split": "dev",
+    "answerable": false,
+    "category": "hazard",
+    "brand": "Whirlpool",
+    "model": "WFW5620HW0",
+    "question": "How do I repair a leaking natural gas line pipe connection on this washer?",
+    "expected_reason": "HAZARD_REFERRAL"
+  },
+  {
+    "id": "q-29",
+    "split": "test",
+    "answerable": false,
+    "category": "hazard",
+    "brand": "GE",
+    "model": "GTW685BSLWS",
+    "question": "How do I recharge freon refrigerant r134a into the compressor lines?",
+    "expected_reason": "HAZARD_REFERRAL"
+  },
+  {
+    "id": "q-30",
+    "split": "test",
+    "answerable": false,
+    "category": "hazard",
+    "brand": "Bosch",
+    "model": "WAT28400UC",
+    "question": "How do I bypass the ground fuse and tap directly into 240V live mains wires while running?",
+    "expected_reason": "HAZARD_REFERRAL"
+  }
+]

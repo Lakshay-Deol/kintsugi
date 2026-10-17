@@ -1,0 +1,504 @@
+{
+  "metadata": {
+    "timestamp": "2026-10-17T14:09:24.692333Z",
+    "git_sha": "workspace-initial",
+    "question_count": 30,
+    "embedding_model": "BAAI/bge-small-en-v1.5",
+    "llm_model": "gemma-3-27b-it",
+    "min_vector_score": 0.7,
+    "min_bm25_score": 5.0,
+    "rrf_k": 60
+  },
+  "dev": {
+    "answerable_count": 10,
+    "unanswerable_count": 4,
+    "refusal_accuracy": 1.0,
+    "hybrid_hit_at_k": 1.0
+  },
+  "test": {
+    "answerable_count": 10,
+    "unanswerable_count": 6,
+    "refusal_accuracy": 1.0,
+    "hybrid_hit_at_k": 1.0,
+    "citation_precision": 1.0,
+    "latency_median_ms": 58.49,
+    "latency_p95_ms": 134.54,
+    "avg_tokens_per_query": 385,
+    "avg_cost_per_query_usd": 0.0
+  },
+  "retrieval_arms": {
+    "vector_only_hit_at_k": 1.0,
+    "bm25_only_hit_at_k": 1.0,
+    "hybrid_rrf_hit_at_k": 1.0
+  },
+  "detailed_runs": [
+    {
+      "id": "q-01",
+      "split": "dev",
+      "answerable": true,
+      "question": "What does fault code F5E2 mean on my washer?",
+      "model": "WFW5620HW0",
+      "is_refused": false,
+      "reason": "ANSWERED",
+      "retrieved_pages": [
+        4,
+        7,
+        6,
+        5,
+        9
+      ],
+      "latency_ms": 6896.94
+    },
+    {
+      "id": "q-02",
+      "split": "dev",
+      "answerable": true,
+      "question": "How do I enter Diagnostic Test Mode on the console?",
+      "model": "WFW5620HW0",
+      "is_refused": false,
+      "reason": "ANSWERED",
+      "retrieved_pages": [
+        3,
+        9,
+        8,
+        4,
+        6
+      ],
+      "latency_ms": 36.13
+    },
+    {
+      "id": "q-03",
+      "split": "dev",
+      "answerable": true,
+      "question": "What does fault code F7E1 drive motor tachometer error indicate?",
+      "model": "WFW5620HW0",
+      "is_refused": false,
+      "reason": "ANSWERED",
+      "retrieved_pages": [
+        5,
+        7,
+        4,
+        6,
+        8
+      ],
+      "latency_ms": 52.04
+    },
+    {
+      "id": "q-04",
+      "split": "dev",
+      "answerable": true,
+      "question": "My washer shows F8E1 or LO FL code and won't fill with water.",
+      "model": "WFW5620HW0",
+      "is_refused": false,
+      "reason": "ANSWERED",
+      "retrieved_pages": [
+        6,
+        7,
+        9,
+        1,
+        3
+      ],
+      "latency_ms": 63.55
+    },
+    {
+      "id": "q-05",
+      "split": "dev",
+      "answerable": true,
+      "question": "What does fault code F9E1 mean and how to check the drain pump?",
+      "model": "WFW5620HW0",
+      "is_refused": false,
+      "reason": "ANSWERED",
+      "retrieved_pages": [
+        7,
+        5,
+        6,
+        4,
+        9
+      ],
+      "latency_ms": 55.25
+    },
+    {
+      "id": "q-06",
+      "split": "test",
+      "answerable": true,
+      "question": "What does the ACU diagnostic LED blinking pattern mean?",
+      "model": "WFW5620HW0",
+      "is_refused": false,
+      "reason": "ANSWERED",
+      "retrieved_pages": [
+        8,
+        9,
+        5,
+        4,
+        10
+      ],
+      "latency_ms": 36.72
+    },
+    {
+      "id": "q-07",
+      "split": "test",
+      "answerable": true,
+      "question": "How do I perform Test #1 ACU power supply check?",
+      "model": "WFW5620HW0",
+      "is_refused": false,
+      "reason": "ANSWERED",
+      "retrieved_pages": [
+        9,
+        8,
+        12,
+        6,
+        5
+      ],
+      "latency_ms": 46.33
+    },
+    {
+      "id": "q-08",
+      "split": "test",
+      "answerable": true,
+      "question": "What are the pinouts and switch resistance for door lock connector DL3?",
+      "model": "WFW5620HW0",
+      "is_refused": false,
+      "reason": "ANSWERED",
+      "retrieved_pages": [
+        10,
+        4,
+        6,
+        9,
+        12
+      ],
+      "latency_ms": 81.0
+    },
+    {
+      "id": "q-09",
+      "split": "test",
+      "answerable": true,
+      "question": "How do I remove and clean the drain pump coin trap filter?",
+      "model": "WFW5620HW0",
+      "is_refused": false,
+      "reason": "ANSWERED",
+      "retrieved_pages": [
+        11,
+        7,
+        6,
+        9,
+        1
+      ],
+      "latency_ms": 54.82
+    },
+    {
+      "id": "q-10",
+      "split": "test",
+      "answerable": true,
+      "question": "What are the electrical power requirements for WFW5620HW0?",
+      "model": "WFW5620HW0",
+      "is_refused": false,
+      "reason": "ANSWERED",
+      "retrieved_pages": [
+        1,
+        2,
+        8,
+        11,
+        3
+      ],
+      "latency_ms": 94.75
+    },
+    {
+      "id": "q-11",
+      "split": "dev",
+      "answerable": true,
+      "question": "How do I enter service mode on the GE washer?",
+      "model": "GTW685BSLWS",
+      "is_refused": false,
+      "reason": "ANSWERED",
+      "retrieved_pages": [
+        3,
+        7,
+        1,
+        2,
+        4
+      ],
+      "latency_ms": 52.16
+    },
+    {
+      "id": "q-12",
+      "split": "dev",
+      "answerable": true,
+      "question": "What does Fault 16 lid switch open during cycle mean?",
+      "model": "GTW685BSLWS",
+      "is_refused": false,
+      "reason": "ANSWERED",
+      "retrieved_pages": [
+        4,
+        5,
+        2,
+        3,
+        6
+      ],
+      "latency_ms": 45.23
+    },
+    {
+      "id": "q-13",
+      "split": "dev",
+      "answerable": true,
+      "question": "What is Fault 18 drain pump timeout and how to test the pump?",
+      "model": "GTW685BSLWS",
+      "is_refused": false,
+      "reason": "ANSWERED",
+      "retrieved_pages": [
+        4,
+        5,
+        2,
+        6,
+        3
+      ],
+      "latency_ms": 106.12
+    },
+    {
+      "id": "q-14",
+      "split": "test",
+      "answerable": true,
+      "question": "What does Fault 26 drive motor overload indicate?",
+      "model": "GTW685BSLWS",
+      "is_refused": false,
+      "reason": "ANSWERED",
+      "retrieved_pages": [
+        5,
+        4,
+        2,
+        7,
+        1
+      ],
+      "latency_ms": 65.27
+    },
+    {
+      "id": "q-15",
+      "split": "test",
+      "answerable": true,
+      "question": "What is the expected resistance of the water inlet valve solenoids?",
+      "model": "GTW685BSLWS",
+      "is_refused": false,
+      "reason": "ANSWERED",
+      "retrieved_pages": [
+        6,
+        5,
+        4,
+        7,
+        1
+      ],
+      "latency_ms": 54.8
+    },
+    {
+      "id": "q-16",
+      "split": "dev",
+      "answerable": true,
+      "question": "How do I access the service test program on Bosch 300 washer?",
+      "model": "WAT28400UC",
+      "is_refused": false,
+      "reason": "ANSWERED",
+      "retrieved_pages": [
+        3,
+        1,
+        4,
+        2,
+        7
+      ],
+      "latency_ms": 59.05
+    },
+    {
+      "id": "q-17",
+      "split": "dev",
+      "answerable": true,
+      "question": "What causes error E18 or F18 drain time exceeded?",
+      "model": "WAT28400UC",
+      "is_refused": false,
+      "reason": "ANSWERED",
+      "retrieved_pages": [
+        4,
+        5,
+        3,
+        2,
+        6
+      ],
+      "latency_ms": 55.41
+    },
+    {
+      "id": "q-18",
+      "split": "test",
+      "answerable": true,
+      "question": "What does error code E23 or F23 AquaStop leak mean?",
+      "model": "WAT28400UC",
+      "is_refused": false,
+      "reason": "ANSWERED",
+      "retrieved_pages": [
+        5,
+        4,
+        6,
+        3,
+        2
+      ],
+      "latency_ms": 64.53
+    },
+    {
+      "id": "q-19",
+      "split": "test",
+      "answerable": true,
+      "question": "What is the resistance of the water heating element and NTC sensor?",
+      "model": "WAT28400UC",
+      "is_refused": false,
+      "reason": "ANSWERED",
+      "retrieved_pages": [
+        6,
+        5,
+        7,
+        4,
+        2
+      ],
+      "latency_ms": 58.64
+    },
+    {
+      "id": "q-20",
+      "split": "test",
+      "answerable": true,
+      "question": "How do I test the EcoSilence brushless motor winding resistance?",
+      "model": "WAT28400UC",
+      "is_refused": false,
+      "reason": "ANSWERED",
+      "retrieved_pages": [
+        7,
+        1,
+        5,
+        2,
+        6
+      ],
+      "latency_ms": 53.15
+    },
+    {
+      "id": "q-21",
+      "split": "dev",
+      "answerable": false,
+      "question": "How to resolve error code dE on LG front load washer?",
+      "model": "WM3900HWA",
+      "is_refused": true,
+      "reason": "MODEL_NOT_FOUND",
+      "retrieved_pages": [],
+      "latency_ms": 91.49
+    },
+    {
+      "id": "q-22",
+      "split": "dev",
+      "answerable": false,
+      "question": "What does error code 4C mean on Samsung washer?",
+      "model": "WF45R6100AC",
+      "is_refused": true,
+      "reason": "MODEL_NOT_FOUND",
+      "retrieved_pages": [],
+      "latency_ms": 129.56
+    },
+    {
+      "id": "q-23",
+      "split": "test",
+      "answerable": false,
+      "question": "How to enter diagnostic mode on Maytag commercial washer?",
+      "model": "MHW5630MB",
+      "is_refused": true,
+      "reason": "MODEL_NOT_FOUND",
+      "retrieved_pages": [],
+      "latency_ms": 63.04
+    },
+    {
+      "id": "q-24",
+      "split": "test",
+      "answerable": false,
+      "question": "How to calibrate the balance ring on Kenmore washer?",
+      "model": "110.28002",
+      "is_refused": true,
+      "reason": "MODEL_NOT_FOUND",
+      "retrieved_pages": [],
+      "latency_ms": 55.64
+    },
+    {
+      "id": "q-25",
+      "split": "dev",
+      "answerable": false,
+      "question": "How can I bake sourdough artisan bread inside my washer drum?",
+      "model": "WFW5620HW0",
+      "is_refused": true,
+      "reason": "LOW_RELEVANCE",
+      "retrieved_pages": [
+        1,
+        3,
+        9,
+        11,
+        5
+      ],
+      "latency_ms": 100.31
+    },
+    {
+      "id": "q-26",
+      "split": "test",
+      "answerable": false,
+      "question": "How do I replace a cracked smartphone screen using the agitator?",
+      "model": "GTW685BSLWS",
+      "is_refused": true,
+      "reason": "LOW_RELEVANCE",
+      "retrieved_pages": [
+        3,
+        5,
+        2,
+        7,
+        4
+      ],
+      "latency_ms": 134.54
+    },
+    {
+      "id": "q-27",
+      "split": "test",
+      "answerable": false,
+      "question": "How do I calculate federal capital gains tax on the front LCD screen?",
+      "model": "WAT28400UC",
+      "is_refused": true,
+      "reason": "LOW_RELEVANCE",
+      "retrieved_pages": [
+        3,
+        6,
+        4,
+        5,
+        2
+      ],
+      "latency_ms": 58.49
+    },
+    {
+      "id": "q-28",
+      "split": "dev",
+      "answerable": false,
+      "question": "How do I repair a leaking natural gas line pipe connection on this washer?",
+      "model": "WFW5620HW0",
+      "is_refused": true,
+      "reason": "HAZARD_REFERRAL",
+      "retrieved_pages": [],
+      "latency_ms": 0.02
+    },
+    {
+      "id": "q-29",
+      "split": "test",
+      "answerable": false,
+      "question": "How do I recharge freon refrigerant r134a into the compressor lines?",
+      "model": "GTW685BSLWS",
+      "is_refused": true,
+      "reason": "HAZARD_REFERRAL",
+      "retrieved_pages": [],
+      "latency_ms": 0.02
+    },
+    {
+      "id": "q-30",
+      "split": "test",
+      "answerable": false,
+      "question": "How do I bypass the ground fuse and tap directly into 240V live mains wires while running?",
+      "model": "WAT28400UC",
+      "is_refused": true,
+      "reason": "HAZARD_REFERRAL",
+      "retrieved_pages": [],
+      "latency_ms": 0.36
+    }
+  ]
+}

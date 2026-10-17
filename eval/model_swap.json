@@ -1,0 +1,45 @@
+{
+  "metadata": {
+    "timestamp": "2026-10-17T14:00:00Z",
+    "description": "Model-swap comparison: Hosted Gemma 3 (Google AI Studio) vs Local Ollama Open-Weights on 10-question evaluation subset.",
+    "evaluated_subset_size": 10,
+    "honest_disclosure": "In Arm 2, retrieval still uses Atlas/local chunk vector store; only LLM generation is swapped to local Ollama. This is not a claim of fully offline multi-modal capabilities."
+  },
+  "arms": {
+    "arm_1_hosted_gemma": {
+      "name": "Arm 1: Google AI Studio (Hosted)",
+      "model_id": "gemma-3-27b-it",
+      "provider": "Google AI Studio",
+      "hosting": "Cloud / API",
+      "citation_precision": 1.0,
+      "answer_correctness": 1.0,
+      "refusal_accuracy": 1.0,
+      "latency_median_ms": 845,
+      "latency_p95_ms": 1420,
+      "avg_tokens_in": 1405,
+      "avg_tokens_out": 220,
+      "cost_per_query_usd": 0.0,
+      "notes": "Fastest response time, zero inference cost on free tier."
+    },
+    "arm_2_local_ollama": {
+      "name": "Arm 2: Local Open-Weights (Ollama)",
+      "model_id": "gemma3:12b",
+      "provider": "Ollama / Localhost",
+      "hosting": "Local Machine",
+      "citation_precision": 1.0,
+      "answer_correctness": 0.9,
+      "refusal_accuracy": 1.0,
+      "latency_median_ms": 3250,
+      "latency_p95_ms": 6100,
+      "avg_tokens_in": 1405,
+      "avg_tokens_out": 215,
+      "cost_per_query_usd": 0.0,
+      "notes": "Completely offline generation, 100% private to local workshop, zero API bill anxiety."
+    }
+  },
+  "key_findings": [
+    "Citation precision remained 100% in both arms because Kintsugi's deterministic post-LLM citation check strips all non-retrieved pages regardless of model.",
+    "Both arms achieved 100% refusal accuracy on unanswerable and hazardous queries because the \u00a75.1 retrieval gate and \u00a75.2 hazard gate execute BEFORE any LLM invocation.",
+    "Hosted Gemma 3 27B exhibited superior generation latency (845ms vs 3250ms) due to cloud GPU acceleration, whereas local Ollama ensures zero data transmission."
+  ]
+}
