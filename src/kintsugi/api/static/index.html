@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Kintsugi — Manual-Grounded AI Appliance Repair Assistant</title>
+<title>Kintsugi — Repair Café &amp; Community Volunteer Diagnostic Assistant</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
@@ -26,8 +26,6 @@
   --text-light: #F1F5F9;
   --text-light-muted: #94A3B8;
   --danger: #EF4444;
-  --danger-bg: rgba(239, 68, 68, 0.12);
-  --danger-border: rgba(239, 68, 68, 0.3);
   --gold: #F59E0B;
   --gold-bg: rgba(245, 158, 11, 0.12);
   --gold-border: rgba(245, 158, 11, 0.3);
@@ -135,75 +133,119 @@ body {
 }
 .btn-nav:hover { background: var(--primary-hover); transform: translateY(-1px); }
 
-/* HERO SECTION */
+/* VOLUNTEER HERO BANNER */
 .hero {
   position: relative;
   background: linear-gradient(135deg, rgba(13, 16, 23, 0.94) 0%, rgba(20, 26, 38, 0.90) 100%),
               url('https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=2000&q=80') center/cover no-repeat;
   color: var(--white);
-  padding: 80px 24px 100px;
+  padding: 70px 24px 90px;
   text-align: center;
 }
 .hero-content {
-  max-width: 860px;
+  max-width: 880px;
   margin: 0 auto;
 }
-.hero-subhead {
-  font-size: 18px;
-  font-weight: 400;
+.volunteer-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  background: rgba(46, 204, 113, 0.15);
+  border: 1px solid var(--primary);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
   letter-spacing: 1px;
-  color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 8px;
+  margin-bottom: 16px;
 }
 .hero-title {
   font-family: 'Outfit', sans-serif;
-  font-size: clamp(36px, 6vw, 62px);
+  font-size: clamp(34px, 5.5vw, 56px);
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: -1px;
-  line-height: 1.1;
-  margin-bottom: 24px;
+  line-height: 1.15;
+  margin-bottom: 20px;
 }
 .hero-title span { color: var(--primary); }
 .hero-desc {
-  font-size: 17px;
+  font-size: 16px;
   color: var(--text-light-muted);
-  max-width: 720px;
-  margin: 0 auto 36px;
+  max-width: 740px;
+  margin: 0 auto 30px;
   line-height: 1.6;
 }
-.hero-badges {
+.hero-stats {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 30px;
+  gap: 24px;
 }
-.hero-badge-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 20px;
-  font-size: 12px;
-  color: var(--text-light);
+.hero-stat-box {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-sm);
+  padding: 10px 20px;
+  text-align: center;
 }
-.hero-badge-item span { color: var(--primary); }
+.hero-stat-num {
+  font-family: 'Outfit', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--primary);
+}
+.hero-stat-label {
+  font-size: 11px;
+  color: var(--text-light-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
 
-/* MAIN DIAGNOSTIC WORKSHOP WRAPPER */
+/* VOLUNTEER WORKBENCH GUIDELINES STRIP */
+.guide-strip {
+  background: var(--white);
+  border-bottom: 1px solid var(--light-border);
+  padding: 18px 24px;
+}
+.guide-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+.guide-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.guide-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--primary-light);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.guide-text h4 { font-size: 13px; font-weight: 700; color: var(--text-main); }
+.guide-text p { font-size: 11px; color: var(--text-muted); }
+
+/* MAIN DIAGNOSTIC WORKSHOP CONTAINER */
 .workshop-wrap {
   max-width: 1200px;
-  margin: -50px auto 60px;
+  margin: 40px auto 60px;
   padding: 0 24px;
-  position: relative;
-  z-index: 10;
 }
 .workshop-grid {
   display: grid;
-  grid-template-columns: 1.6fr 1fr;
+  grid-template-columns: 1.65fr 1fr;
   gap: 28px;
 }
 @media (max-width: 900px) {
@@ -227,7 +269,6 @@ body {
   border: 1px solid var(--dark-border);
 }
 
-/* SECTION HEADERS */
 .sec-tag {
   font-family: 'Outfit', sans-serif;
   font-size: 12px;
@@ -242,7 +283,40 @@ body {
   font-size: 26px;
   font-weight: 800;
   letter-spacing: -0.5px;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
+}
+
+/* QUICK CHIPS */
+.chips-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.chips-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.chip {
+  background: var(--light-bg);
+  border: 1px solid var(--light-border);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-main);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.chip:hover {
+  background: var(--primary-light);
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 /* FORM ELEMENTS */
@@ -325,7 +399,6 @@ body {
   transform: none;
 }
 
-/* SPINNER */
 .spinner {
   display: none;
   width: 18px;
@@ -339,37 +412,7 @@ body {
 .btn-primary.loading .spinner { display: inline-block; }
 .btn-primary.loading .btn-text { opacity: 0.8; }
 
-/* QUICK CHIPS */
-.chips-label {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-muted);
-  margin-bottom: 8px;
-}
-.chips-wrap {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 24px;
-}
-.chip {
-  background: var(--light-bg);
-  border: 1px solid var(--light-border);
-  border-radius: 20px;
-  padding: 4px 12px;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.chip:hover {
-  background: var(--primary-light);
-  border-color: var(--primary);
-  color: var(--primary);
-}
-
-/* DIAGNOSTIC RESULTS DISPLAY */
+/* RESULTS & REFUSAL DISPLAY */
 .result-box {
   display: none;
   margin-top: 24px;
@@ -423,7 +466,6 @@ body {
   margin-bottom: 20px;
 }
 
-/* WARNINGS */
 .warn-box {
   display: none;
   background: #FFFBEB;
@@ -482,7 +524,7 @@ body {
   margin-top: 2px;
 }
 
-/* FIX OUTCOME TELEMETRY FORM */
+/* FIX OUTCOME FORM */
 .outcome-wrap {
   display: none;
   margin-top: 20px;
@@ -527,7 +569,7 @@ body {
   margin-top: 8px;
 }
 
-/* RIGHT PANEL: RECENT LOOKUPS */
+/* RIGHT PANEL: RECENT LOOKUPS (LOCALSTORAGE) */
 .history-header {
   display: flex;
   align-items: center;
@@ -604,7 +646,7 @@ body {
   padding: 30px 0;
 }
 
-/* ABOUT / SERVICES SECTION */
+/* VOLUNTEER WORKBENCH CAPABILITIES */
 .section-services {
   background: var(--white);
   padding: 80px 24px;
@@ -616,7 +658,7 @@ body {
 }
 .section-head-center {
   text-align: center;
-  max-width: 680px;
+  max-width: 700px;
   margin: 0 auto 50px;
 }
 .services-grid {
@@ -660,7 +702,7 @@ body {
   line-height: 1.55;
 }
 
-/* TECHNICIAN TESTIMONIAL BANNER */
+/* VOLUNTEER TESTIMONIAL BANNER */
 .tech-banner {
   background: linear-gradient(135deg, #11141A 0%, #1A212E 100%);
   color: var(--white);
@@ -672,17 +714,16 @@ body {
   text-align: center;
 }
 .avatar-wrap {
-  width: 72px;
-  height: 72px;
+  width: 76px;
+  height: 76px;
   border-radius: 50%;
   border: 3px solid var(--primary);
   margin: 0 auto 16px;
-  overflow: hidden;
   background: #2A3241;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 32px;
+  font-size: 34px;
 }
 .tech-quote {
   font-family: 'Inter', sans-serif;
@@ -699,7 +740,7 @@ body {
   color: var(--primary);
 }
 .tech-role {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-light-muted);
 }
 
@@ -709,7 +750,7 @@ body {
   background: var(--light-bg);
 }
 .faq-grid {
-  max-width: 800px;
+  max-width: 820px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -748,7 +789,7 @@ body {
 }
 .faq-item.open .faq-a { display: block; }
 
-/* CONTACT / GREEN BAR */
+/* GREEN COMMUNITY STRIP */
 .contact-bar {
   background: var(--primary);
   color: var(--white);
@@ -770,7 +811,7 @@ body {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 1px;
-  opacity: 0.85;
+  opacity: 0.9;
   margin-bottom: 2px;
 }
 .contact-block p {
@@ -842,7 +883,6 @@ body {
   font-size: 12px;
 }
 
-/* TOAST */
 .toast {
   position: fixed;
   bottom: 24px;
@@ -874,49 +914,97 @@ body {
       <div class="brand-name">KINT<span>SUGI</span></div>
     </a>
     <ul class="nav-links">
-      <li><a href="#diagnostics">Diagnostics</a></li>
-      <li><a href="#services">Capabilities</a></li>
+      <li><a href="#workbench">Workbench</a></li>
+      <li><a href="#guidelines">Safety</a></li>
+      <li><a href="#capabilities">Features</a></li>
       <li><a href="#faq">FAQ</a></li>
       <li><a href="https://github.com/Lakshay-Deol/kintsugi" target="_blank" rel="noopener">GitHub</a></li>
     </ul>
     <div class="nav-actions">
       <span class="badge-demo" id="db" style="display:none;"></span>
-      <a href="#diagnostics" class="btn-nav">Launch Diagnostic</a>
+      <a href="#workbench" class="btn-nav">Volunteer Workbench</a>
     </div>
   </div>
 </header>
 
-<!-- HERO SECTION -->
+<!-- VOLUNTEER HERO BANNER -->
 <section class="hero">
   <div class="hero-content">
-    <p class="hero-subhead">Any Appliance Problem? Model-Grounded Answers</p>
+    <div class="volunteer-pill">🌱 Right to Repair &middot; Repair Café Network</div>
     <h1 class="hero-title">WE WILL <span>HELP</span></h1>
     <p class="hero-desc">
-      The AI repair assistant that refuses before it hallucinates. Retrieves exclusively from your appliance's official manufacturer service manual with verifiable page citations.
+      Empowering community volunteers and appliance repair technicians with manual-grounded diagnostics. 
+      Refuses before it hallucinates, cites exact manufacturer page numbers, and guides safe multimeter troubleshooting.
     </p>
-    <div class="hero-badges">
-      <div class="hero-badge-item"><span>⚡</span> FastEmbed 384-dim ONNX</div>
-      <div class="hero-badge-item"><span>🔍</span> MongoDB Atlas Vector + BM25</div>
-      <div class="hero-badge-item"><span>🛡️</span> Deterministic Safety Gates</div>
-      <div class="hero-badge-item"><span>📖</span> 100% Citation Verifier</div>
+    <div class="hero-stats">
+      <div class="hero-stat-box">
+        <div class="hero-stat-num">100%</div>
+        <div class="hero-stat-label">Citation Precision</div>
+      </div>
+      <div class="hero-stat-box">
+        <div class="hero-stat-num">0%</div>
+        <div class="hero-stat-label">Gas/Mains Hallucinations</div>
+      </div>
+      <div class="hero-stat-box">
+        <div class="hero-stat-num">384-dim</div>
+        <div class="hero-stat-label">FastEmbed ONNX CPU</div>
+      </div>
+      <div class="hero-stat-box">
+        <div class="hero-stat-num">Atlas</div>
+        <div class="hero-stat-label">Vector + BM25 Hybrid</div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- MAIN WORKSHOP CONTAINER -->
-<main class="workshop-wrap" id="diagnostics">
+<!-- VOLUNTEER WORKBENCH GUIDELINES STRIP -->
+<div class="guide-strip" id="guidelines">
+  <div class="guide-inner">
+    <div class="guide-item">
+      <div class="guide-icon">🔌</div>
+      <div class="guide-text">
+        <h4>Disconnect Power</h4>
+        <p>Always unplug before testing continuity or resistance</p>
+      </div>
+    </div>
+    <div class="guide-item">
+      <div class="guide-icon">⚡</div>
+      <div class="guide-text">
+        <h4>Multimeter Ready</h4>
+        <p>Check component resistance against manual tolerances</p>
+      </div>
+    </div>
+    <div class="guide-item">
+      <div class="guide-icon">🛑</div>
+      <div class="guide-text">
+        <h4>Hazard Boundaries</h4>
+        <p>Refer gas lines &amp; sealed refrigerants to specialists</p>
+      </div>
+    </div>
+    <div class="guide-item">
+      <div class="guide-icon">🤝</div>
+      <div class="guide-text">
+        <h4>Community Intelligence</h4>
+        <p>Record your fix outcomes to help other volunteers</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN VOLUNTEER WORKBENCH WRAPPER -->
+<main class="workshop-wrap" id="workbench">
   <div class="workshop-grid">
     
-    <!-- LEFT PANEL: DIAGNOSTIC FORM -->
+    <!-- LEFT PANEL: DIAGNOSTIC LOOKUP -->
     <div class="card-main">
-      <div class="sec-tag">Service Bench &middot; Manual Grounded</div>
-      <h2 class="sec-title">Appliance Diagnostic Lookup</h2>
+      <div class="sec-tag">Repair Café Service Bench</div>
+      <h2 class="sec-title">Community Appliance Diagnostic</h2>
 
-      <div class="chips-label">Quick sample lookups from indexed manuals:</div>
+      <div class="chips-label">Quick sample cases from verified service manuals:</div>
       <div class="chips-wrap">
-        <button type="button" class="chip" onclick="fillForm('WFW5620HW0', 'What does fault code F5E2 mean on my washer?', 'Whirlpool')">Whirlpool F5E2 Door Error</button>
+        <button type="button" class="chip" onclick="fillForm('WFW5620HW0', 'What does fault code F5E2 mean on my washer?', 'Whirlpool')">Whirlpool F5E2 Latch Error</button>
         <button type="button" class="chip" onclick="fillForm('WAT28400UC', 'What is the expected resistance of the water heater element and NTC temperature sensor?', 'Bosch')">Bosch 300 Heater Ohms</button>
-        <button type="button" class="chip" onclick="fillForm('GTW685BSLWS', 'How do I enter Field Service Mode to check stored fault history?', 'GE')">GE Field Service Mode</button>
+        <button type="button" class="chip" onclick="fillForm('GTW685BSLWS', 'How do I enter Field Service Mode to check stored fault history?', 'GE')">GE Field Service Sequence</button>
         <button type="button" class="chip" onclick="fillForm('WFW5620HW0', 'repair natural gas leak line pipe', 'Whirlpool')">⚠️ Hazard Safety Refusal</button>
       </div>
 
@@ -925,9 +1013,9 @@ body {
           <div class="form-group">
             <label class="form-label" for="mi">
               Model Number <span style="color:var(--danger)">*</span>
-              <span class="form-label-hint">e.g. WFW5620HW0</span>
+              <span class="form-label-hint">Found on door / cabinet tag</span>
             </label>
-            <input type="text" class="form-input" id="mi" placeholder="Enter appliance model number" required autocomplete="off"/>
+            <input type="text" class="form-input" id="mi" placeholder="e.g. WFW5620HW0" required autocomplete="off"/>
           </div>
           <div class="form-group">
             <label class="form-label" for="bi">
@@ -939,10 +1027,10 @@ body {
 
         <div class="form-group">
           <label class="form-label" for="si">
-            Symptom, Error Code, or Question <span style="color:var(--danger)">*</span>
-            <span class="form-label-hint">Be specific for best relevance</span>
+            Symptom or Error Code <span style="color:var(--danger)">*</span>
+            <span class="form-label-hint">Describe symptom or enter fault code</span>
           </label>
-          <textarea class="form-textarea" id="si" placeholder="Describe the symptom or enter code. e.g. Door won't lock after 3 attempts, showing error F5E2" required></textarea>
+          <textarea class="form-textarea" id="si" placeholder="Describe the symptom or code. e.g. Door won't lock after 3 attempts, showing code F5E2" required></textarea>
         </div>
 
         <button type="submit" class="btn-primary" id="sb">
@@ -964,22 +1052,22 @@ body {
         <div class="warn-box" id="wb"></div>
         <div class="res-body" id="at"></div>
 
-        <!-- VERIFIED CITATIONS -->
+        <!-- CITATIONS CONTAINER -->
         <div class="citations-wrap" id="cs">
-          <div class="citations-title">📄 Verified Manual Citations</div>
+          <div class="citations-title">📄 Verified Manufacturer Manual Citations</div>
           <div id="cl"></div>
         </div>
 
         <!-- FIX-OUTCOME TELEMETRY FORM -->
         <div class="outcome-wrap" id="os">
-          <div class="outcome-title">Did this diagnostic step help? Record your fix outcome:</div>
+          <div class="outcome-title">Did this diagnostic step help your volunteer repair? Record outcome:</div>
           <div class="outcome-buttons" id="of">
-            <button type="button" class="btn-outcome" data-o="fixed">✅ Fixed</button>
-            <button type="button" class="btn-outcome" data-o="partially">⚡ Partially fixed</button>
-            <button type="button" class="btn-outcome" data-o="not_fixed">❌ Not fixed</button>
-            <button type="button" class="btn-outcome" data-o="unsafe_referred">🔒 Referred to specialist</button>
+            <button type="button" class="btn-outcome" data-o="fixed">✅ Fixed Appliance</button>
+            <button type="button" class="btn-outcome" data-o="partially">⚡ Partially Fixed</button>
+            <button type="button" class="btn-outcome" data-o="not_fixed">❌ Not Fixed</button>
+            <button type="button" class="btn-outcome" data-o="unsafe_referred">🔒 Referred to Pro Specialist</button>
           </div>
-          <div class="outcome-msg" id="osv">✓ Outcome recorded anonymously. Thank you!</div>
+          <div class="outcome-msg" id="osv">✓ Outcome recorded anonymously. Thank you for supporting community repair!</div>
         </div>
       </div>
 
@@ -988,37 +1076,37 @@ body {
     <!-- RIGHT PANEL: RECENT LOOKUPS (LOCALSTORAGE) -->
     <div class="card-dark">
       <div class="history-header">
-        <div class="history-title">📋 Recent Lookups</div>
-        <button type="button" class="btn-clear" id="hcl">Clear</button>
+        <div class="history-title">📋 Session Repair Log</div>
+        <button type="button" class="btn-clear" id="hcl">Clear Log</button>
       </div>
       <p style="font-size:12px;color:var(--text-light-muted);margin-bottom:14px;">
-        Queries stay stored in your browser's localStorage only and are never saved on our server.
+        Volunteer session queries are kept exclusively in your browser's localStorage and never retained on our servers.
       </p>
       <div class="history-list" id="hl">
-        <div class="history-empty">No lookups yet. Search a model to begin!</div>
+        <div class="history-empty">No lookups yet. Search an appliance to begin!</div>
       </div>
     </div>
 
   </div>
 </main>
 
-<!-- SERVICES / CAPABILITIES SECTION -->
-<section class="section-services" id="services">
+<!-- VOLUNTEER CAPABILITIES SECTION -->
+<section class="section-services" id="capabilities">
   <div class="section-container">
     <div class="section-head-center">
-      <div class="sec-tag">Safety &amp; Precision First</div>
-      <h2 class="sec-title" style="font-size:32px;">Engineered for Real Workshop Scenarios</h2>
+      <div class="sec-tag">Community Workbench Features</div>
+      <h2 class="sec-title" style="font-size:32px;">Built for Repair Café Tables &amp; Small Workshops</h2>
       <p style="color:var(--text-muted);font-size:15px;">
-        Unlike general conversational bots, Kintsugi is built specifically for technicians, small repair shops, and Repair Café volunteers.
+        Designed to assist volunteers in keeping consumer electronics and whitegoods out of landfills safely and accurately.
       </p>
     </div>
 
     <div class="services-grid">
       <div class="service-card">
         <div class="service-icon">📖</div>
-        <h3 class="service-title">Model-Only Evidence</h3>
+        <h3 class="service-title">Model-Specific Evidence</h3>
         <p class="service-desc">
-          Queries retrieve exclusively from the service manual for the exact model entered. Never confuses top-load with front-load specifications.
+          Retrieves exclusively from the official factory manual for the matched model number. Eliminates generic, speculative internet advice.
         </p>
       </div>
 
@@ -1026,15 +1114,15 @@ body {
         <div class="service-icon">🛑</div>
         <h3 class="service-title">Deterministic Refusals</h3>
         <p class="service-desc">
-          Refuses out-of-domain and low-relevance questions before calling any LLM. Saves API costs and eliminates speculative answers.
+          Refuses ungrounded and out-of-domain queries before calling an LLM, preventing dangerous hallucinations and zeroing API waste.
         </p>
       </div>
 
       <div class="service-card">
         <div class="service-icon">⚡</div>
-        <h3 class="service-title">Multimeter &amp; Ohms Testing</h3>
+        <h3 class="service-title">Multimeter Resistance Specs</h3>
         <p class="service-desc">
-          Extracts exact component resistance tolerances (e.g. 60–90 Ω latch solenoids, 12–18 Ω pump windings) with direct page references.
+          Cites exact expected resistance ranges (e.g. 60–90 Ω latch solenoids, 12–18 Ω pump motors) so volunteers can test components with confidence.
         </p>
       </div>
 
@@ -1042,22 +1130,22 @@ body {
         <div class="service-icon">⚠️</div>
         <h3 class="service-title">Hazard Redirection</h3>
         <p class="service-desc">
-          High-risk procedures involving gas lines, mains 240V tampering, or sealed refrigerants trigger instant safety notices and referrals.
+          High-risk inquiries involving natural gas lines, mains 240V tampering, or sealed refrigerants trigger explicit safety warnings and pro referrals.
         </p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- TECHNICIAN TESTIMONIAL BANNER -->
+<!-- VOLUNTEER TESTIMONIAL BANNER -->
 <section class="tech-banner">
   <div class="tech-banner-inner">
     <div class="avatar-wrap">👨‍🔧</div>
     <p class="tech-quote">
-      "When diagnosing a front-load washer on a customer's basement floor, guessing at an error code is unacceptable. Kintsugi immediately points me to the exact test pin and expected resistance value from the manufacturer's documentation."
+      "At our monthly Repair Café, volunteers only have 45 minutes per visitor. Kintsugi removes the guesswork by showing the exact multimeter test pins and resistance tolerances directly from the manufacturer manual. It turns a frustrating diagnostic session into a successful repair."
     </p>
     <div class="tech-author">Karl Greaves</div>
-    <div class="tech-role">Senior Appliance Technician &amp; Repair Café Volunteer</div>
+    <div class="tech-role">Senior Appliance Technician &amp; Repair Café Volunteer Coordinator</div>
   </div>
 </section>
 
@@ -1066,26 +1154,26 @@ body {
   <div class="section-container">
     <div class="section-head-center">
       <div class="sec-tag">Frequently Asked Questions</div>
-      <h2 class="sec-title" style="font-size:30px;">Answers Grounded in Reality</h2>
+      <h2 class="sec-title" style="font-size:30px;">Answers Grounded in Factory Manuals</h2>
     </div>
 
     <div class="faq-grid">
       <div class="faq-item open">
-        <div class="faq-q">How does Kintsugi prevent hallucinated repair steps?</div>
+        <div class="faq-q">How does Kintsugi protect volunteers from inaccurate AI advice?</div>
         <div class="faq-a">
           Kintsugi uses a three-tier gate architecture. First, a deterministic hazard gate screens high-risk queries. Second, an Atlas hybrid retrieval gate refuses out-of-domain queries if search relevance scores fall below calibrated thresholds. Third, a programmatic citation verifier cross-references all cited page numbers against retrieved chunks, automatically stripping ungrounded pages.
         </div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-q">Can Kintsugi run offline without an internet connection?</div>
+        <div class="faq-q">Can a Repair Café run Kintsugi completely offline?</div>
         <div class="faq-a">
-          Yes. Kintsugi features local CPU ONNX vectorization via FastEmbed and an in-memory cosine fallback. For LLM generation, it supports model-swapping to local open-weights Gemma models (such as gemma3:12b) running on Ollama, making it completely functional for air-gapped workshops.
+          Yes. Kintsugi features local CPU ONNX vectorization via FastEmbed and an in-memory cosine fallback. For LLM generation, it supports model-swapping to local open-weights Gemma models (such as gemma3:12b) running on Ollama, making it completely functional for community halls with zero WiFi.
         </div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-q">Where is my diagnostic query data stored?</div>
+        <div class="faq-q">Where is diagnostic query data stored?</div>
         <div class="faq-a">
           Your search queries and job history are stored solely in your browser's localStorage. No customer diagnostic symptom text is stored on our servers. In cloud mode, queries are processed via Google AI Studio subject to their API terms of service.
         </div>
@@ -1094,19 +1182,19 @@ body {
   </div>
 </section>
 
-<!-- GREEN QUICK CONTACT BAR -->
+<!-- GREEN COMMUNITY STRIP -->
 <div class="contact-bar">
   <div class="contact-bar-inner">
     <div class="contact-block">
-      <h4>Open Source Project</h4>
-      <p>Apache 2.0 Licensed</p>
+      <h4>Open Source Initiative</h4>
+      <p>Apache 2.0 Community License</p>
     </div>
     <div class="contact-block">
-      <h4>Hackathon Event</h4>
+      <h4>Hackathon Submission</h4>
       <p>DEV &times; Hacktoberfest 2026</p>
     </div>
     <div class="contact-block">
-      <h4>Platform Architecture</h4>
+      <h4>Core Infrastructure</h4>
       <p>MongoDB Atlas &middot; Gemma &middot; Render</p>
     </div>
   </div>
@@ -1151,14 +1239,13 @@ body {
 
   <div class="footer-bottom">
     <p>Kintsugi &mdash; Apache 2.0 License. Designed for repair technicians and Right to Repair volunteers.</p>
-    <p><a href="#diagnostics" style="color:var(--primary);text-decoration:none;">Back to top &uarr;</a></p>
+    <p><a href="#workbench" style="color:var(--primary);text-decoration:none;">Back to workbench &uarr;</a></p>
   </div>
 </footer>
 
 <div class="toast" id="t"></div>
 
 <script>
-// Query health endpoint on load to reflect mode state
 fetch('/health').then(r => r.json()).then(d => {
   const badge = document.getElementById('db');
   if (badge) {
@@ -1201,7 +1288,7 @@ function rh() {
   var l = x('hl');
   var a = gh();
   if (!a.length) {
-    l.innerHTML = '<div class="history-empty">No lookups yet. Search a model to begin!</div>';
+    l.innerHTML = '<div class="history-empty">No lookups yet. Search an appliance to begin!</div>';
     return;
   }
   var html = '';
@@ -1372,7 +1459,6 @@ x('hcl').addEventListener('click', function() {
   }
 });
 
-// Accordion interaction
 document.querySelectorAll('.faq-item').forEach(function(item) {
   item.addEventListener('click', function() {
     this.classList.toggle('open');
