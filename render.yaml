@@ -34,7 +34,7 @@
       - key: LLM_BASE_URL
         value: https://generativelanguage.googleapis.com/v1beta/openai/
       - key: LLM_MODEL
-        value: gemma-3-27b-it
+        value: gemini-3.1-flash-lite
       - key: LLM_TIMEOUT_SECONDS
         value: "60"
       - key: LLM_MAX_ATTEMPTS
