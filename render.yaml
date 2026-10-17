@@ -1,0 +1,71 @@
+﻿services:
+  - type: web
+    name: kintsugi
+    runtime: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -e .
+    startCommand: python -m kintsugi.api.main
+    envVars:
+      - key: PYTHONMALLOC
+        value: malloc
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: APP_ENV
+        value: production
+      - key: DEMO_MODE
+        value: "true"
+      - key: MONGODB_URI
+        sync: false
+      - key: MONGODB_DB
+        value: kintsugi
+      - key: MONGODB_CHUNKS_COLLECTION
+        value: chunks
+      - key: MONGODB_MANUALS_COLLECTION
+        value: manuals
+      - key: MONGODB_FIX_OUTCOMES_COLLECTION
+        value: fix_outcomes
+      - key: ATLAS_VECTOR_INDEX
+        value: vector_index
+      - key: ATLAS_SEARCH_INDEX
+        value: bm25_index
+      - key: LLM_API_KEY
+        sync: false
+      - key: LLM_BASE_URL
+        value: https://generativelanguage.googleapis.com/v1beta/openai/
+      - key: LLM_MODEL
+        value: gemma-3-27b-it
+      - key: LLM_TIMEOUT_SECONDS
+        value: "60"
+      - key: LLM_MAX_ATTEMPTS
+        value: "3"
+      - key: LLM_MAX_TOKENS
+        value: "2048"
+      - key: EMBEDDING_MODEL
+        value: BAAI/bge-small-en-v1.5
+      - key: EMBEDDING_DIMS
+        value: "384"
+      - key: MIN_VECTOR_SCORE
+        value: "0.70"
+      - key: MIN_BM25_SCORE
+        value: "5.0"
+      - key: RRF_K
+        value: "60"
+      - key: VECTOR_TOP_K
+        value: "10"
+      - key: BM25_TOP_K
+        value: "10"
+      - key: FINAL_TOP_K
+        value: "5"
+      - key: RATE_LIMIT_PER_IP
+        value: "5"
+      - key: RATE_LIMIT_GLOBAL
+        value: "20"
+      - key: RATE_LIMIT_WINDOW_SECONDS
+        value: "60"
+      - key: API_HOST
+        value: "0.0.0.0"
+      - key: API_PORT
+        value: "8080"
+    healthCheckPath: /health
+    autoDeploy: true
