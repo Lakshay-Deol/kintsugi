@@ -73,16 +73,6 @@ We utilize Google AI Studio (`gemini-3.1-flash-lite` and `gemma-3-27b-it`) throu
   `{"answer": "...", "citations": [{"page": 4, "claim": "...", "excerpt": "..."}]}`
 
 
-### Temporal (Durable Diagnostic Agent & Flaky Call Recovery)
-LLM inference and external cloud endpoints can suffer from network timeouts, 429 rate limits, and cold-start spikes. We wrapped the diagnostic pipeline in a **Temporal Workflow** (src/kintsugi/workflows/temporal_flow.py):
-- **DiagnosticWorkflow:** Durable orchestration separating deterministic hazard checks, hybrid retrieval, LLM synthesis, and citation verification into distinct Temporal Activities.
-- **Automated Activity Retries:** Flaky LLM requests automatically retry with exponential backoff (initial_interval=1s, backoff=2.0, attempts=3) so the technician never receives a failed screen halfway through a repair diagnosis.
-
-### Tiger Data (pgvector Hybrid Search & Tiger MCP Management)
-To support PostgreSQL ecosystems alongside MongoDB Atlas, we integrated **Tiger Data** (src/kintsugi/tiger_data.py):
-- **pgvector Storage:** Indexes 384-dimensional FastEmbed embeddings with cosine distance (<=>) combined with full-text 	svector keyword matching.
-- **Tiger MCP Server Tools:** Exposes Model Context Protocol (MCP) tool definitions (	iger_search_manual, 	iger_list_indexed_models) so autonomous coding agents can inspect and query the repair manual database through the Tiger MCP protocol.
-
 ### Render (Zero-Downtime Deployment)
 The application is deployed on Render via a declarative [`render.yaml`](file:///c:/Users/laksh/OneDrive/Desktop/ksp/mlh/kintsugi/render.yaml) Blueprint:
 - Fast Uvicorn ASGI server with `proxy_headers=True` and `forwarded_allow_ips="*"` to ensure individual client IPs behind Render's edge proxy are rate-limited independently (preventing "demo busy" collisions for evaluators).

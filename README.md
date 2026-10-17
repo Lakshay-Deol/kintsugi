@@ -9,7 +9,6 @@
 [![Live Demo](https://img.shields.io/badge/Render-Live%20Demo-brightgreen.svg)](https://kintsugi-hx3b.onrender.com/ui/index.html)
 [![MongoDB Atlas](https://img.shields.io/badge/MongoDB-Atlas%20Vector%20Search-green.svg)](https://www.mongodb.com/atlas)
 [![Google Gemma](https://img.shields.io/badge/Google-Gemma%204%20%2F%20Gemini-blue.svg)](https://ai.google.dev/)
-[![Temporal](https://img.shields.io/badge/Temporal-Durable%20Workflow-black.svg)](https://temporal.io/)
 
 ---
 
@@ -52,14 +51,6 @@ Kintsugi integrates the hackathon sponsors into its production architecture:
 - **Infrastructure as Code:** Fully managed via a declarative [`render.yaml`](render.yaml) Blueprint.
 - **Reverse Proxy Architecture:** Configured with `proxy_headers=True` and `forwarded_allow_ips="*"` to ensure individual client IPs behind Render's edge proxy are rate-limited independently (preventing "demo busy" collisions for evaluators).
 - **Health Monitoring:** Automated `/health` endpoint checks database connectivity and reports demo mode status.
-
-### 4. Temporal (Durable Diagnostic Agent & Flaky Call Recovery)
-- **Durable Workflow (`src/kintsugi/workflows/temporal_flow.py`):** Wraps the entire diagnostic pipeline in a Temporal Workflow (`DiagnosticWorkflow`) separating hazard checks, hybrid retrieval, LLM synthesis, and citation verification into distinct Activities.
-- **Automated Activity Retries:** Flaky external LLM requests automatically retry with exponential backoff (`initial_interval=1s, backoff=2.0, attempts=3`) so technicians never face dropped connections during critical repairs.
-
-### 5. Tiger Data (pgvector Hybrid Search & Tiger MCP Management)
-- **pgvector Storage (`src/kintsugi/tiger_data.py`):** Stores 384-dimensional FastEmbed embeddings with cosine distance (`<=>`) combined with full-text `tsvector` keyword matching on PostgreSQL.
-- **Tiger MCP Tools:** Implements Model Context Protocol (MCP) tool schemas (`tiger_search_manual`, `tiger_list_indexed_models`) enabling autonomous coding agents to inspect, query, and manage the repair manual database.
 
 ---
 
