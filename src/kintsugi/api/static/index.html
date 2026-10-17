@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Kintsugi - AI Repair Assistant</title>
+<meta name="description" content="Manual-grounded repair assistant for appliance technicians and Repair Cafe volunteers."/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{--gold:#d4a843;--gold-light:#f0c96b;--gold-dim:#8a6c2a;--bg:#0d0e12;--bg2:#13151c;--bg3:#1a1d27;--border:#2a2f45;--text:#e8eaf2;--text-muted:#7a82a6;--text-dim:#4a5070;--success:#3ddc84;--warning:#ffaa44;--danger:#ff5a5a;--radius:12px;--radius-sm:8px;--shadow:0 4px 24px rgba(0,0,0,.5)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;font-size:15px}
+header{border-bottom:1px solid var(--border);background:rgba(13,14,18,.95);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;padding:0 24px}
+.hdr{max-width:900px;margin:0 auto;height:64px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--gold-dim),var(--gold));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.logo-name{font-family:'Outfit',sans-serif;font-size:20px;font-weight:700;color:var(--text)}
+.logo-sub{font-size:11px;color:var(--text-muted);margin-top:-3px}
+.badge-demo{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:.3px;text-transform:uppercase;background:rgba(212,168,67,.15);color:var(--gold);border:1px solid rgba(212,168,67,.3)}
+main{max-width:900px;margin:0 auto;padding:40px 24px 80px}
+.hero{text-align:center;margin-bottom:48px}
+h1{font-family:'Outfit',sans-serif;font-size:clamp(28px,5vw,46px);font-weight:800;letter-spacing:-1px;line-height:1.1;background:linear-gradient(135deg,var(--text) 0%,var(--gold-light) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:14px}
+.hero p{font-size:16px;color:var(--text-muted);max-width:520px;margin:0 auto}
+.hero-tag{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:20px;background:rgba(79,124,255,.1);border:1px solid rgba(79,124,255,.25);color:#7ba7ff;font-size:12px;font-weight:600;margin-bottom:20px}
+.refusal-note{margin-top:16px;font-size:13px;color:var(--text-dim);display:flex;align-items:center;justify-content:center;gap:6px}
+.refusal-note b{color:var(--gold)}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:28px;margin-bottom:24px;box-shadow:var(--shadow)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+@media(max-width:600px){.row{grid-template-columns:1fr}}
+.fg{display:flex;flex-direction:column;gap:6px}
+label{font-size:12px;font-weight:600;color:var(--text-muted);letter-spacing:.4px;text-transform:uppercase}
+input,textarea{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;padding:11px 14px;width:100%;transition:border-color .2s,box-shadow .2s;outline:none}
+input:focus,textarea:focus{border-color:var(--gold-dim);box-shadow:0 0 0 3px rgba(212,168,67,.1)}
+input::placeholder,textarea::placeholder{color:var(--text-dim)}
+textarea{resize:vertical;min-height:90px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;border-radius:var(--radius-sm);border:none;cursor:pointer;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;background:linear-gradient(135deg,var(--gold-dim) 0%,var(--gold) 100%);color:#0d0e12;transition:opacity .2s,transform .1s,box-shadow .2s;box-shadow:0 2px 12px rgba(212,168,67,.3)}
+.btn:hover:not(:disabled){opacity:.92;transform:translateY(-1px)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.sp{width:16px;height:16px;border:2px solid rgba(0,0,0,.3);border-top-color:#0d0e12;border-radius:50%;animation:spin .7s linear infinite;display:none}
+.btn.ld .sp{display:block}.btn.ld .bt{display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.result{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);display:none}
+.result.on{display:block;animation:fs .3s ease}
+@keyframes fs{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.rh{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border)}
+.rs{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600}
+.dot{width:8px;height:8px;border-radius:50%}
+.s-answered .dot{background:var(--success)}.s-refused .dot{background:var(--danger)}
+.rm{font-size:12px;color:var(--text-dim);background:var(--bg3);padding:3px 10px;border-radius:20px;border:1px solid var(--border)}
+.wb{padding:12px 20px;background:rgba(255,170,68,.05);border-bottom:1px solid rgba(255,170,68,.15)}
+.wi{font-size:13px;color:var(--warning);padding:4px 0}
+.rb{padding:20px}
+.at{font-size:15px;line-height:1.75;color:var(--text);white-space:pre-wrap}
+.at.rf{color:var(--text-muted);font-style:italic}
+.cs{margin-top:20px}.ct{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text-dim);margin-bottom:10px}
+.cc{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:8px;transition:border-color .2s}
+.cc:hover{border-color:var(--gold-dim)}
+.cp{background:linear-gradient(135deg,var(--gold-dim),var(--gold));color:#0d0e12;font-size:11px;font-weight:700;padding:2px 7px;border-radius:5px;flex-shrink:0;margin-top:2px}
+.cb{flex:1}.ccl{font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px}
+.cex{font-size:12px;color:var(--text-muted);font-style:italic;line-height:1.5}
+.os{margin-top:20px;padding-top:20px;border-top:1px solid var(--border)}
+.ot{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text-dim);margin-bottom:12px}
+.of{display:flex;gap:8px;flex-wrap:wrap}
+.ob{padding:7px 14px;border-radius:20px;border:1px solid var(--border);background:var(--bg3);color:var(--text-muted);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s}
+.ob:hover{border-color:var(--gold-dim);color:var(--text)}.ob.sel{background:rgba(212,168,67,.12);border-color:var(--gold);color:var(--gold)}
+.osv{font-size:13px;color:var(--success);display:none;align-items:center;gap:6px;margin-top:8px}.osv.on{display:flex}
+.hs{margin-top:40px}.ht{font-size:13px;font-weight:600;color:var(--text-muted);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+.hc{font-size:12px;color:var(--text-dim);background:none;border:none;cursor:pointer;padding:2px 8px;border-radius:4px;transition:color .2s}.hc:hover{color:var(--danger)}
+.he{color:var(--text-dim);font-size:13px;font-style:italic;padding:12px 0}
+.hi{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:8px;cursor:pointer;transition:background .2s}
+.hi:hover{background:var(--bg3)}.hib{flex:1;min-width:0}.him{font-size:13px;font-weight:600;color:var(--text)}
+.his{font-size:12px;color:var(--text-muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hist{font-size:11px;font-weight:600;padding:3px 8px;border-radius:10px;flex-shrink:0}
+.ha{background:rgba(61,220,132,.1);color:var(--success)}.hr{background:rgba(255,90,90,.1);color:var(--danger)}
+.pn{margin-top:48px;padding:16px 20px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);font-size:12px;color:var(--text-dim);line-height:1.7}
+.pn strong{color:var(--text-muted)}.pn a{color:var(--text-dim)}.pn a:hover{color:var(--gold)}
+footer{text-align:center;padding:24px;font-size:12px;color:var(--text-dim);border-top:1px solid var(--border);margin-top:40px}
+footer a{color:var(--text-dim);text-decoration:none}footer a:hover{color:var(--gold)}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 16px;font-size:13px;color:var(--text);box-shadow:var(--shadow);transform:translateY(60px);opacity:0;transition:all .3s ease;z-index:1000}
+.toast.show{transform:translateY(0);opacity:1}
+</style>
+</head>
+<body>
+<header>
+  <div class="hdr">
+    <a href="/" class="logo">
+      <div class="logo-icon">🔧</div>
+      <div><div class="logo-name">Kintsugi</div><div class="logo-sub">Repair Assistant</div></div>
+    </a>
+    <span class="badge-demo" id="db" title="Queries sent to Google AI Studio (Gemma)">⚡ Demo Mode</span>
+  </div>
+</header>
+<main>
+  <div class="hero">
+    <div class="hero-tag">&#9679; Manual-grounded &middot; No hallucinations</div>
+    <h1>Fix it right.<br/>From the actual manual.</h1>
+    <p>Enter your appliance model number and symptom. Kintsugi searches the manufacturer manual and cites every claim &mdash; or tells you honestly when it cannot find the answer.</p>
+    <div class="refusal-note">&#x1F6E1; <b>Refusing is a feature.</b>&nbsp;No manual evidence = no answer.</div>
+  </div>
+  <div class="card">
+    <form id="qf">
+      <div class="row">
+        <div class="fg"><label for="mi">Model Number</label><input id="mi" type="text" placeholder="e.g. WFW5620HW0" autocomplete="off" required/></div>
+        <div class="fg"><label for="bi">Brand (optional)</label><input id="bi" type="text" placeholder="e.g. Whirlpool" autocomplete="off"/></div>
+      </div>
+      <div class="fg" style="margin-bottom:16px">
+        <label for="si">Symptom or Question</label>
+        <textarea id="si" placeholder="Describe the symptom. e.g. Door won't lock, error F5E2 showing" required></textarea>
+      </div>
+      <button type="submit" class="btn" id="sb"><div class="sp"></div><span class="bt">&#x1F50D; Search Manual</span></button>
+    </form>
+  </div>
+  <div class="result" id="rc">
+    <div class="rh">
+      <div class="rs" id="rs"><div class="dot"></div><span id="st"></span></div>
+      <span class="rm" id="rm"></span>
+    </div>
+    <div class="wb" id="wb" style="display:none"></div>
+    <div class="rb">
+      <div class="at" id="at"></div>
+      <div class="cs" id="cs" style="display:none"><div class="ct">&#x1F4C4; Manual Citations</div><div id="cl"></div></div>
+      <div class="os" id="os" style="display:none">
+        <div class="ot">Did this help? Record the outcome.</div>
+        <div class="of" id="of">
+          <button type="button" class="ob" data-o="fixed">&#x2705; Fixed</button>
+          <button type="button" class="ob" data-o="partially">&#x26A1; Partially fixed</button>
+          <button type="button" class="ob" data-o="not_fixed">&#x274C; Not fixed</button>
+          <button type="button" class="ob" data-o="unsafe_referred">&#x1F512; Referred to tech</button>
+        </div>
+        <div class="osv" id="osv">&#x2713; Outcome recorded. Thank you!</div>
+      </div>
+    </div>
+  </div>
+  <div class="hs">
+    <div class="ht">
+      <span>&#x1F4CB; Recent Lookups <span style="font-weight:400;color:var(--text-dim)">(browser only)</span></span>
+      <button class="hc" id="hcl">Clear</button>
+    </div>
+    <div id="hl"><div class="he">No lookups yet. Results stay in your browser only.</div></div>
+  </div>
+  <div class="pn">
+    <strong>Privacy notice:</strong> Your queries are sent to <strong>Google AI Studio</strong> (Gemma) for answer generation.
+    On the free tier, Google's terms may allow use of prompts for product improvement &mdash; see
+    <a href="https://ai.google.dev/gemini-api/terms" target="_blank" rel="noopener">Google AI Studio Terms of Service</a> (verified 2026-10-17).
+    <br/><br/>
+    <strong>No personal data is stored on this server.</strong> Your job history stays in your browser's localStorage and is never uploaded.
+    The only server-side data is the anonymous fix-outcome record you optionally submit (model, symptom category, outcome &mdash; no names, emails, IPs or free text).
+    <br/><br/>&#x1F512; <strong>Demo Mode</strong>: the hosted LLM provider (Google AI Studio) processes your query.
+  </div>
+</main>
+<footer><p>Kintsugi &mdash; Apache 2.0 &nbsp;&middot;&nbsp; Built with <a href="https://ai.google.dev/" target="_blank">Gemma</a>, <a href="https://www.mongodb.com/atlas" target="_blank">MongoDB Atlas</a>, <a href="https://render.com" target="_blank">Render</a></p></footer>
+<div class="toast" id="t"></div>
+<script>
+var SK='kintsugi_history';var cm='';var od=false;
+function x(id){return document.getElementById(id);}
+function toast(m,d){if(!d)d=2500;var e=x('t');e.textContent=m;e.classList.add('show');setTimeout(function(){e.classList.remove('show');},d);}
+function gh(){try{return JSON.parse(localStorage.getItem(SK)||'[]');}catch(e){return[];}}
+function sh(a){try{localStorage.setItem(SK,JSON.stringify(a.slice(0,20)));}catch(e){}}
+function ah(e){var a=gh();a.unshift(Object.assign({},e,{ts:Date.now()}));sh(a);rh();}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function rh(){
+  var l=x('hl');var a=gh();
+  if(!a.length){l.innerHTML='<div class="he">No lookups yet. Results stay in your browser only.</div>';return;}
+  var html='';
+  for(var i=0;i<a.length;i++){
+    var it=a[i];
+    html+='<div class="hi" onclick="rply('+i+')"><div class="hib"><div class="him">'+esc(it.model)+'</div><div class="his">'+esc(it.symptom)+'</div></div><span class="hist '+(it.status==='answered'?'ha':'hr')+'">'+(it.status==='answered'?'&#x2713; Answered':'&#x2715; Refused')+'</span></div>';
+  }
+  l.innerHTML=html;
+}
+function rply(i){var it=gh()[i];if(!it)return;x('mi').value=it.model;x('si').value=it.symptom;x('bi').value=it.brand||'';x('qf').dispatchEvent(new Event('submit'));}
+x('qf').addEventListener('submit',async function(e){
+  e.preventDefault();
+  var m=x('mi').value.trim(),s=x('si').value.trim(),b=x('bi').value.trim();
+  if(!m||!s)return;
+  cm=m;od=false;
+  var btn=x('sb');btn.disabled=true;btn.classList.add('ld');
+  try{
+    var r=await fetch('/answer',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model_number:m,symptom:s,brand:b})});
+    if(r.status===429){var d=await r.json();se(d.detail||'Rate limit reached. Try again in a minute.');return;}
+    if(!r.ok){var d2=await r.json().catch(function(){return{};});se(d2.detail||'Server error ('+r.status+')');return;}
+    var data=await r.json();rr(data,m,s,b);ah({model:m,symptom:s,brand:b,status:data.status});
+  }catch(err){se('Network error. Please try again.');console.error(err);}
+  finally{btn.disabled=false;btn.classList.remove('ld');}
+});
+function rr(d,m,s,b){
+  x('osv').classList.remove('on');
+  var obs=document.querySelectorAll('.ob');for(var j=0;j<obs.length;j++)obs[j].classList.remove('sel');
+  x('cs').style.display='none';x('wb').style.display='none';x('wb').innerHTML='';
+  x('rs').className='rs s-'+d.status;
+  x('st').textContent=d.status==='answered'?'Answer found':'Cannot answer';
+  x('rm').textContent=d.matched_model?'Model: '+d.matched_model:'Query: '+m;
+  var warns=d.warnings||[];
+  if(warns.length){x('wb').style.display='block';var wh='';for(var w=0;w<warns.length;w++){wh+='<div class="wi">&#x26A0;&#xFE0F; '+esc(warns[w])+'</div>';}x('wb').innerHTML=wh;}
+  var at=x('at');at.className='at'+(d.status==='refused'?' rf':'');at.textContent=d.answer||'';
+  if(d.citations&&d.citations.length){
+    x('cs').style.display='block';
+    var ch='';for(var c=0;c<d.citations.length;c++){var ci=d.citations[c];ch+='<div class="cc"><span class="cp">p.'+ci.page+'</span><div class="cb"><div class="ccl">'+esc(ci.claim)+'</div>'+(ci.excerpt?'<div class="cex">&ldquo;'+esc(ci.excerpt)+'&rdquo;</div>':'')+'</div></div>';}
+    x('cl').innerHTML=ch;
+  }
+  x('os').style.display=d.status==='answered'?'block':'none';
+  x('rc').classList.add('on');x('rc').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function se(msg){
+  x('rs').className='rs s-refused';x('st').textContent='Error';x('rm').textContent='';
+  x('at').className='at rf';x('at').textContent=msg;
+  x('cs').style.display='none';x('wb').style.display='none';x('os').style.display='none';x('rc').classList.add('on');
+}
+x('of').addEventListener('click',async function(e){
+  var btn=e.target.closest('.ob');if(!btn||od)return;
+  var o=btn.dataset.o;od=true;
+  var obs=document.querySelectorAll('.ob');for(var j=0;j<obs.length;j++)obs[j].classList.remove('sel');
+  btn.classList.add('sel');
+  try{
+    await fetch('/fix-outcome',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:cm,symptom_category:'other',outcome:o})});
+    x('osv').classList.add('on');
+  }catch(err){toast('Could not save outcome');od=false;btn.classList.remove('sel');}
+});
+x('hcl').addEventListener('click',function(){if(confirm('Clear all recent lookups?')){localStorage.removeItem(SK);rh();}});
+rh();
+</script>
+</body>
+</html>
