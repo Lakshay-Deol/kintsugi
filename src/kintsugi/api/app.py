@@ -103,7 +103,11 @@ def create_app() -> FastAPI:
 
     @app.post("/answer", response_model=AnswerResponse)
     async def answer(req: AnswerRequest, request: Request):
-        client_ip = request.client.host if request.client else "unknown"
+        forwarded = request.headers.get("x-forwarded-for")
+        if forwarded:
+            client_ip = forwarded.split(",")[0].strip()
+        else:
+            client_ip = request.client.host if request.client else "unknown"
 
         # Rate limiting
         allowed, rate_msg = check_rate_limit(client_ip)

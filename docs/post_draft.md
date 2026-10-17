@@ -1,143 +1,199 @@
 ---
-title: "Kintsugi: A Manual-Grounded Repair Assistant That Knows When to Refuse"
+title: Kintsugi: The Manual-Grounded AI Repair Assistant That Refuses Before It Hallucinates
 published: false
-tags: devchallenge, hf26challenge, gemma, mongodb, ai, python
-canonical_url: https://kintsugi-repair.tech
-cover_image: https://raw.githubusercontent.com/kintsugi-repair/kintsugi/main/docs/images/kintsugi-banner.png
+description: Built for the DEV x Hacktoberfest 2026 Challenge (Side Hustle theme). Uses MongoDB Atlas Hybrid Search + Gemma to diagnose appliances with zero hallucinated citations.
+tags: devchallenge, hf26challenge, mongodb, ai
 ---
 
-# Kintsugi: A Manual-Grounded Repair Assistant That Knows When to Refuse
+# Kintsugi: The Manual-Grounded AI Repair Assistant That Refuses Before It Hallucinates
 
-> *"The product's value is refusing correctly. In physical appliance repair, a confident hallucination can burn out a motor or shock a technician. Refusal is not a bug; it is the core safety feature."*
-
----
-
-## 1. What I Built
-
-Every weekend, thousands of independent repair technicians, small appliance fix shops, and Repair Café volunteers troubleshoot complex consumer appliances. When an error code like `F5E2` or `E18` flashes on a digital console, guessing is dangerous. High-voltage capacitors store lethal charges, gas valves risk explosion, and misdiagnosing an inverter drive motor wastes hundreds of dollars in unnecessary parts.
-
-Generic LLMs are notorious for "helpful guessing" — inventing non-existent reset codes or suggesting steps from a top-load washer for a sealed front-load drum.
-
-**Kintsugi** (named after the Japanese art of repairing broken pottery with gold lacquer) is a manual-grounded AI repair assistant engineered for repair technicians and side-hustle repairers. 
-
-### The User Scenario & Business Model
-- **Target User:** Independent technicians and Repair Café volunteers earning side income repairing household appliances.
-- **The Problem:** Technicians lose 20–45 minutes per job searching fragmented online PDF service manuals, schematics, and service bulletins.
-- **The Solution:** The user inputs an appliance model number (`WFW5620HW0`) and symptom (`error F5E2 door lock`). Kintsugi retrieves evidence **exclusively from that specific model's manufacturer manual**, enforces strict deterministic pre-LLM gates, and returns cited page-grounded instructions with direct excerpts.
-- **Who Pays & Why:** Small repair shops and independent contractors pay a $19/month micro-SaaS subscription because getting an authoritative, grounded diagnostic in 30 seconds saves an hour of unbillable triage on every job.
+> **Live Demo:** [https://kintsugi-hx3b.onrender.com/ui/index.html](https://kintsugi-hx3b.onrender.com/ui/index.html)  
+> **Source Code:** [https://github.com/Lakshay-Deol/kintsugi](https://github.com/Lakshay-Deol/kintsugi)
 
 ---
 
-## 2. Demo
+## 1. The Problem: When LLMs Guess at High Voltage
 
-- **Live Application:** [https://kintsugi-repair.tech](https://kintsugi-repair.tech) (hosted on Render over HTTPS)
-- **Direct Render URL:** [https://kintsugi.onrender.com](https://kintsugi.onrender.com)
-- **Demo Video:** [Watch the 3-minute Walkthrough & Live Refusal Demo](https://youtu.be/kintsugi-demo) *(Demonstrates exact pinout diagnostic test, followed by an intentional refusal when asked to service a high-risk gas line and an unknown model)*.
+In consumer appliance repair, an incorrect answer is far more dangerous than a refusal.
 
----
+If an AI chatbot hallucinates a JavaScript library, your build fails. If it hallucinates a washing machine repair procedure, a technician measures the wrong wire with a multimeter on a live 240V circuit, strips an unreplaceable drive-pulley thread, or orders a $220 electronic control unit (ECU) that doesn't fix the problem.
 
-## 3. Code & Reproducibility
+Most repair technicians, small appliance shop owners, and Repair Cafe volunteers don't need another generic conversational agent. They need an assistant that respects one foundational rule:
 
-- **GitHub Repository:** [https://github.com/laksh/kintsugi](https://github.com/laksh/kintsugi) (Apache-2.0 License)
-- **Evaluation Suite:** Complete 30-question gold-labeled test suite in `eval/questions.json`
-- **Benchmark Results:** Provenance-stamped execution log in `eval/results.json`
+> **Refusing to answer when evidence is missing or when safety is at risk is a core feature, not a failure.**
 
-### Tested Performance Across 30 Real Scenarios:
-| Metric | Benchmark Result | Target |
-|---|---|---|
-| **Refusal Accuracy (Unanswerable & Hazard)** | **100.0%** | 100% |
-| **Citation Precision (Zero Hallucinated Pages)** | **100.0%** | 100% |
-| **Retrieval Hit@K (Hybrid RRF)** | **100.0%** | >90% |
-| **Median Response Latency** | **845 ms** | <2000 ms |
-| **Cost per Diagnostic Query** | **$0.000** | Free Tier |
+Meet **Kintsugi**—named after the Japanese art of repairing broken ceramics with lacquer dusted with powdered gold, honoring the history of the object rather than disguising the break. Kintsugi retrieves exclusively from the manufacturer service manual of the user's specific appliance model, refuses out-of-domain and hazardous questions before calling an LLM, and verifies every single page citation.
 
 ---
 
-## 4. How I Built It
+## 2. The Side Hustle Angle: Unit Economics & Pricing
 
-Kintsugi transforms the manual retrieval problem through an authoritative 4-stage pipeline:
+The DEV × Hacktoberfest 2026 Week 2 theme is **Side Hustle**. Here is how Kintsugi translates technical rigor into a viable business model:
+
+### Target Market
+- **Primary:** Independent appliance repair technicians (sole proprietors) and small local repair shops (1–3 vans).
+- **Secondary:** Repair Cafe community coordinators and right-to-repair volunteers.
+
+### Value Proposition
+A typical service call costs a consumer $150–$300. Technicians spend an estimated 15–25 minutes per job searching shady PDF mirror sites for service manuals, decoding obscure blinking LED sequences, and testing components. If Kintsugi saves 15 minutes per diagnostic call, a technician doing 6 calls a day gains 1.5 billable hours daily.
+
+### Proposed Pricing Tiers (Clearly Labeled Hypotheses)
+- **Community Tier ($0 / month):** Web access with rate limits (5 queries/min) and community repair manuals. Target: Repair Cafe volunteers.
+- **Pro Technician ($29 / month per seat):** Instant lookups, unlimited multi-brand manual indexing, offline desktop mode (via Ollama), and direct multimeter testing step-lists.
+- **Shop / Fleet ($79 / month up to 5 seats):** Centralized manual repository, team repair history telemetry, and repair outcome analytics.
+
+### Running Cost Analysis
+- **Vector Search & Document Database:** MongoDB Atlas M0 free tier during bootstrap; $0.08/hour ($57/mo) dedicated M10 cluster at 100k chunks.
+- **Embeddings:** FastEmbed ONNX runtime (`BAAI/bge-small-en-v1.5`) runs locally on the host CPU in ~8 ms at **$0 API cost**.
+- **LLM Inference:** Free-tier Google AI Studio (`gemini-3.1-flash-lite`) during evaluation; estimated $0.0003 per answer in production.
+- **Break-Even:** At $29/month, just **3 paying subscribers** cover all hosting, database, and inference expenses.
+
+---
+
+## 3. How We Use Challenge Sponsors
+
+Kintsugi integrates the hackathon sponsors cleanly across its stack:
+
+### MongoDB Atlas (Vector Search + Full-Text Search + Telemetry)
+Appliance repair queries require two fundamentally different types of search:
+1. **Semantic understanding:** Matching symptoms like "drum doesn't turn but motor hums" to motor control passages.
+2. **Exact keyword matching:** Matching exact alphanumeric error codes like `F5E2` or `E18`.
+
+MongoDB Atlas gives us both in a single database:
+- **Atlas Vector Search (`vector_index`):** Indexes 384-dimensional dense vectors on `kintsugi.chunks` with pre-filters on `brand` and `model` to guarantee strict model isolation.
+- **Atlas Text Search (`bm25_index`):** Full-text dynamic index that scores exact component part codes and error IDs.
+- **Application-Side Fusion:** The results are combined using Reciprocal Rank Fusion:
+  `RRF Score = 1 / (60 + rank_vector) + 1 / (60 + rank_bm25)`
+- **Telemetry Collection:** When a technician completes a job, anonymous feedback is recorded in `kintsugi.fix_outcomes` to build empirical repair reliability stats without ever storing customer diagnostic text.
+
+### Google Gemma & Gemini (Structured Reasoning & Citations)
+We utilize Google AI Studio (`gemini-3.1-flash-lite` and `gemma-3-27b-it`) through the official `google-genai` SDK.
+- The model prompt is strictly bounded to the top-5 retrieved manual passages for the matched appliance model.
+- We require structured JSON output containing the step-by-step diagnostic procedure and explicit page citations:
+  `{"answer": "...", "citations": [{"page": 4, "claim": "...", "excerpt": "..."}]}`
+
+### Render (Zero-Downtime Deployment)
+The application is deployed on Render via a declarative [`render.yaml`](file:///c:/Users/laksh/OneDrive/Desktop/ksp/mlh/kintsugi/render.yaml) Blueprint:
+- Fast Uvicorn ASGI server with `proxy_headers=True` and `forwarded_allow_ips="*"` to ensure individual client IPs behind Render's edge proxy are rate-limited independently (preventing "demo busy" collisions for evaluators).
+- Automated health monitoring on `/health` verifying MongoDB connectivity and readiness.
+
+### .TECH Domains
+Provides a dedicated, professional domain identity for mobile and tablet workshop usage.
+
+---
+
+## 4. The Three Safety & Refusal Gates
+
+Kintsugi implements three deterministic checkpoints around the model:
 
 ```
-[User Input: Model + Symptom]
-           │
-           ▼
-┌─────────────────────────┐
-│   §5.2 Hazard Gate      │ ──[Gas / Refrigerant]──► Refuse & Refer to Licensed Tech
-└─────────────────────────┘
-           │ (Safe Query)
-           ▼
-┌─────────────────────────┐
-│   §5.1 Retrieval Gate   │
-│  - Normalized Model Match
-│  - Atlas Hybrid Search  │ ──[Low Relevance / No Model]──► Refuse Gracefully
-│    (Vector + BM25 + RRF)│
-└─────────────────────────┘
-           │ (Authoritative Passages)
-           ▼
-┌─────────────────────────┐
-│  Gemma 3 (27B IT) LLM   │
-│  - Zero System Prompts  │
-│  - Structured JSON Mode │
-└─────────────────────────┘
-           │ (Generated Claims)
-           ▼
-┌─────────────────────────┐
-│  §5.3 Citation Check    │ ──[Uncited / Hallucinated Page]──► Strip Claim or Fallback to Verbatim
-└─────────────────────────┘
-           │
-           ▼
-[Cited Answer with Verbatim Excerpts & Page Links]
+User Query
+   │
+   ▼
+[ §5.2 Hazard Gate ] ──── Hazard Detected? ────► REFUSE: HAZARD_REFERRAL (No DB/LLM)
+   │ (Safe)
+   ▼
+[ MongoDB Atlas Hybrid Retrieval ]
+   │
+   ▼
+[ §5.1 Retrieval Gate ] ─── Score Below Threshold? ─► REFUSE: LOW_RELEVANCE (No LLM)
+   │ (Grounded Evidence)
+   ▼
+[ Grounded LLM Synthesis ]
+   │
+   ▼
+[ §5.3 Citation Verifier ] ── Ungrounded Page? ────► Programmatically Strip Page
+   │
+   ▼
+Verified Answer with [Page X] Citations
 ```
 
-### Core Architecture:
-1. **Google Gemma 3 (27B IT via Google AI Studio):** Powers grounded diagnosis without system-prompt fragility by packaging grounding rules and extracted excerpts directly into the single turn.
-2. **MongoDB Atlas Hybrid Search:** Combines HNSW Vector Search (`bge-small-en-v1.5` 384-dim ONNX embeddings) with Atlas Search BM25 full-text queries, fused using app-side Reciprocal Rank Fusion ($k=60$).
-3. **Deterministic Safety Architecture:**
-   - **Pre-LLM Retrieval Gate (§5.1):** Rejects any query whose cosine similarity is below 0.70 and BM25 score is below 5.0, saving LLM calls.
-   - **Hazard Detection (§5.2):** Deterministically catches mains voltage, gas lines, and refrigerants with static safety warnings.
-   - **Post-LLM Citation Verification (§5.3):** Programmatically validates every claimed citation against retrieved passages. If an uncited page is found, it is stripped or replaced with verbatim manual text.
-4. **Render Deployment:** Single unified web service deployed via `render.yaml` with continuous health checks and UptimeRobot keep-alives.
+1. **Hazard Gate (§5.2 - Before DB/LLM):** Scans for dangerous operations (high-voltage mains tampering, natural gas/propane lines, sealed-system R134a/R600a refrigerants). Returns deterministic professional referral warnings with zero inference cost.
+2. **Retrieval Gate (§5.1 - Before LLM):** If the requested model is not in the corpus, returns `MODEL_NOT_FOUND`. If the top vector score is below 0.70 and BM25 score is below 5.0, returns `LOW_RELEVANCE`. Irrelevant queries (e.g. asking how to bake sourdough bread in a washing machine) are refused before calling the LLM.
+3. **Citation Check (§5.3 - After LLM):** Because LLMs can still hallucinate citations even when instructed otherwise, Kintsugi compares every cited page against the set of retrieved passages. If a page number wasn't in the retrieved evidence, it is automatically stripped.
 
 ---
 
-## 5. Why Does Open Innovation Matter?
+## 5. Model-Swap Benchmark: Hosted Cloud vs. Local Offline
 
-In our comparative cost analysis (`eval/cost_comparison.md`), we calculated the exact unit economics of closed proprietary APIs versus open-weight models:
+To support basements and rural workshops with zero internet, Kintsugi's architecture supports swapping the inference engine to local open-weights via Ollama. We benchmarked both arms on a 10-question evaluation subset:
 
-- A closed commercial model (GPT-4o mini or Claude 3.5 Haiku) costs between **$0.34 and $2.00 per 1,000 diagnostic queries**.
-- For a small repair business or Repair Café processing 10,000 lookups a month, proprietary API fees create unpredictable marginal costs that penalize usage.
-- **Open Innovation changes the equation:** Gemma open weights provide state-of-the-art diagnostic reasoning at **$0.00 marginal cost**. Furthermore, as demonstrated in our model-swap benchmark (`eval/model_swap.json`), technicians in low-connectivity rural workshops can run Kintsugi completely offline using local Ollama on their laptop without changing a single line of application code.
+| Dimension | Arm 1: Hosted Gemma / Gemini | Arm 2: Local Ollama (`gemma3:12b`) |
+| :--- | :--- | :--- |
+| **Provider** | Google AI Studio | Ollama (Localhost) |
+| **Inference Location** | Cloud / GPU | Local CPU / GPU |
+| **Citation Precision** | 100.0% | 100.0% |
+| **Refusal Accuracy** | 100.0% | 100.0% |
+| **Median Generation Latency** | **845 ms** | **3,250 ms** |
+| **P95 Latency** | 1,420 ms | 6,100 ms |
+| **Data Privacy** | Sent to Google API under TOS | 100% on-device (Zero network egress) |
+| **Estimated Cost** | Free tier / Pay-per-token | $0.00 (Pure local compute) |
 
-Open weights empower independent workers to build self-sustaining side hustles without vendor lock-in.
-
----
-
-## 6. My Agent Session
-
-Developing Kintsugi was pair-programmed with Google Antigravity IDE:
-- **What the Agent Did Well:** Implemented mathematical RRF rank fusion, deterministic regex hazard filtering, and written test client simulations rapidly.
-- **Where the Agent Struggled:** Handled PowerShell multiline quote escaping poorly when generating static HTML directly, and initially counted domain stopwords ("washer") toward BM25 relevance until corrected.
-- **Key Takeaway:** Agentic workflows excel when constrained by strict phase gates and evidence files (`scripts/gate_phaseX.py`). Having automated gates eliminated hallucinated claims of "done".
+**Key Finding:** Citation precision remained 100% in both configurations because Kintsugi's deterministic post-generation verifier enforces grounding regardless of which LLM generates the output text.
 
 ---
 
-## 7. My First User Feedback
+## 6. Evaluation Sanity Check (30 Hand-Written Questions)
 
-During early testing, we engaged local repairers to test Kintsugi against real washer error queries:
-- **Participant:** Independent Appliance Specialist & Volunteer Repairer
-- **Reaction:** *"Most AI chatbots just tell you to check the breaker or call someone. Seeing the exact pinout numbers on the DL3 connector and knowing it came from page 10 of the actual manual gives me immediate confidence."*
-- **Willingness to Pay:** Stated they would comfortably pay $15–$25/month if the corpus is expanded to include refrigerators and dryers.
-- Full interview notes documented in `docs/first_user.md`.
+We constructed an evaluation suite (`eval/questions.json`) of **30 hand-written questions** reflecting real diagnostic scenarios (door lock errors, coin trap cleaning, diagnostic modes, pump resistance checks, hazards, and adversarial out-of-domain queries) across 3 baseline washer service manuals (Whirlpool `WFW5620HW0`, GE `GTW685BSLWS`, Bosch `WAT28400UC`).
 
----
+- **Refusal Accuracy:** 100.0% (10 of 10 unanswerable and hazard questions correctly refused)
+- **Citation Precision:** 100.0% (Zero ungrounded citations survived post-processing)
+- **Hybrid RRF Hit@K:** 100.0% (Gold manual page ranked in top-5 for all 15 answerable questions)
+- **Retrieval P50 Latency:** **58.5 ms** (Measures ONNX local query embedding + Atlas hybrid search only; does not include LLM generation)
+- **End-to-End P50 Latency:** **~845 ms** (Full pipeline from user request through LLM synthesis to client response)
 
-## 8. Prize Category Mapping
-
-- **Gemma:** Powered by Google Gemma 3 (27B IT) for structured manual-grounded extraction and diagnostic synthesis.
-- **Render:** Hosted on Render with automatic deployments, environment management, and `/health` monitoring via `render.yaml`.
-- **MongoDB Atlas:** Leverages MongoDB Atlas M0 for unified vector search and BM25 search with brand/model pre-filtering.
-- **.tech Domain:** Production web application served with SSL from custom `.tech` domain ([https://kintsugi-repair.tech](https://kintsugi-repair.tech)).
+*Corpus Note:* These metrics represent a verification sanity check on our 26-chunk curated baseline. They confirm the pipeline's logic and thresholds work as designed on calibrated data.
 
 ---
 
-*Built with care for Hacktoberfest 2026. Keep fixing, keep learning.*\n
+## 7. Open-Source Reuse Ledger
+
+In accordance with Hacktoberfest rules, we maintain full transparency regarding prior art:
+
+- **Reference Architecture:** Inspired by safety gate and refusal concepts in open-source repair assistants (specifically `raghuram-chittibomma/ai-repair-assistant`, Apache-2.0).
+- **What Was Reused:** Conceptual structure for hazard refusal policies and multi-tier gate classification.
+- **What Was Built New for Kintsugi:**
+  - Transitioned from Docker/PostgreSQL/pgvector to **MongoDB Atlas Vector Search + BM25 text search**.
+  - Local CPU FastEmbed ONNX pipeline (384-dim BGE embeddings) eliminating paid embedding APIs.
+  - Multi-provider LLM adapter supporting Google AI Studio (Gemini/Gemma) and local Ollama.
+  - Programmatic citation verification engine (§5.3) that checks and strips ungrounded pages.
+  - Brand new dark-theme web UI with reverse-proxy aware rate limiting and client-side localStorage history.
+  - 100% fresh 30-question evaluation dataset and automated gate validation scripts.
+
+---
+
+## 8. First-User Feedback & Honest Limitations
+
+### First-User Outreach
+During the 36-hour challenge window, we initiated outreach to local appliance repair technicians and community Repair Cafe organizers. **As of submission time, no formal user interviews have been completed.** No paying users or verified willingness-to-pay numbers exist yet. The pricing tiers outlined in Section 2 are hypotheses to be tested during customer discovery.
+
+### Current Limitations
+1. **Curated Baseline Corpus:** The live system is currently seeded with 3 washer service manuals (26 chunks). Adding dryers, refrigerators, and dishwashers requires running the ingestion CLI with additional manufacturer PDFs.
+2. **Text-Only Citations:** Kintsugi currently extracts text and tabular specifications. Circuit schematics and exploded-view wire diagrams are not yet rendered visually in the response.
+3. **Third-Party API Privacy:** In cloud mode, queries are processed by Google AI Studio under their developer terms of service. For 100% air-gapped privacy, workshops must run the local Ollama arm.
+
+---
+
+## 9. Try It Yourself
+
+1. Open the live demo: **[https://kintsugi-hx3b.onrender.com/ui/index.html](https://kintsugi-hx3b.onrender.com/ui/index.html)**
+2. Test a grounded diagnostic query:
+   - **Model:** `WFW5620HW0`
+   - **Symptom:** `What does fault code F5E2 mean on my washer?`
+   - *Result:* Retrieves the Whirlpool manual, explains the door latch switch failure, and cites **[Page 4]**.
+3. Test a deterministic safety refusal:
+   - **Model:** `WFW5620HW0`
+   - **Symptom:** `repair natural gas leak line pipe`
+   - *Result:* Refuses immediately with `HAZARD_REFERRAL` without calling the LLM.
+4. Clone the repository and run the gates locally:
+   ```bash
+   git clone https://github.com/Lakshay-Deol/kintsugi.git
+   cd kintsugi
+   pip install -e .
+   python scripts/gate_phase0.py
+   python scripts/gate_phase1.py
+   python scripts/gate_phase2.py
+   python scripts/gate_phase3.py
+   python scripts/gate_phase4.py
+   ```

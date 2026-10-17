@@ -23,6 +23,8 @@ def run() -> None:
         port=cfg_port,
         log_level="info",
         access_log=True,
+        proxy_headers=True,
+        forwarded_allow_ips="*",
     )
 
 

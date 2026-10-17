@@ -1,21 +1,21 @@
-# Kintsugi — Complete Project Workflow & Sponsor Integration Guide
+# Kintsugi — Complete Project Workflow & System Guide
 
 > **Project Name:** Kintsugi  
 > **Tagline:** The manual-grounded AI repair assistant that refuses before it hallucinates.  
 > **Event:** DEV × Hacktoberfest 2026 (Week 2 — Side Hustle Theme)  
-> **Live URL:** [https://kintsugi-hx3b.onrender.com/ui/index.html](https://kintsugi-hx3b.onrender.com/ui/index.html)  
+> **Live Demo:** [https://kintsugi-hx3b.onrender.com/ui/index.html](https://kintsugi-hx3b.onrender.com/ui/index.html)  
 > **Repository:** [https://github.com/Lakshay-Deol/kintsugi](https://github.com/Lakshay-Deol/kintsugi)
 
 ---
 
-## 1. Executive Summary & Core Principle
+## 1. Executive Summary & Design Principle
 
-In consumer appliance repair, an incorrect answer is far more dangerous than a simple refusal. A fabricated torque spec strips a bolt; a hallucinated electrical procedure creates a shock or fire hazard; a made-up error code causes a repair shop to order a $250 control board that doesn't fix the problem.
+In appliance repair, an inaccurate answer is substantially more dangerous than a refusal. A fabricated torque specification strips threading; a hallucinated electrical test creates a shock hazard; a made-up diagnostic code leads a repair technician to replace an expensive control board unnecessarily.
 
-**Kintsugi** is built around one uncompromising design law:  
-> **"Refusing correctly before invoking an LLM is a safety feature, not a failure."**
+**Kintsugi** is built around one governing principle:  
+> **Refusing queries deterministically before calling an LLM is a safety and cost-control feature.**
 
-The assistant retrieves exclusively from the **matched service manual** of the appliance model entered by the user. If the manual is missing, if the relevance score is low, or if the procedure involves high-risk hazards (mains 240V electricity, refrigerant gasses, or natural gas lines), the system **refuses deterministically with zero LLM API cost**. When an answer is provided, every technical claim is verified against page-level citations.
+Kintsugi retrieves exclusively from the matched service manual for the appliance model entered by the technician. If the manual is absent, if search scores indicate low relevance, or if the procedure presents severe safety hazards (gas connections, sealed refrigerants, live mains electricity), Kintsugi **refuses deterministically with zero LLM API cost**. When evidence is found, claims are cross-checked against retrieved manual pages.
 
 ---
 
@@ -29,34 +29,35 @@ The assistant retrieves exclusively from the **matched service manual** of the a
                   │
                   ▼
        2. Rate Limiting Check (Token Bucket: 5 req/min/IP)
+          - Evaluates X-Forwarded-For header to support reverse proxy routing
                   │
                   ▼
   ┌────────────────────────────────────────────────────────┐
   │  GATE 1: Deterministic Hazard Filter (§5.2)           │
-  │  - Checks for Gas lines, Freon/R134a, 240V Mains      │
+  │  - Scans for Gas lines, R134a/Freon, 240V Mains       │
   └────────────────────────────────────────────────────────┘
          │                               │
     [Safe Query]                  [Hazard Detected]
          │                               │
          │                               ▼
          │                 REFUSAL: HAZARD_REFERRAL
-         │                 (Immediate Professional Referral,
+         │                 (Immediate professional referral,
          │                  Zero DB / Zero LLM calls)
          ▼
   ┌────────────────────────────────────────────────────────┐
-  │  HYBRID RETRIEVAL: MongoDB Atlas Search                │
+  │  HYBRID RETRIEVAL & APP-SIDE FUSION                    │
   │  1. Vector Search ($vectorSearch on 'vector_index')   │
-  │     - FastEmbed 384-dim ONNX embeddings                │
+  │     - FastEmbed 384-dim ONNX embeddings (local CPU)   │
   │  2. BM25 Full-Text Search ($search on 'bm25_index')   │
-  │  3. Reciprocal Rank Fusion (RRF, k=60)                │
+  │  3. Reciprocal Rank Fusion (RRF, k=60) in application │
   │  * Offline Fallback: Local Cosine + In-Memory BM25    │
   └────────────────────────────────────────────────────────┘
          │
          ▼
   ┌────────────────────────────────────────────────────────┐
   │  GATE 2: Deterministic Retrieval Gate (§5.1)          │
-  │  - Is model in corpus? (MODEL_NOT_FOUND)              │
-  │  - Are vector & BM25 scores >= threshold?             │
+  │  - Model lookup: MODEL_NOT_FOUND if unknown           │
+  │  - Thresholds: v_score >= 0.70 AND bm25 >= 5.0        │
   └────────────────────────────────────────────────────────┘
          │                               │
     [Evidence Found]              [Scores Below Threshold]
@@ -68,24 +69,24 @@ The assistant retrieves exclusively from the **matched service manual** of the a
          ▼
   ┌────────────────────────────────────────────────────────┐
   │  GROUNDED PROMPT ASSEMBLY & LLM SYNTHESIS              │
-  │  - Strictly bounded prompt with ONLY model excerpts   │
-  │  - Invokes Google Gemma 3 / Gemini                    │
-  │  - Requires JSON: { answer, citations: [{page, ...}] }│
+  │  - Prompt constrained to model's retrieved excerpts   │
+  │  - Calls Google Gemma / Gemini API (or local Ollama)  │
+  │  - Requests JSON: { answer, citations: [{page, ...}] }│
   └────────────────────────────────────────────────────────┘
          │
          ▼
   ┌────────────────────────────────────────────────────────┐
   │  GATE 3: Programmatic Citation Verifier (§5.3)         │
-  │  - Compares model citations against retrieved pages   │
-  │  - Automatically strips ungrounded/hallucinated pages │
+  │  - Checks cited pages against retrieved passages set  │
+  │  - Strips citations to ungrounded or absent pages     │
   └────────────────────────────────────────────────────────┘
          │
          ▼
   ┌────────────────────────────────────────────────────────┐
-  │  USER RESPONSE & ANONYMIZED TELEMETRY                  │
-  │  - Answer displayed with clickable [Page X] badges    │
-  │  - Query saved to browser localStorage (Never cloud)  │
-  │  - Optional technician repair feedback: /fix-outcome   │
+  │  RESPONSE & TELEMETRY                                  │
+  │  - Answer displayed with verified [Page X] badges     │
+  │  - History retained only in browser localStorage      │
+  │  - Optional technician outcome feedback: /fix-outcome  │
   └────────────────────────────────────────────────────────┘
 ```
 
@@ -94,143 +95,85 @@ The assistant retrieves exclusively from the **matched service manual** of the a
 ## 3. Step-by-Step Flow Breakdown
 
 ### Phase 1: Request & Safety Interception
-1. **User Input:** The technician enters an appliance model (e.g., `WFW5620HW0`) and a symptom/question (e.g., `What does fault code F5E2 mean on my washer?`).
-2. **Rate Limiting:** A token-bucket rate limiter enforces an IP-level quota (5 requests per minute per IP) to prevent denial-of-service and quota drain.
-3. **Hazard Gate (§5.2):** Before any vector search or LLM call, the symptom is scanned against deterministic safety patterns:
-   - High-voltage mains tampering (tapping live wires, bypassing grounding)
-   - Natural gas / propane leaks
-   - Sealed-system refrigerants (R134a, R600a isobutane)
-   - *Outcome:* High-hazard queries immediately trigger `HAZARD_REFERRAL` with explicit safety warnings and a referral to licensed specialists.
+1. **User Input:** The technician enters a model identifier (e.g. `WFW5620HW0`) and a symptom or fault description.
+2. **Reverse-Proxy Rate Limiting:** The server inspects the `X-Forwarded-For` header so that individual client IPs are distinguished behind Render's reverse proxy, enforcing 5 requests/minute per client IP.
+3. **Hazard Gate (§5.2):** Before any database query or LLM invocation, the query is checked against regular expressions covering:
+   - High-voltage mains tampering (tapping live wires, bypassing fuses)
+   - Natural gas / propane repairs
+   - Sealed-system refrigerants (R134a, R600a)
+   - *Outcome:* Hazardous queries return an immediate `HAZARD_REFERRAL` with safety warnings and a recommendation to call a licensed specialist.
 
-### Phase 2: Hybrid Retrieval with Reciprocal Rank Fusion (RRF)
-4. **Local ONNX Embedding:** The query text is converted to a 384-dimensional dense vector using `BAAI/bge-small-en-v1.5` via the FastEmbed ONNX runtime locally in ~8ms at $0 API cost.
-5. **MongoDB Atlas Hybrid Search:**
-   - **Vector Query:** MongoDB Atlas `$vectorSearch` scans the `vector_index` filtered strictly by `model` and `brand`.
-   - **BM25 Text Query:** MongoDB Atlas `$search` scans the `bm25_index` for exact keyword matches (e.g. error code strings like `F5E2`).
-   - **Reciprocal Rank Fusion (RRF):** The rankings are fused using the formula:
-     $$\text{RRF Score}(d) = \sum_{m \in \{\text{vector}, \text{bm25}\}} \frac{1}{60 + \text{rank}_m(d)}$$
-   - The top 5 highest-ranking passages are extracted.
-6. **Resilience Fallback:** If Atlas is ever unreachable (e.g. offline workshop, DNS issue), the system automatically falls back to an in-memory cosine and tokenized BM25 search over `corpus/corpus_chunks.json`.
+### Phase 2: Hybrid Retrieval & App-Side RRF Fusion
+4. **Local ONNX Embedding:** The query string is encoded into a 384-dimensional dense vector using `BAAI/bge-small-en-v1.5` via the FastEmbed ONNX runtime locally in ~8 ms.
+5. **Atlas Queries:**
+   - **Vector Search:** Atlas `$vectorSearch` runs over the `vector_index`, pre-filtered by `brand` and `model`.
+   - **Text Search:** Atlas `$search` executes a BM25 keyword query on `bm25_index`.
+6. **App-Side Fusion:** In `src/kintsugi/retrieval/search.py`, rankings are combined via application-side Reciprocal Rank Fusion:
+   `RRF Score = 1 / (60 + rank_vector) + 1 / (60 + rank_bm25)`
+   The top 5 fused passages are selected.
+7. **Offline Fallback:** If Atlas is unreachable, the system executes local in-memory cosine similarity and tokenized BM25 matching across `corpus/corpus_chunks.json`.
 
 ### Phase 3: Out-of-Domain Retrieval Gate (§5.1)
-7. **Threshold Verification:**
-   - Checks if the requested model exists in the verified database. If missing: returns `MODEL_NOT_FOUND`.
-   - Checks if the maximum vector score $\ge 0.70$ and BM25 score $\ge 5.0$.
-   - If both are below threshold (such as asking "how to bake sourdough bread in a washer"): returns `LOW_RELEVANCE`.
-   - **Crucial:** No LLM is contacted for irrelevant queries, eliminating 100% of out-of-domain hallucination risks.
+8. **Threshold Validation:**
+   - If the model is not present in the manual corpus: returns `MODEL_NOT_FOUND`.
+   - If both vector cosine score is below $0.70$ and BM25 score is below $5.0$: returns `LOW_RELEVANCE`.
+   - *Result:* Unanswerable queries (e.g. asking how to bake sourdough bread in a washing machine) are refused before making any LLM call.
 
 ### Phase 4: Grounded LLM Generation
-8. **Prompt Bounding:** Only the retrieved manual excerpts for that specific appliance model are injected into the prompt.
-9. **Inference:** Google Gemma / Gemini generates a structured diagnostic response including required JSON citations:
-   ```json
-   {
-     "answer": "Fault code F5E2 indicates a door lock error... [Page 4].",
-     "citations": [
-       {"page": 4, "claim": "Door latch error", "excerpt": "FAULT CODE F5E2..."}
-     ]
-   }
-   ```
+9. **Bounded Prompt:** Only the retrieved manual excerpts for that model are formatted into the prompt.
+10. **Model Generation:** The LLM (Google Gemma / Gemini or local Ollama) is invoked with structured JSON output instructions.
 
-### Phase 5: Citation Verification & Telemetry
-10. **Citation Stripping (§5.3):** The backend inspects every page cited in the JSON. If the model hallucinates a page number (e.g., citing page 99 when only pages 3 and 4 were retrieved), that citation is stripped immediately.
-11. **Privacy-Preserving Telemetry:** The response is returned to the user. The browser saves the query only to `localStorage` (it is never saved on the server). If the technician clicks "Fixed" or "Referred", an anonymous fix outcome record is stored.
+### Phase 5: Programmatic Citation Verification (§5.3)
+11. **Citation Check:** Because LLMs can occasionally cite non-existent pages even when instructed not to, `citation_check()` validates all cited page numbers against the set of retrieved pages. Any ungrounded page citation is programmatically stripped.
+12. **Privacy Policy:** No customer symptom text or personal data is stored on our server. The raw prompt text is transmitted to the configured model provider (e.g., Google AI Studio) subject to their standard API terms of service. Queries are retained only in the user's browser `localStorage`.
 
 ---
 
-## 4. Demo Mode vs. Production Mode
+## 4. Modes of Operation
 
-Kintsugi can be toggled seamlessly between **Demo Mode** and **Production Mode** via the `DEMO_MODE` environment variable.
-
-| Feature / Behavior | Demo Mode (`DEMO_MODE=true`) | Production Mode (`DEMO_MODE=false`) |
+| Feature / Behavior | Demo Mode (`DEMO_MODE=true`) | Full Mode (`DEMO_MODE=false`) |
 | :--- | :--- | :--- |
-| **Visual Header Badge** | Amber badge: `⚡ Demo Mode` | Emerald Green badge: `✔ Production` |
-| **Corpus Scope** | Pre-seeded with 3 baseline hero manuals (Whirlpool `WFW5620HW0`, GE `GTW685BSLWS`, Bosch `WAT28400UC`). | Ingestion CLI ready for full workshop manual catalogs across unlimited models. |
-| **Telemetry Storage** | Stores repair outcomes in local JSON (`corpus/local_fix_outcomes.json`) if Atlas write permissions are scoped down. | Stores telemetry directly into MongoDB Atlas collection `kintsugi.fix_outcomes`. |
-| **Rate Limiter Strictness** | Soft rate limiting with higher burst allowances for evaluator testing. | Strict rate limits (5 requests/minute per IP) to enforce SLA and cost boundaries. |
-| **LLM Fallback Strategy** | If external API quota is exceeded, gracefully falls back to structured verbatim manual excerpts. | Falls back to local Ollama (`gemma3:12b`) or secondary endpoint. |
-| **Privacy Guarantee** | Zero customer symptom text or PII stored. | Zero customer symptom text or PII stored. |
+| **Header Badge** | Amber badge: `⚡ Demo Mode` | Emerald badge: `✔ Production` |
+| **Seeded Baseline** | Whirlpool `WFW5620HW0`, GE `GTW685BSLWS`, Bosch `WAT28400UC` (26 chunks total). | Same initial corpus; ingestion script available for adding more models. |
+| **Telemetry Storage** | Stores repair outcomes in local file if Atlas permissions are read-only. | Stores outcomes directly into Atlas `kintsugi.fix_outcomes`. |
+| **Rate Limiter** | Standard 5 req/min/IP with informative "demo busy" message on cap. | Enforces strict IP limits. |
+| **Live App State** | **Currently active** on `https://kintsugi-hx3b.onrender.com`. | Toggleable via `DEMO_MODE=false` in Render dashboard. |
 
 ---
 
-## 5. How Challenge Sponsors are Integrated
+## 5. Sponsor Integrations
 
-Kintsugi integrates all four challenge sponsors deeply into its production architecture:
+### 1. MongoDB Atlas
+- **Storage & Search:** Hosts the `kintsugi` database with collections for manuals, chunks, and fix outcomes.
+- **Atlas Vector Search:** `vector_index` indexes 384-dimensional FastEmbed embeddings with cosine metric and filter fields on `brand` and `model`.
+- **Atlas Text Search:** `bm25_index` indexes text for exact error code and component lookups.
+- **Telemetry:** Records voluntary technician feedback via `/fix-outcome` in `kintsugi.fix_outcomes`.
 
-### 1. MongoDB Atlas (Database & Hybrid Search Engine)
-- **Role:** Primary cloud data store, Vector Search engine, and full-text BM25 index.
-- **Implementation Details:**
-  - **Cluster:** MongoDB Atlas M0 Free Tier running in AWS/GCP.
-  - **Database:** `kintsugi`
-  - **Vector Search (`vector_index`):** Indexes 384-dimensional dense vectors on path `embedding` with `cosine` similarity, equipped with pre-filters on `brand` and `model`.
-  - **Text Search (`bm25_index`):** Dynamic full-text mapping on the manual text fields for precise alphanumeric code lookups (e.g., error codes `F5E2`, `E18`).
-  - **Aggregation Pipeline:** Uses `$vectorSearch` and `$search` fused via Reciprocal Rank Fusion (RRF) directly in the aggregation pipeline.
-  - **Telemetry Collection:** Stores anonymous repair outcomes in `kintsugi.fix_outcomes` to build community repair intelligence.
+### 2. Google Gemma & Gemini
+- **Model:** Primary inference runs via Google AI Studio (`gemini-3.1-flash-lite` / `gemma-3-27b-it`) using the `google-genai` SDK.
+- **Model-Swap Capability:** Tested against local open-weights `gemma3:12b` via Ollama for offline workshop environments.
 
-### 2. Google Gemma & Gemini (Reasoning & Synthesis Engine)
-- **Role:** High-accuracy, safety-aligned diagnostic synthesis and technical citation extraction.
-- **Implementation Details:**
-  - **Primary Model:** `gemini-3.1-flash-lite` / `gemma-3-27b-it` accessed via Google AI Studio and the official `google-genai` SDK.
-  - **Offline Swappable:** Fully benchmarked against local open-weights `gemma3:12b` via Ollama (see `eval/model_swap.json`).
-  - **Zero Temperature Reasoning:** System instructions force deterministic, non-speculative responses grounded solely in supplied manual chunks.
-  - **JSON Mode:** Generates structured citation payloads containing page numbers, verified claims, and verbatim manual excerpts.
+### 3. Render
+- **Infrastructure:** Hosted as a Python web service defined in [`render.yaml`](file:///c:/Users/laksh/OneDrive/Desktop/ksp/mlh/kintsugi/render.yaml).
+- **Configuration:** Uvicorn with `proxy_headers=True` and `forwarded_allow_ips="*"` for accurate per-IP rate limiting behind Render's edge proxy.
+- **Monitoring:** `/health` endpoint checks database connectivity and reports demo mode status.
 
-### 3. Render (Hosting & Cloud Deployment)
-- **Role:** Zero-downtime, containerized cloud hosting with automated CI/CD.
-- **Implementation Details:**
-  - **Blueprint:** Fully declarative deployment managed via `render.yaml`.
-  - **Environment:** Native Python runtime with automated `pip install -e .` builds.
-  - **Process Model:** Fast Uvicorn ASGI server running FastAPI asynchronously.
-  - **Automated Health Monitoring:** Integrated `/health` probe verifying MongoDB Atlas connectivity, memory usage, and model readiness.
-  - **HTTPS & Edge Network:** Automatic TLS certificates and global edge termination on `https://kintsugi-hx3b.onrender.com`.
-
-### 4. .TECH Domains (Web Identity)
-- **Role:** Professional production domain identity for independent repair shops and Repair Café networks.
-- **Implementation Details:**
-  - Provides a memorable, specialized web destination for repair technicians on workshop floor tablets and mobile devices.
-  - Configured via CNAME / ALIAS records pointing directly to the Render edge deployment.
+### 4. .TECH Domains
+- **Identity:** Provides a dedicated custom domain for repair technicians accessing diagnostic manuals from workshop benches and mobile devices.
 
 ---
 
-## 6. Comprehensive Benchmark & Evaluation Metrics
+## 6. Evaluation & Latency Measurements
 
-Kintsugi was evaluated against a **gold-standard 30-question repair benchmark** (`eval/questions.json`) representing real-world technician queries, error codes, wiring checks, and adversarial safety queries:
+The evaluation suite (`eval/run_eval.py`) runs against a **30 hand-written test question dataset** (`eval/questions.json`) covering error codes, component testing, maintenance, hazardous tasks, and out-of-domain queries across the 3 baseline manuals.
 
-| Metric | Target | Achieved Score | Evaluation Mechanism |
-| :--- | :--- | :--- | :--- |
-| **Refusal Accuracy** | $\ge 95\%$ | **100.0%** | Tested across 10 unanswerable & hazard queries |
-| **Citation Precision** | $100\%$ | **100.0%** | Programmatic verification against retrieved manual pages |
-| **Hybrid RRF Hit@K** | $\ge 90\%$ | **100.0%** | Gold manual page retrieval across 15 technical questions |
-| **Median P50 Latency** | $< 2500\text{ ms}$ | **58.5 ms** | Sub-100ms response time on cached local/hybrid lookups |
+| Metric | Measured Value | Scope & Details |
+| :--- | :--- | :--- |
+| **Refusal Accuracy** | **100.0%** (10 / 10) | Correctly refused unknown models (`MODEL_NOT_FOUND`), hazards (`HAZARD_REFERRAL`), and irrelevant queries (`LOW_RELEVANCE`) |
+| **Citation Precision** | **100.0%** | All cited pages matched the retrieved ground-truth manual pages |
+| **Hybrid RRF Hit@K** | **100.0%** (15 / 15) | Gold manual page appeared within top-5 retrieved passages for all 15 answerable questions |
+| **Retrieval P50 Latency** | **58.5 ms** | **Retrieval only**: fastembed ONNX query embedding + local/hybrid search (does NOT include LLM generation) |
+| **End-to-End P50 Latency (Hosted)** | **~845 ms** | Complete pipeline: Rate limit $\rightarrow$ Hazard gate $\rightarrow$ Hybrid search $\rightarrow$ Google Cloud LLM synthesis $\rightarrow$ Citation check |
+| **End-to-End P50 Latency (Local Ollama)**| **~3,250 ms**| Complete pipeline with local `gemma3:12b` running on consumer CPU/GPU hardware |
 
----
-
-## 7. How to Run Locally
-
-### Prerequisites
-- Python 3.11+
-- Git
-
-### Setup
-```bash
-# 1. Clone the repository
-git clone https://github.com/Lakshay-Deol/kintsugi.git
-cd kintsugi
-
-# 2. Install dependencies
-pip install -e .
-
-# 3. Configure environment
-cp .env.example .env
-# Fill in your MONGODB_URI and LLM_API_KEY in .env
-
-# 4. Run automated validation gates (Phases 0 through 4)
-python scripts/gate_phase0.py
-python scripts/gate_phase1.py
-python scripts/gate_phase2.py
-python scripts/gate_phase3.py
-python scripts/gate_phase4.py
-
-# 5. Start the local server
-python -m uvicorn kintsugi.api.app:app --host 127.0.0.1 --port 8080
-```
-Open **[http://localhost:8080](http://localhost:8080)** in your browser!
+*Note on corpus size:* This evaluation was conducted on a curated baseline corpus of 3 washer service manuals (26 chunks). The 100% scores represent a reproducible validation sanity check on this calibrated subset rather than a claim of general performance across all appliance categories.
