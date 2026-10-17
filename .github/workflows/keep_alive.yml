@@ -1,0 +1,26 @@
+name: Render Keep-Alive Ping
+
+on:
+  schedule:
+    # Runs every 12 minutes to prevent Render free tier (15-min timeout) from sleeping
+    - cron: '*/12 * * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub Actions web tab
+
+jobs:
+  ping:
+    name: Ping Kintsugi Health Endpoint
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Ping Health Endpoint
+        run: |
+          echo "Pinging Kintsugi on Render at https://kintsugi-hx3b.onrender.com/health..."
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 https://kintsugi-hx3b.onrender.com/health)
+          echo "Received HTTP status: $STATUS"
+          if [ "$STATUS" -ge 200 ] && [ "$STATUS" -lt 400 ]; then
+            echo "Service is healthy and active!"
+            exit 0
+          else
+            echo "Warning: Received unexpected status $STATUS"
+            exit 1
+          fi
