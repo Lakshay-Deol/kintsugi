@@ -87,7 +87,7 @@ footer a{color:var(--text-dim);text-decoration:none}footer a:hover{color:var(--g
       <div class="logo-icon">🔧</div>
       <div><div class="logo-name">Kintsugi</div><div class="logo-sub">Repair Assistant</div></div>
     </a>
-    <span class="badge-demo" id="db" title="Queries sent to Google AI Studio (Gemma)">⚡ Demo Mode</span>
+    <span class="badge-demo" id="db" style="display:none;"></span>
   </div>
 </header>
 <main>
@@ -151,6 +151,23 @@ footer a{color:var(--text-dim);text-decoration:none}footer a:hover{color:var(--g
 <footer><p>Kintsugi &mdash; Apache 2.0 &nbsp;&middot;&nbsp; Built with <a href="https://ai.google.dev/" target="_blank">Gemma</a>, <a href="https://www.mongodb.com/atlas" target="_blank">MongoDB Atlas</a>, <a href="https://render.com" target="_blank">Render</a></p></footer>
 <div class="toast" id="t"></div>
 <script>
+// Query health endpoint on load to reflect production/demo state
+// Query health endpoint on load to reflect production/demo state
+fetch('/health').then(r => r.json()).then(d => {
+  const badge = document.getElementById('db');
+  if (badge) {
+    badge.style.display = 'inline-block';
+    if (d.demo_mode === false) {
+      badge.innerHTML = '&#x2714; Production';
+      badge.style.background = 'rgba(46, 213, 115, 0.15)';
+      badge.style.color = '#2ed573';
+      badge.style.borderColor = 'rgba(46, 213, 115, 0.3)';
+      badge.title = 'Production mode active: Live Atlas + Grounded Citations';
+    } else {
+      badge.innerHTML = '&#x26A1; Demo Mode';
+    }
+  }
+}).catch(console.error);
 var SK='kintsugi_history';var cm='';var od=false;
 function x(id){return document.getElementById(id);}
 function toast(m,d){if(!d)d=2500;var e=x('t');e.textContent=m;e.classList.add('show');setTimeout(function(){e.classList.remove('show');},d);}
