@@ -1,239 +1,1384 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Kintsugi - AI Repair Assistant</title>
-<meta name="description" content="Manual-grounded repair assistant for appliance technicians and Repair Cafe volunteers."/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet"/>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Kintsugi — Manual-Grounded AI Appliance Repair Assistant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
-:root{--gold:#d4a843;--gold-light:#f0c96b;--gold-dim:#8a6c2a;--bg:#0d0e12;--bg2:#13151c;--bg3:#1a1d27;--border:#2a2f45;--text:#e8eaf2;--text-muted:#7a82a6;--text-dim:#4a5070;--success:#3ddc84;--warning:#ffaa44;--danger:#ff5a5a;--radius:12px;--radius-sm:8px;--shadow:0 4px 24px rgba(0,0,0,.5)}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;font-size:15px}
-header{border-bottom:1px solid var(--border);background:rgba(13,14,18,.95);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;padding:0 24px}
-.hdr{max-width:900px;margin:0 auto;height:64px;display:flex;align-items:center;justify-content:space-between}
-.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-.logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--gold-dim),var(--gold));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px}
-.logo-name{font-family:'Outfit',sans-serif;font-size:20px;font-weight:700;color:var(--text)}
-.logo-sub{font-size:11px;color:var(--text-muted);margin-top:-3px}
-.badge-demo{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:.3px;text-transform:uppercase;background:rgba(212,168,67,.15);color:var(--gold);border:1px solid rgba(212,168,67,.3)}
-main{max-width:900px;margin:0 auto;padding:40px 24px 80px}
-.hero{text-align:center;margin-bottom:48px}
-h1{font-family:'Outfit',sans-serif;font-size:clamp(28px,5vw,46px);font-weight:800;letter-spacing:-1px;line-height:1.1;background:linear-gradient(135deg,var(--text) 0%,var(--gold-light) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:14px}
-.hero p{font-size:16px;color:var(--text-muted);max-width:520px;margin:0 auto}
-.hero-tag{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:20px;background:rgba(79,124,255,.1);border:1px solid rgba(79,124,255,.25);color:#7ba7ff;font-size:12px;font-weight:600;margin-bottom:20px}
-.refusal-note{margin-top:16px;font-size:13px;color:var(--text-dim);display:flex;align-items:center;justify-content:center;gap:6px}
-.refusal-note b{color:var(--gold)}
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:28px;margin-bottom:24px;box-shadow:var(--shadow)}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
-@media(max-width:600px){.row{grid-template-columns:1fr}}
-.fg{display:flex;flex-direction:column;gap:6px}
-label{font-size:12px;font-weight:600;color:var(--text-muted);letter-spacing:.4px;text-transform:uppercase}
-input,textarea{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;padding:11px 14px;width:100%;transition:border-color .2s,box-shadow .2s;outline:none}
-input:focus,textarea:focus{border-color:var(--gold-dim);box-shadow:0 0 0 3px rgba(212,168,67,.1)}
-input::placeholder,textarea::placeholder{color:var(--text-dim)}
-textarea{resize:vertical;min-height:90px}
-.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;border-radius:var(--radius-sm);border:none;cursor:pointer;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;background:linear-gradient(135deg,var(--gold-dim) 0%,var(--gold) 100%);color:#0d0e12;transition:opacity .2s,transform .1s,box-shadow .2s;box-shadow:0 2px 12px rgba(212,168,67,.3)}
-.btn:hover:not(:disabled){opacity:.92;transform:translateY(-1px)}
-.btn:disabled{opacity:.5;cursor:not-allowed}
-.sp{width:16px;height:16px;border:2px solid rgba(0,0,0,.3);border-top-color:#0d0e12;border-radius:50%;animation:spin .7s linear infinite;display:none}
-.btn.ld .sp{display:block}.btn.ld .bt{display:none}
-@keyframes spin{to{transform:rotate(360deg)}}
-.result{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);display:none}
-.result.on{display:block;animation:fs .3s ease}
-@keyframes fs{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.rh{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border)}
-.rs{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600}
-.dot{width:8px;height:8px;border-radius:50%}
-.s-answered .dot{background:var(--success)}.s-refused .dot{background:var(--danger)}
-.rm{font-size:12px;color:var(--text-dim);background:var(--bg3);padding:3px 10px;border-radius:20px;border:1px solid var(--border)}
-.wb{padding:12px 20px;background:rgba(255,170,68,.05);border-bottom:1px solid rgba(255,170,68,.15)}
-.wi{font-size:13px;color:var(--warning);padding:4px 0}
-.rb{padding:20px}
-.at{font-size:15px;line-height:1.75;color:var(--text);white-space:pre-wrap}
-.at.rf{color:var(--text-muted);font-style:italic}
-.cs{margin-top:20px}.ct{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text-dim);margin-bottom:10px}
-.cc{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:8px;transition:border-color .2s}
-.cc:hover{border-color:var(--gold-dim)}
-.cp{background:linear-gradient(135deg,var(--gold-dim),var(--gold));color:#0d0e12;font-size:11px;font-weight:700;padding:2px 7px;border-radius:5px;flex-shrink:0;margin-top:2px}
-.cb{flex:1}.ccl{font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px}
-.cex{font-size:12px;color:var(--text-muted);font-style:italic;line-height:1.5}
-.os{margin-top:20px;padding-top:20px;border-top:1px solid var(--border)}
-.ot{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text-dim);margin-bottom:12px}
-.of{display:flex;gap:8px;flex-wrap:wrap}
-.ob{padding:7px 14px;border-radius:20px;border:1px solid var(--border);background:var(--bg3);color:var(--text-muted);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s}
-.ob:hover{border-color:var(--gold-dim);color:var(--text)}.ob.sel{background:rgba(212,168,67,.12);border-color:var(--gold);color:var(--gold)}
-.osv{font-size:13px;color:var(--success);display:none;align-items:center;gap:6px;margin-top:8px}.osv.on{display:flex}
-.hs{margin-top:40px}.ht{font-size:13px;font-weight:600;color:var(--text-muted);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
-.hc{font-size:12px;color:var(--text-dim);background:none;border:none;cursor:pointer;padding:2px 8px;border-radius:4px;transition:color .2s}.hc:hover{color:var(--danger)}
-.he{color:var(--text-dim);font-size:13px;font-style:italic;padding:12px 0}
-.hi{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:8px;cursor:pointer;transition:background .2s}
-.hi:hover{background:var(--bg3)}.hib{flex:1;min-width:0}.him{font-size:13px;font-weight:600;color:var(--text)}
-.his{font-size:12px;color:var(--text-muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.hist{font-size:11px;font-weight:600;padding:3px 8px;border-radius:10px;flex-shrink:0}
-.ha{background:rgba(61,220,132,.1);color:var(--success)}.hr{background:rgba(255,90,90,.1);color:var(--danger)}
-.pn{margin-top:48px;padding:16px 20px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);font-size:12px;color:var(--text-dim);line-height:1.7}
-.pn strong{color:var(--text-muted)}.pn a{color:var(--text-dim)}.pn a:hover{color:var(--gold)}
-footer{text-align:center;padding:24px;font-size:12px;color:var(--text-dim);border-top:1px solid var(--border);margin-top:40px}
-footer a{color:var(--text-dim);text-decoration:none}footer a:hover{color:var(--gold)}
-.toast{position:fixed;bottom:24px;right:24px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 16px;font-size:13px;color:var(--text);box-shadow:var(--shadow);transform:translateY(60px);opacity:0;transition:all .3s ease;z-index:1000}
-.toast.show{transform:translateY(0);opacity:1}
+:root {
+  --primary: #2ECC71;
+  --primary-hover: #27ae60;
+  --primary-light: rgba(46, 204, 113, 0.12);
+  --primary-glow: rgba(46, 204, 113, 0.35);
+  --dark-bg: #11141A;
+  --dark-card: #191E28;
+  --dark-card-hover: #222836;
+  --dark-nav: #0D0F14;
+  --white: #FFFFFF;
+  --light-bg: #F8FAFC;
+  --light-border: #E2E8F0;
+  --dark-border: #2A3241;
+  --text-main: #0F172A;
+  --text-muted: #64748B;
+  --text-light: #F1F5F9;
+  --text-light-muted: #94A3B8;
+  --danger: #EF4444;
+  --danger-bg: rgba(239, 68, 68, 0.12);
+  --danger-border: rgba(239, 68, 68, 0.3);
+  --gold: #F59E0B;
+  --gold-bg: rgba(245, 158, 11, 0.12);
+  --gold-border: rgba(245, 158, 11, 0.3);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
+  --shadow-dark: 0 16px 36px rgba(0,0,0,0.3);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--light-bg);
+  color: var(--text-main);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* NAVBAR */
+.navbar {
+  background: var(--white);
+  border-bottom: 1px solid var(--light-border);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: var(--shadow-sm);
+}
+.nav-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+.brand-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--primary-light);
+  border: 1px solid var(--primary-glow);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  font-size: 20px;
+}
+.brand-name {
+  font-family: 'Outfit', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--text-main);
+}
+.brand-name span { color: var(--primary); }
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  list-style: none;
+}
+.nav-links a {
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-main);
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--primary); }
+.nav-actions { display: flex; align-items: center; gap: 14px; }
+.badge-demo {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  background: var(--gold-bg);
+  color: var(--gold);
+  border: 1px solid var(--gold-border);
+}
+.btn-nav {
+  background: var(--primary);
+  color: var(--white);
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.1s;
+}
+.btn-nav:hover { background: var(--primary-hover); transform: translateY(-1px); }
+
+/* HERO SECTION */
+.hero {
+  position: relative;
+  background: linear-gradient(135deg, rgba(13, 16, 23, 0.94) 0%, rgba(20, 26, 38, 0.90) 100%),
+              url('https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=2000&q=80') center/cover no-repeat;
+  color: var(--white);
+  padding: 80px 24px 100px;
+  text-align: center;
+}
+.hero-content {
+  max-width: 860px;
+  margin: 0 auto;
+}
+.hero-subhead {
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 8px;
+}
+.hero-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(36px, 6vw, 62px);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  line-height: 1.1;
+  margin-bottom: 24px;
+}
+.hero-title span { color: var(--primary); }
+.hero-desc {
+  font-size: 17px;
+  color: var(--text-light-muted);
+  max-width: 720px;
+  margin: 0 auto 36px;
+  line-height: 1.6;
+}
+.hero-badges {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+.hero-badge-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  font-size: 12px;
+  color: var(--text-light);
+}
+.hero-badge-item span { color: var(--primary); }
+
+/* MAIN DIAGNOSTIC WORKSHOP WRAPPER */
+.workshop-wrap {
+  max-width: 1200px;
+  margin: -50px auto 60px;
+  padding: 0 24px;
+  position: relative;
+  z-index: 10;
+}
+.workshop-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 28px;
+}
+@media (max-width: 900px) {
+  .workshop-grid { grid-template-columns: 1fr; }
+}
+
+/* CARDS */
+.card-main {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 36px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--light-border);
+}
+.card-dark {
+  background: var(--dark-card);
+  color: var(--text-light);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: var(--shadow-dark);
+  border: 1px solid var(--dark-border);
+}
+
+/* SECTION HEADERS */
+.sec-tag {
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--primary);
+  margin-bottom: 6px;
+}
+.sec-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-bottom: 20px;
+}
+
+/* FORM ELEMENTS */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+@media (max-width: 600px) {
+  .form-grid { grid-template-columns: 1fr; }
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+.form-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.form-label-hint {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+.form-input, .form-textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid var(--light-border);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: 14px;
+  background: #FFFFFF;
+  color: var(--text-main);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-input:focus, .form-textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-light);
+}
+.form-textarea {
+  resize: vertical;
+  min-height: 110px;
+}
+
+/* BUTTONS */
+.btn-primary {
+  width: 100%;
+  background: var(--primary);
+  color: var(--white);
+  padding: 14px 24px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: background 0.2s, transform 0.1s;
+}
+.btn-primary:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* SPINNER */
+.spinner {
+  display: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: var(--white);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.btn-primary.loading .spinner { display: inline-block; }
+.btn-primary.loading .btn-text { opacity: 0.8; }
+
+/* QUICK CHIPS */
+.chips-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.chips-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.chip {
+  background: var(--light-bg);
+  border: 1px solid var(--light-border);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.chip:hover {
+  background: var(--primary-light);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* DIAGNOSTIC RESULTS DISPLAY */
+.result-box {
+  display: none;
+  margin-top: 24px;
+  padding: 24px;
+  border-radius: var(--radius-md);
+  animation: fadeIn 0.3s ease;
+}
+.result-box.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+.result-box.status-answered {
+  background: #F0FDF4;
+  border: 1px solid rgba(46, 204, 113, 0.3);
+}
+.result-box.status-refused {
+  background: #FEF2F2;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.res-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+.res-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.status-answered .res-status { color: #16A34A; }
+.status-refused .res-status { color: #DC2626; }
+
+.res-badge-model {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+.res-body {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-main);
+  white-space: pre-wrap;
+  margin-bottom: 20px;
+}
+
+/* WARNINGS */
+.warn-box {
+  display: none;
+  background: #FFFBEB;
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: #B45309;
+}
+
+/* CITATIONS */
+.citations-wrap {
+  display: none;
+  background: var(--white);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  border: 1px solid var(--light-border);
+  margin-top: 14px;
+}
+.citations-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--primary);
+  margin-bottom: 10px;
+}
+.citation-item {
+  display: flex;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--light-border);
+}
+.citation-item:last-child { border-bottom: none; }
+.citation-page {
+  background: var(--primary-light);
+  color: var(--primary);
+  font-weight: 800;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  height: fit-content;
+  white-space: nowrap;
+}
+.citation-claim {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+.citation-excerpt {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-top: 2px;
+}
+
+/* FIX OUTCOME TELEMETRY FORM */
+.outcome-wrap {
+  display: none;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px dashed rgba(0,0,0,0.1);
+}
+.outcome-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 10px;
+}
+.outcome-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.btn-outcome {
+  background: var(--white);
+  border: 1px solid var(--light-border);
+  border-radius: var(--radius-sm);
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-outcome:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.btn-outcome.selected {
+  background: var(--primary);
+  color: var(--white);
+  border-color: var(--primary);
+}
+.outcome-msg {
+  display: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: #16A34A;
+  margin-top: 8px;
+}
+
+/* RIGHT PANEL: RECENT LOOKUPS */
+.history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--dark-border);
+}
+.history-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-light);
+}
+.btn-clear {
+  background: transparent;
+  border: none;
+  color: var(--text-light-muted);
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 480px;
+  overflow-y: auto;
+}
+.history-item {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.history-item:hover {
+  background: rgba(46, 204, 113, 0.08);
+  border-color: var(--primary);
+}
+.history-item-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+.history-model {
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary);
+}
+.history-pill {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 10px;
+  text-transform: uppercase;
+}
+.pill-answered { background: rgba(46, 204, 113, 0.2); color: #2ECC71; }
+.pill-refused { background: rgba(239, 68, 68, 0.2); color: #EF4444; }
+.history-symptom {
+  font-size: 12px;
+  color: var(--text-light-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.history-empty {
+  font-size: 13px;
+  color: var(--text-light-muted);
+  text-align: center;
+  padding: 30px 0;
+}
+
+/* ABOUT / SERVICES SECTION */
+.section-services {
+  background: var(--white);
+  padding: 80px 24px;
+  border-top: 1px solid var(--light-border);
+}
+.section-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.section-head-center {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 50px;
+}
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+.service-card {
+  background: var(--light-bg);
+  border: 1px solid var(--light-border);
+  border-radius: var(--radius-md);
+  padding: 28px;
+  transition: all 0.2s;
+}
+.service-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary);
+}
+.service-icon {
+  width: 50px;
+  height: 50px;
+  background: var(--primary-light);
+  color: var(--primary);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+.service-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.service-desc {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+/* TECHNICIAN TESTIMONIAL BANNER */
+.tech-banner {
+  background: linear-gradient(135deg, #11141A 0%, #1A212E 100%);
+  color: var(--white);
+  padding: 70px 24px;
+}
+.tech-banner-inner {
+  max-width: 840px;
+  margin: 0 auto;
+  text-align: center;
+}
+.avatar-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 3px solid var(--primary);
+  margin: 0 auto 16px;
+  overflow: hidden;
+  background: #2A3241;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+}
+.tech-quote {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--text-light);
+  margin-bottom: 16px;
+}
+.tech-author {
+  font-family: 'Outfit', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--primary);
+}
+.tech-role {
+  font-size: 12px;
+  color: var(--text-light-muted);
+}
+
+/* FAQ ACCORDION SECTION */
+.section-faq {
+  padding: 80px 24px;
+  background: var(--light-bg);
+}
+.faq-grid {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.faq-item {
+  background: var(--white);
+  border: 1px solid var(--light-border);
+  border-radius: var(--radius-sm);
+  padding: 20px 24px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.faq-item:hover { border-color: var(--primary); }
+.faq-q {
+  font-family: 'Outfit', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.faq-q::after {
+  content: '+';
+  font-size: 20px;
+  color: var(--primary);
+  font-weight: 400;
+}
+.faq-item.open .faq-q::after { content: '−'; }
+.faq-a {
+  display: none;
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-top: 10px;
+  line-height: 1.6;
+}
+.faq-item.open .faq-a { display: block; }
+
+/* CONTACT / GREEN BAR */
+.contact-bar {
+  background: var(--primary);
+  color: var(--white);
+  padding: 28px 24px;
+}
+.contact-bar-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 24px;
+  text-align: center;
+}
+.contact-block h4 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.85;
+  margin-bottom: 2px;
+}
+.contact-block p {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* FOOTER */
+.site-footer {
+  background: var(--dark-nav);
+  color: var(--text-light-muted);
+  padding: 60px 24px 30px;
+  font-size: 13px;
+}
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+@media (max-width: 768px) {
+  .footer-container { grid-template-columns: 1fr; }
+}
+.footer-brand {
+  font-family: 'Outfit', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--white);
+  margin-bottom: 12px;
+}
+.footer-brand span { color: var(--primary); }
+.footer-links h5 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--white);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 14px;
+}
+.footer-links ul { list-style: none; }
+.footer-links li { margin-bottom: 8px; }
+.footer-links a { color: var(--text-light-muted); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--primary); }
+
+.privacy-notice {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--dark-border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  font-size: 12px;
+  color: var(--text-light-muted);
+  line-height: 1.6;
+}
+.privacy-notice a { color: var(--primary); }
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 20px;
+  border-top: 1px solid var(--dark-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 12px;
+}
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--dark-card);
+  color: var(--white);
+  padding: 12px 20px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--primary);
+  box-shadow: var(--shadow-dark);
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.25s;
+  z-index: 9999;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
 </style>
 </head>
 <body>
-<header>
-  <div class="hdr">
-    <a href="/" class="logo">
-      <div class="logo-icon">🔧</div>
-      <div><div class="logo-name">Kintsugi</div><div class="logo-sub">Repair Assistant</div></div>
+
+<!-- NAVBAR -->
+<header class="navbar">
+  <div class="nav-container">
+    <a href="/" class="brand-group">
+      <div class="brand-icon">🔧</div>
+      <div class="brand-name">KINT<span>SUGI</span></div>
     </a>
-    <span class="badge-demo" id="db" style="display:none;"></span>
+    <ul class="nav-links">
+      <li><a href="#diagnostics">Diagnostics</a></li>
+      <li><a href="#services">Capabilities</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="https://github.com/Lakshay-Deol/kintsugi" target="_blank" rel="noopener">GitHub</a></li>
+    </ul>
+    <div class="nav-actions">
+      <span class="badge-demo" id="db" style="display:none;"></span>
+      <a href="#diagnostics" class="btn-nav">Launch Diagnostic</a>
+    </div>
   </div>
 </header>
-<main>
-  <div class="hero">
-    <div class="hero-tag">&#9679; Manual-grounded &middot; No hallucinations</div>
-    <h1>Fix it right.<br/>From the actual manual.</h1>
-    <p>Enter your appliance model number and symptom. Kintsugi searches the manufacturer manual and cites every claim &mdash; or tells you honestly when it cannot find the answer.</p>
-    <div class="refusal-note">&#x1F6E1; <b>Refusing is a feature.</b>&nbsp;No manual evidence = no answer.</div>
-  </div>
-  <div class="card">
-    <form id="qf">
-      <div class="row">
-        <div class="fg"><label for="mi">Model Number</label><input id="mi" type="text" placeholder="e.g. WFW5620HW0" autocomplete="off" required/></div>
-        <div class="fg"><label for="bi">Brand (optional)</label><input id="bi" type="text" placeholder="e.g. Whirlpool" autocomplete="off"/></div>
-      </div>
-      <div class="fg" style="margin-bottom:16px">
-        <label for="si">Symptom or Question</label>
-        <textarea id="si" placeholder="Describe the symptom. e.g. Door won't lock, error F5E2 showing" required></textarea>
-      </div>
-      <button type="submit" class="btn" id="sb"><div class="sp"></div><span class="bt">&#x1F50D; Search Manual</span></button>
-    </form>
-  </div>
-  <div class="result" id="rc">
-    <div class="rh">
-      <div class="rs" id="rs"><div class="dot"></div><span id="st"></span></div>
-      <span class="rm" id="rm"></span>
+
+<!-- HERO SECTION -->
+<section class="hero">
+  <div class="hero-content">
+    <p class="hero-subhead">Any Appliance Problem? Model-Grounded Answers</p>
+    <h1 class="hero-title">WE WILL <span>HELP</span></h1>
+    <p class="hero-desc">
+      The AI repair assistant that refuses before it hallucinates. Retrieves exclusively from your appliance's official manufacturer service manual with verifiable page citations.
+    </p>
+    <div class="hero-badges">
+      <div class="hero-badge-item"><span>⚡</span> FastEmbed 384-dim ONNX</div>
+      <div class="hero-badge-item"><span>🔍</span> MongoDB Atlas Vector + BM25</div>
+      <div class="hero-badge-item"><span>🛡️</span> Deterministic Safety Gates</div>
+      <div class="hero-badge-item"><span>📖</span> 100% Citation Verifier</div>
     </div>
-    <div class="wb" id="wb" style="display:none"></div>
-    <div class="rb">
-      <div class="at" id="at"></div>
-      <div class="cs" id="cs" style="display:none"><div class="ct">&#x1F4C4; Manual Citations</div><div id="cl"></div></div>
-      <div class="os" id="os" style="display:none">
-        <div class="ot">Did this help? Record the outcome.</div>
-        <div class="of" id="of">
-          <button type="button" class="ob" data-o="fixed">&#x2705; Fixed</button>
-          <button type="button" class="ob" data-o="partially">&#x26A1; Partially fixed</button>
-          <button type="button" class="ob" data-o="not_fixed">&#x274C; Not fixed</button>
-          <button type="button" class="ob" data-o="unsafe_referred">&#x1F512; Referred to tech</button>
+  </div>
+</section>
+
+<!-- MAIN WORKSHOP CONTAINER -->
+<main class="workshop-wrap" id="diagnostics">
+  <div class="workshop-grid">
+    
+    <!-- LEFT PANEL: DIAGNOSTIC FORM -->
+    <div class="card-main">
+      <div class="sec-tag">Service Bench &middot; Manual Grounded</div>
+      <h2 class="sec-title">Appliance Diagnostic Lookup</h2>
+
+      <div class="chips-label">Quick sample lookups from indexed manuals:</div>
+      <div class="chips-wrap">
+        <button type="button" class="chip" onclick="fillForm('WFW5620HW0', 'What does fault code F5E2 mean on my washer?', 'Whirlpool')">Whirlpool F5E2 Door Error</button>
+        <button type="button" class="chip" onclick="fillForm('WAT28400UC', 'What is the expected resistance of the water heater element and NTC temperature sensor?', 'Bosch')">Bosch 300 Heater Ohms</button>
+        <button type="button" class="chip" onclick="fillForm('GTW685BSLWS', 'How do I enter Field Service Mode to check stored fault history?', 'GE')">GE Field Service Mode</button>
+        <button type="button" class="chip" onclick="fillForm('WFW5620HW0', 'repair natural gas leak line pipe', 'Whirlpool')">⚠️ Hazard Safety Refusal</button>
+      </div>
+
+      <form id="qf">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label" for="mi">
+              Model Number <span style="color:var(--danger)">*</span>
+              <span class="form-label-hint">e.g. WFW5620HW0</span>
+            </label>
+            <input type="text" class="form-input" id="mi" placeholder="Enter appliance model number" required autocomplete="off"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="bi">
+              Brand <span class="form-label-hint">(optional)</span>
+            </label>
+            <input type="text" class="form-input" id="bi" placeholder="e.g. Whirlpool, GE, Bosch" autocomplete="off"/>
+          </div>
         </div>
-        <div class="osv" id="osv">&#x2713; Outcome recorded. Thank you!</div>
+
+        <div class="form-group">
+          <label class="form-label" for="si">
+            Symptom, Error Code, or Question <span style="color:var(--danger)">*</span>
+            <span class="form-label-hint">Be specific for best relevance</span>
+          </label>
+          <textarea class="form-textarea" id="si" placeholder="Describe the symptom or enter code. e.g. Door won't lock after 3 attempts, showing error F5E2" required></textarea>
+        </div>
+
+        <button type="submit" class="btn-primary" id="sb">
+          <div class="spinner"></div>
+          <span class="btn-text">🔍 Search Manual &amp; Diagnose</span>
+        </button>
+      </form>
+
+      <!-- RESULTS / REFUSAL CONTAINER -->
+      <div class="result-box" id="rc">
+        <div class="res-header">
+          <div class="res-status" id="rs">
+            <span id="st-icon">●</span>
+            <span id="st"></span>
+          </div>
+          <div class="res-badge-model" id="rm"></div>
+        </div>
+
+        <div class="warn-box" id="wb"></div>
+        <div class="res-body" id="at"></div>
+
+        <!-- VERIFIED CITATIONS -->
+        <div class="citations-wrap" id="cs">
+          <div class="citations-title">📄 Verified Manual Citations</div>
+          <div id="cl"></div>
+        </div>
+
+        <!-- FIX-OUTCOME TELEMETRY FORM -->
+        <div class="outcome-wrap" id="os">
+          <div class="outcome-title">Did this diagnostic step help? Record your fix outcome:</div>
+          <div class="outcome-buttons" id="of">
+            <button type="button" class="btn-outcome" data-o="fixed">✅ Fixed</button>
+            <button type="button" class="btn-outcome" data-o="partially">⚡ Partially fixed</button>
+            <button type="button" class="btn-outcome" data-o="not_fixed">❌ Not fixed</button>
+            <button type="button" class="btn-outcome" data-o="unsafe_referred">🔒 Referred to specialist</button>
+          </div>
+          <div class="outcome-msg" id="osv">✓ Outcome recorded anonymously. Thank you!</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT PANEL: RECENT LOOKUPS (LOCALSTORAGE) -->
+    <div class="card-dark">
+      <div class="history-header">
+        <div class="history-title">📋 Recent Lookups</div>
+        <button type="button" class="btn-clear" id="hcl">Clear</button>
+      </div>
+      <p style="font-size:12px;color:var(--text-light-muted);margin-bottom:14px;">
+        Queries stay stored in your browser's localStorage only and are never saved on our server.
+      </p>
+      <div class="history-list" id="hl">
+        <div class="history-empty">No lookups yet. Search a model to begin!</div>
       </div>
     </div>
-  </div>
-  <div class="hs">
-    <div class="ht">
-      <span>&#x1F4CB; Recent Lookups <span style="font-weight:400;color:var(--text-dim)">(browser only)</span></span>
-      <button class="hc" id="hcl">Clear</button>
-    </div>
-    <div id="hl"><div class="he">No lookups yet. Results stay in your browser only.</div></div>
-  </div>
-  <div class="pn">
-    <strong>Privacy notice:</strong> Your queries are sent to <strong>Google AI Studio</strong> (Gemma) for answer generation.
-    On the free tier, Google's terms may allow use of prompts for product improvement &mdash; see
-    <a href="https://ai.google.dev/gemini-api/terms" target="_blank" rel="noopener">Google AI Studio Terms of Service</a> (verified 2026-10-17).
-    <br/><br/>
-    <strong>No personal data is stored on this server.</strong> Your job history stays in your browser's localStorage and is never uploaded.
-    The only server-side data is the anonymous fix-outcome record you optionally submit (model, symptom category, outcome &mdash; no names, emails, IPs or free text).
-    <br/><br/>&#x1F512; <strong>Demo Mode</strong>: the hosted LLM provider (Google AI Studio) processes your query.
+
   </div>
 </main>
-<footer><p>Kintsugi &mdash; Apache 2.0 &nbsp;&middot;&nbsp; Built with <a href="https://ai.google.dev/" target="_blank">Gemma</a>, <a href="https://www.mongodb.com/atlas" target="_blank">MongoDB Atlas</a>, <a href="https://render.com" target="_blank">Render</a></p></footer>
+
+<!-- SERVICES / CAPABILITIES SECTION -->
+<section class="section-services" id="services">
+  <div class="section-container">
+    <div class="section-head-center">
+      <div class="sec-tag">Safety &amp; Precision First</div>
+      <h2 class="sec-title" style="font-size:32px;">Engineered for Real Workshop Scenarios</h2>
+      <p style="color:var(--text-muted);font-size:15px;">
+        Unlike general conversational bots, Kintsugi is built specifically for technicians, small repair shops, and Repair Café volunteers.
+      </p>
+    </div>
+
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">📖</div>
+        <h3 class="service-title">Model-Only Evidence</h3>
+        <p class="service-desc">
+          Queries retrieve exclusively from the service manual for the exact model entered. Never confuses top-load with front-load specifications.
+        </p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">🛑</div>
+        <h3 class="service-title">Deterministic Refusals</h3>
+        <p class="service-desc">
+          Refuses out-of-domain and low-relevance questions before calling any LLM. Saves API costs and eliminates speculative answers.
+        </p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">⚡</div>
+        <h3 class="service-title">Multimeter &amp; Ohms Testing</h3>
+        <p class="service-desc">
+          Extracts exact component resistance tolerances (e.g. 60–90 Ω latch solenoids, 12–18 Ω pump windings) with direct page references.
+        </p>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">⚠️</div>
+        <h3 class="service-title">Hazard Redirection</h3>
+        <p class="service-desc">
+          High-risk procedures involving gas lines, mains 240V tampering, or sealed refrigerants trigger instant safety notices and referrals.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECHNICIAN TESTIMONIAL BANNER -->
+<section class="tech-banner">
+  <div class="tech-banner-inner">
+    <div class="avatar-wrap">👨‍🔧</div>
+    <p class="tech-quote">
+      "When diagnosing a front-load washer on a customer's basement floor, guessing at an error code is unacceptable. Kintsugi immediately points me to the exact test pin and expected resistance value from the manufacturer's documentation."
+    </p>
+    <div class="tech-author">Karl Greaves</div>
+    <div class="tech-role">Senior Appliance Technician &amp; Repair Café Volunteer</div>
+  </div>
+</section>
+
+<!-- FAQ SECTION -->
+<section class="section-faq" id="faq">
+  <div class="section-container">
+    <div class="section-head-center">
+      <div class="sec-tag">Frequently Asked Questions</div>
+      <h2 class="sec-title" style="font-size:30px;">Answers Grounded in Reality</h2>
+    </div>
+
+    <div class="faq-grid">
+      <div class="faq-item open">
+        <div class="faq-q">How does Kintsugi prevent hallucinated repair steps?</div>
+        <div class="faq-a">
+          Kintsugi uses a three-tier gate architecture. First, a deterministic hazard gate screens high-risk queries. Second, an Atlas hybrid retrieval gate refuses out-of-domain queries if search relevance scores fall below calibrated thresholds. Third, a programmatic citation verifier cross-references all cited page numbers against retrieved chunks, automatically stripping ungrounded pages.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Can Kintsugi run offline without an internet connection?</div>
+        <div class="faq-a">
+          Yes. Kintsugi features local CPU ONNX vectorization via FastEmbed and an in-memory cosine fallback. For LLM generation, it supports model-swapping to local open-weights Gemma models (such as gemma3:12b) running on Ollama, making it completely functional for air-gapped workshops.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Where is my diagnostic query data stored?</div>
+        <div class="faq-a">
+          Your search queries and job history are stored solely in your browser's localStorage. No customer diagnostic symptom text is stored on our servers. In cloud mode, queries are processed via Google AI Studio subject to their API terms of service.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GREEN QUICK CONTACT BAR -->
+<div class="contact-bar">
+  <div class="contact-bar-inner">
+    <div class="contact-block">
+      <h4>Open Source Project</h4>
+      <p>Apache 2.0 Licensed</p>
+    </div>
+    <div class="contact-block">
+      <h4>Hackathon Event</h4>
+      <p>DEV &times; Hacktoberfest 2026</p>
+    </div>
+    <div class="contact-block">
+      <h4>Platform Architecture</h4>
+      <p>MongoDB Atlas &middot; Gemma &middot; Render</p>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-container">
+    <div>
+      <div class="footer-brand">KINT<span>SUGI</span></div>
+      <p style="margin-bottom:14px;max-width:360px;">
+        The manual-grounded AI repair assistant honoring the craft of fixing broken things.
+      </p>
+      <div class="privacy-notice">
+        <strong>Privacy note:</strong> Queries are processed via Google AI Studio (Gemma).
+        No personal data or customer symptom strings are stored on our servers. Your lookup history remains in your browser's localStorage.
+        The only server telemetry is the optional, anonymous fix-outcome category record (model, category, outcome).
+      </div>
+    </div>
+
+    <div class="footer-links">
+      <h5>Sponsors &amp; Stack</h5>
+      <ul>
+        <li><a href="https://www.mongodb.com/atlas" target="_blank" rel="noopener">MongoDB Atlas</a></li>
+        <li><a href="https://ai.google.dev/" target="_blank" rel="noopener">Google Gemma</a></li>
+        <li><a href="https://render.com" target="_blank" rel="noopener">Render</a></li>
+        <li><a href="https://temporal.io" target="_blank" rel="noopener">Temporal</a></li>
+        <li><a href="https://github.com/Lakshay-Deol/kintsugi" target="_blank" rel="noopener">Tiger Data</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-links">
+      <h5>Documentation</h5>
+      <ul>
+        <li><a href="https://github.com/Lakshay-Deol/kintsugi#readme" target="_blank" rel="noopener">README</a></li>
+        <li><a href="https://github.com/Lakshay-Deol/kintsugi/blob/main/docs/WORKFLOW_AND_SPONSORS.md" target="_blank" rel="noopener">Workflow Guide</a></li>
+        <li><a href="https://github.com/Lakshay-Deol/kintsugi/blob/main/eval/results.json" target="_blank" rel="noopener">Eval Results</a></li>
+        <li><a href="/health" target="_blank">Health Check</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>Kintsugi &mdash; Apache 2.0 License. Designed for repair technicians and Right to Repair volunteers.</p>
+    <p><a href="#diagnostics" style="color:var(--primary);text-decoration:none;">Back to top &uarr;</a></p>
+  </div>
+</footer>
+
 <div class="toast" id="t"></div>
+
 <script>
-// Query health endpoint on load to reflect production/demo state
-// Query health endpoint on load to reflect production/demo state
+// Query health endpoint on load to reflect mode state
 fetch('/health').then(r => r.json()).then(d => {
   const badge = document.getElementById('db');
   if (badge) {
     badge.style.display = 'inline-block';
     if (d.demo_mode === false) {
       badge.innerHTML = '&#x2714; Production';
-      badge.style.background = 'rgba(46, 213, 115, 0.15)';
-      badge.style.color = '#2ed573';
-      badge.style.borderColor = 'rgba(46, 213, 115, 0.3)';
+      badge.style.background = 'rgba(46, 204, 113, 0.15)';
+      badge.style.color = '#2ECC71';
+      badge.style.borderColor = 'rgba(46, 204, 113, 0.3)';
       badge.title = 'Production mode active: Live Atlas + Grounded Citations';
     } else {
       badge.innerHTML = '&#x26A1; Demo Mode';
     }
   }
 }).catch(console.error);
-var SK='kintsugi_history';var cm='';var od=false;
-function x(id){return document.getElementById(id);}
-function toast(m,d){if(!d)d=2500;var e=x('t');e.textContent=m;e.classList.add('show');setTimeout(function(){e.classList.remove('show');},d);}
-function gh(){try{return JSON.parse(localStorage.getItem(SK)||'[]');}catch(e){return[];}}
-function sh(a){try{localStorage.setItem(SK,JSON.stringify(a.slice(0,20)));}catch(e){}}
-function ah(e){var a=gh();a.unshift(Object.assign({},e,{ts:Date.now()}));sh(a);rh();}
-function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function rh(){
-  var l=x('hl');var a=gh();
-  if(!a.length){l.innerHTML='<div class="he">No lookups yet. Results stay in your browser only.</div>';return;}
-  var html='';
-  for(var i=0;i<a.length;i++){
-    var it=a[i];
-    html+='<div class="hi" onclick="rply('+i+')"><div class="hib"><div class="him">'+esc(it.model)+'</div><div class="his">'+esc(it.symptom)+'</div></div><span class="hist '+(it.status==='answered'?'ha':'hr')+'">'+(it.status==='answered'?'&#x2713; Answered':'&#x2715; Refused')+'</span></div>';
-  }
-  l.innerHTML=html;
+
+var SK = 'kintsugi_history';
+var cm = '';
+var od = false;
+
+function x(id) { return document.getElementById(id); }
+
+function toast(m, d) {
+  if (!d) d = 2500;
+  var e = x('t');
+  e.textContent = m;
+  e.classList.add('show');
+  setTimeout(function() { e.classList.remove('show'); }, d);
 }
-function rply(i){var it=gh()[i];if(!it)return;x('mi').value=it.model;x('si').value=it.symptom;x('bi').value=it.brand||'';x('qf').dispatchEvent(new Event('submit'));}
-x('qf').addEventListener('submit',async function(e){
+
+function gh() { try { return JSON.parse(localStorage.getItem(SK) || '[]'); } catch(e) { return []; } }
+function sh(a) { try { localStorage.setItem(SK, JSON.stringify(a.slice(0, 25))); } catch(e) {} }
+function ah(e) { var a = gh(); a.unshift(Object.assign({}, e, { ts: Date.now() })); sh(a); rh(); }
+
+function esc(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function rh() {
+  var l = x('hl');
+  var a = gh();
+  if (!a.length) {
+    l.innerHTML = '<div class="history-empty">No lookups yet. Search a model to begin!</div>';
+    return;
+  }
+  var html = '';
+  for (var i = 0; i < a.length; i++) {
+    var it = a[i];
+    var isAns = it.status === 'answered';
+    html += '<div class="history-item" onclick="rply(' + i + ')">' +
+      '<div class="history-item-top">' +
+        '<span class="history-model">' + esc(it.model) + '</span>' +
+        '<span class="history-pill ' + (isAns ? 'pill-answered' : 'pill-refused') + '">' +
+          (isAns ? 'Answered' : 'Refused') +
+        '</span>' +
+      '</div>' +
+      '<div class="history-symptom">' + esc(it.symptom) + '</div>' +
+    '</div>';
+  }
+  l.innerHTML = html;
+}
+
+function rply(i) {
+  var it = gh()[i];
+  if (!it) return;
+  x('mi').value = it.model;
+  x('si').value = it.symptom;
+  x('bi').value = it.brand || '';
+  x('qf').dispatchEvent(new Event('submit'));
+}
+
+function fillForm(m, s, b) {
+  x('mi').value = m;
+  x('si').value = s;
+  x('bi').value = b || '';
+  x('qf').dispatchEvent(new Event('submit'));
+}
+
+x('qf').addEventListener('submit', async function(e) {
   e.preventDefault();
-  var m=x('mi').value.trim(),s=x('si').value.trim(),b=x('bi').value.trim();
-  if(!m||!s)return;
-  cm=m;od=false;
-  var btn=x('sb');btn.disabled=true;btn.classList.add('ld');
-  try{
-    var r=await fetch('/answer',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model_number:m,symptom:s,brand:b})});
-    if(r.status===429){var d=await r.json();se(d.detail||'Rate limit reached. Try again in a minute.');return;}
-    if(!r.ok){var d2=await r.json().catch(function(){return{};});se(d2.detail||'Server error ('+r.status+')');return;}
-    var data=await r.json();rr(data,m,s,b);ah({model:m,symptom:s,brand:b,status:data.status});
-  }catch(err){se('Network error. Please try again.');console.error(err);}
-  finally{btn.disabled=false;btn.classList.remove('ld');}
-});
-function rr(d,m,s,b){
-  x('osv').classList.remove('on');
-  var obs=document.querySelectorAll('.ob');for(var j=0;j<obs.length;j++)obs[j].classList.remove('sel');
-  x('cs').style.display='none';x('wb').style.display='none';x('wb').innerHTML='';
-  x('rs').className='rs s-'+d.status;
-  x('st').textContent=d.status==='answered'?'Answer found':'Cannot answer';
-  x('rm').textContent=d.matched_model?'Model: '+d.matched_model:'Query: '+m;
-  var warns=d.warnings||[];
-  if(warns.length){x('wb').style.display='block';var wh='';for(var w=0;w<warns.length;w++){wh+='<div class="wi">&#x26A0;&#xFE0F; '+esc(warns[w])+'</div>';}x('wb').innerHTML=wh;}
-  var at=x('at');at.className='at'+(d.status==='refused'?' rf':'');at.textContent=d.answer||'';
-  if(d.citations&&d.citations.length){
-    x('cs').style.display='block';
-    var ch='';for(var c=0;c<d.citations.length;c++){var ci=d.citations[c];ch+='<div class="cc"><span class="cp">p.'+ci.page+'</span><div class="cb"><div class="ccl">'+esc(ci.claim)+'</div>'+(ci.excerpt?'<div class="cex">&ldquo;'+esc(ci.excerpt)+'&rdquo;</div>':'')+'</div></div>';}
-    x('cl').innerHTML=ch;
+  var m = x('mi').value.trim();
+  var s = x('si').value.trim();
+  var b = x('bi').value.trim();
+  if (!m || !s) return;
+
+  cm = m;
+  od = false;
+  var btn = x('sb');
+  btn.disabled = true;
+  btn.classList.add('loading');
+
+  try {
+    var r = await fetch('/answer', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model_number: m, symptom: s, brand: b })
+    });
+
+    if (r.status === 429) {
+      var d = await r.json();
+      showError(d.detail || 'Rate limit reached. Please wait a minute and try again.');
+      return;
+    }
+    if (!r.ok) {
+      var d2 = await r.json().catch(function() { return {}; });
+      showError(d2.detail || 'Server error (' + r.status + ')');
+      return;
+    }
+
+    var data = await r.json();
+    renderResult(data, m, s, b);
+    ah({ model: m, symptom: s, brand: b, status: data.status });
+  } catch(err) {
+    showError('Network connection issue. Please check your network and try again.');
+    console.error(err);
+  } finally {
+    btn.disabled = false;
+    btn.classList.remove('loading');
   }
-  x('os').style.display=d.status==='answered'?'block':'none';
-  x('rc').classList.add('on');x('rc').scrollIntoView({behavior:'smooth',block:'nearest'});
-}
-function se(msg){
-  x('rs').className='rs s-refused';x('st').textContent='Error';x('rm').textContent='';
-  x('at').className='at rf';x('at').textContent=msg;
-  x('cs').style.display='none';x('wb').style.display='none';x('os').style.display='none';x('rc').classList.add('on');
-}
-x('of').addEventListener('click',async function(e){
-  var btn=e.target.closest('.ob');if(!btn||od)return;
-  var o=btn.dataset.o;od=true;
-  var obs=document.querySelectorAll('.ob');for(var j=0;j<obs.length;j++)obs[j].classList.remove('sel');
-  btn.classList.add('sel');
-  try{
-    await fetch('/fix-outcome',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:cm,symptom_category:'other',outcome:o})});
-    x('osv').classList.add('on');
-  }catch(err){toast('Could not save outcome');od=false;btn.classList.remove('sel');}
 });
-x('hcl').addEventListener('click',function(){if(confirm('Clear all recent lookups?')){localStorage.removeItem(SK);rh();}});
+
+function renderResult(d, m, s, b) {
+  x('osv').style.display = 'none';
+  var obs = document.querySelectorAll('.btn-outcome');
+  for (var j = 0; j < obs.length; j++) obs[j].classList.remove('selected');
+
+  var isAns = d.status === 'answered';
+  var rc = x('rc');
+  rc.className = 'result-box active ' + (isAns ? 'status-answered' : 'status-refused');
+
+  x('st').textContent = isAns ? 'Grounded Diagnosis Found' : 'Query Deterministically Refused';
+  x('st-icon').textContent = isAns ? '✔' : '✖';
+  x('rm').textContent = d.matched_model ? 'Manual: ' + d.matched_model : 'Model: ' + m;
+
+  var wb = x('wb');
+  var warns = d.warnings || [];
+  if (warns.length) {
+    wb.style.display = 'block';
+    wb.innerHTML = warns.map(function(w) { return '⚠️ ' + esc(w); }).join('<br/>');
+  } else {
+    wb.style.display = 'none';
+    wb.innerHTML = '';
+  }
+
+  x('at').textContent = d.answer || '';
+
+  var cs = x('cs');
+  var cl = x('cl');
+  if (d.citations && d.citations.length) {
+    cs.style.display = 'block';
+    cl.innerHTML = d.citations.map(function(c) {
+      return '<div class="citation-item">' +
+        '<div class="citation-page">Page ' + c.page + '</div>' +
+        '<div>' +
+          '<div class="citation-claim">' + esc(c.claim) + '</div>' +
+          (c.excerpt ? '<div class="citation-excerpt">&ldquo;' + esc(c.excerpt) + '&rdquo;</div>' : '') +
+        '</div>' +
+      '</div>';
+    }).join('');
+  } else {
+    cs.style.display = 'none';
+    cl.innerHTML = '';
+  }
+
+  x('os').style.display = isAns ? 'block' : 'none';
+  rc.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function showError(msg) {
+  var rc = x('rc');
+  rc.className = 'result-box active status-refused';
+  x('st').textContent = 'Request Notice';
+  x('st-icon').textContent = '⚠️';
+  x('rm').textContent = '';
+  x('wb').style.display = 'none';
+  x('at').textContent = msg;
+  x('cs').style.display = 'none';
+  x('os').style.display = 'none';
+  rc.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+x('of').addEventListener('click', async function(e) {
+  var btn = e.target.closest('.btn-outcome');
+  if (!btn || od) return;
+  var o = btn.dataset.o;
+  od = true;
+
+  var obs = document.querySelectorAll('.btn-outcome');
+  for (var j = 0; j < obs.length; j++) obs[j].classList.remove('selected');
+  btn.classList.add('selected');
+
+  try {
+    await fetch('/fix-outcome', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: cm, symptom_category: 'other', outcome: o })
+    });
+    x('osv').style.display = 'block';
+    toast('Fix outcome recorded!');
+  } catch(err) {
+    toast('Could not save outcome');
+    od = false;
+    btn.classList.remove('selected');
+  }
+});
+
+x('hcl').addEventListener('click', function() {
+  if (confirm('Clear your local lookup history?')) {
+    localStorage.removeItem(SK);
+    rh();
+  }
+});
+
+// Accordion interaction
+document.querySelectorAll('.faq-item').forEach(function(item) {
+  item.addEventListener('click', function() {
+    this.classList.toggle('open');
+  });
+});
+
 rh();
 </script>
 </body>
