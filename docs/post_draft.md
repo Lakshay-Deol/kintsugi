@@ -77,8 +77,7 @@ The application is deployed on Render via a declarative [`render.yaml`](file:///
 - Fast Uvicorn ASGI server with `proxy_headers=True` and `forwarded_allow_ips="*"` to ensure individual client IPs behind Render's edge proxy are rate-limited independently (preventing "demo busy" collisions for evaluators).
 - Automated health monitoring on `/health` verifying MongoDB connectivity and readiness.
 
-### .TECH Domains
-Provides a dedicated, professional domain identity for mobile and tablet workshop usage.
+
 
 ---
 

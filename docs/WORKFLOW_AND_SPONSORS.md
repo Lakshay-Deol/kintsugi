@@ -158,10 +158,6 @@ Kintsugi retrieves exclusively from the matched service manual for the appliance
 - **Configuration:** Uvicorn with `proxy_headers=True` and `forwarded_allow_ips="*"` for accurate per-IP rate limiting behind Render's edge proxy.
 - **Monitoring:** `/health` endpoint checks database connectivity and reports demo mode status.
 
-### 4. .TECH Domains
-- **Identity:** Provides a dedicated custom domain for repair technicians accessing diagnostic manuals from workshop benches and mobile devices.
-
----
 
 ## 6. Evaluation & Latency Measurements
 
