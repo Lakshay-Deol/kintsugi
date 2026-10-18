@@ -82,5 +82,12 @@
     "symptom_category": "mechanical",
     "outcome": "fixed",
     "created_at": "2026-10-17T20:35:01.153656Z"
+  },
+  {
+    "_id": "cb111505-ebe6-4962-a914-4f0bf38ff8d2",
+    "model": "WFW5620HW0",
+    "symptom_category": "mechanical",
+    "outcome": "fixed",
+    "created_at": "2026-10-18T07:04:10.848034Z"
   }
 ]

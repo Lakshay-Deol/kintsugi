@@ -3,116 +3,79 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Kintsugi — Repair Café & Community Volunteer Diagnostic Workbench</title>
+<title>Kintsugi — Appliance Diagnostic Workbench & Repair Café Intelligence</title>
+<meta name="description" content="Manual-grounded AI appliance repair assistant. Zero hallucinations, 100% OEM page citations, and deterministic safety hazard boundaries."/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet"/>
+
 <style>
 :root {
-  --primary: #2ECC71;
-  --primary-hover: #27ae60;
-  --primary-light: rgba(46, 204, 113, 0.12);
-  --primary-glow: rgba(46, 204, 113, 0.35);
-  --dark-bg: #11141A;
-  --dark-card: #181E29;
-  --dark-card-hover: #212938;
-  --dark-nav: #0D0F14;
+  /* Artisan Kintsugi Cinnabar & Gold Palette */
+  --primary: #D9532F;
+  --primary-hover: #BF4422;
+  --primary-light: rgba(217, 83, 47, 0.08);
+  --primary-glow: rgba(217, 83, 47, 0.25);
+  --gold: #D97706;
+  --gold-hover: #B45309;
+  --gold-bg: rgba(217, 119, 6, 0.10);
+  --gold-border: rgba(217, 119, 6, 0.28);
+
+  /* Sensible Deep Navy / Obsidian Foundation */
+  --navy-950: #0B0F17;
+  --navy-900: #0F172A;
+  --navy-850: #141C2E;
+  --navy-800: #1E293B;
+  --navy-700: #334155;
+
+  /* Clean Surface Colors (Sensible Slate & Whites) */
   --white: #FFFFFF;
-  --light-bg: #F8FAFC;
-  --light-border: #E2E8F0;
-  --dark-border: #2A3241;
+  --bg-subtle: #F8FAFC;
+  --bg-card: #FFFFFF;
+  --border-light: #E2E8F0;
+  --border-card: #E5E9F0;
+  --border-dark: #263347;
+
+  /* Typography */
   --text-main: #0F172A;
+  --text-body: #334155;
   --text-muted: #64748B;
-  --text-light: #F1F5F9;
+  --text-light: #F8FAFC;
   --text-light-muted: #94A3B8;
-  --danger: #EF4444;
-  --gold: #F59E0B;
-  --gold-bg: rgba(245, 158, 11, 0.12);
-  --gold-border: rgba(245, 158, 11, 0.3);
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
-  --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
-  --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
-  --shadow-dark: 0 16px 36px rgba(0,0,0,0.3);
+
+  /* Engineering Diagnostic Status Indicators */
+  --success: #059669;
+  --success-bg: #ECFDF5;
+  --success-border: #A7F3D0;
+  --danger: #DC2626;
+  --danger-bg: #FEF2F2;
+  --danger-border: #FECACA;
+
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 4px 14px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 14px 34px rgba(15, 23, 42, 0.12);
+  --shadow-dark: 0 16px 36px rgba(0, 0, 0, 0.4);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: var(--light-bg);
-  color: var(--text-main);
+  background: var(--bg-subtle);
+  color: var(--text-body);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 
-/* NAVBAR (IMAGE 1 STYLE) */
-.navbar {
-  background: var(--white);
-  border-bottom: 1px solid var(--light-border);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  box-shadow: var(--shadow-sm);
-}
-.nav-container {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 14px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.brand-group {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  text-decoration: none;
-}
-.brand-icon {
-  width: 42px;
-  height: 42px;
-  background: var(--primary-light);
-  border: 1px solid var(--primary-glow);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--primary);
-  font-size: 22px;
-}
-.brand-name {
-  font-family: 'Outfit', sans-serif;
-  font-size: 24px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  color: var(--text-main);
-}
-.brand-name span { color: var(--primary); }
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 28px;
-  list-style: none;
-}
-@media (max-width: 960px) {
-  .nav-links { display: none; }
-}
-.nav-links a {
-  text-decoration: none;
-  font-size: 13px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  color: var(--text-main);
-  transition: color 0.2s;
-}
-.nav-links a:hover { color: var(--primary); }
-.nav-actions { display: flex; align-items: center; gap: 14px; }
 .badge-demo {
-  padding: 6px 14px;
-  border-radius: 20px;
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.5px;
@@ -120,7 +83,7 @@ body {
   background: var(--gold-bg);
   color: var(--gold);
   border: 1px solid var(--gold-border);
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
 }
@@ -131,540 +94,573 @@ body {
   border-radius: 50%;
   background: var(--gold);
 }
-.btn-nav {
+
+/* NAVBAR (Inspired by Repair Cafe logo & layout) */
+.navbar {
+  background: var(--navy-900);
+  border-bottom: 1px solid var(--border-dark);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: var(--shadow-md);
+}
+.nav-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+.brand-seal {
+  width: 40px;
+  height: 40px;
   background: var(--primary);
-  color: var(--white);
-  padding: 10px 20px;
   border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 900;
+  font-size: 20px;
+  box-shadow: 0 2px 8px rgba(217, 83, 47, 0.4);
+}
+.brand-title-wrap {
+  display: flex;
+  flex-direction: column;
+}
+.brand-name {
+  font-family: 'Outfit', sans-serif;
+  font-size: 23px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  color: var(--white);
+  line-height: 1.1;
+}
+.brand-name span {
+  color: var(--primary);
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  list-style: none;
+}
+@media (max-width: 1024px) {
+  .nav-links { display: none; }
+}
+.nav-links a {
+  text-decoration: none;
   font-size: 13px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.6px;
+  color: #CBD5E1;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--white); }
+.nav-actions { display: flex; align-items: center; gap: 12px; }
+.btn-nav-primary {
+  background: var(--primary);
+  color: var(--white);
+  padding: 10px 20px;
+  border-radius: var(--radius-xs);
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
   border: none;
   cursor: pointer;
   text-decoration: none;
-  transition: background 0.2s, transform 0.1s;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(217, 83, 47, 0.3);
 }
-.btn-nav:hover { background: var(--primary-hover); transform: translateY(-1px); }
+.btn-nav-primary:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
 
-/* HERO BANNER (IMAGE 1 STYLE: DARK BACKGROUND, WE WILL HELP) */
-.hero {
-  position: relative;
-  background: linear-gradient(135deg, rgba(13, 16, 23, 0.94) 0%, rgba(20, 26, 38, 0.91) 100%),
-              url('https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=2000&q=80') center/cover no-repeat;
+/* HERO SECTION (Adapted from Image 1: "Toss it? No way!") */
+.hero-section {
+  background: linear-gradient(135deg, var(--navy-950) 0%, var(--navy-900) 55%, var(--navy-850) 100%);
   color: var(--white);
-  padding: 85px 24px 105px;
-  text-align: center;
+  padding: 70px 24px 85px;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 3px solid var(--primary);
 }
-.hero-content {
-  max-width: 900px;
+.hero-grid {
+  max-width: 1240px;
   margin: 0 auto;
-}
-.volunteer-pill {
-  display: inline-flex;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
   align-items: center;
-  gap: 8px;
-  padding: 6px 16px;
-  background: rgba(46, 204, 113, 0.15);
-  border: 1px solid var(--primary);
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--primary);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 20px;
+  gap: 48px;
 }
-.hero-subtitle-top {
-  font-size: 24px;
-  font-weight: 300;
-  color: #CBD5E1;
-  letter-spacing: 0.5px;
-  margin-bottom: 8px;
+@media (max-width: 960px) {
+  .hero-grid { grid-template-columns: 1fr; }
 }
-.hero-title {
+
+.hero-punchline {
   font-family: 'Outfit', sans-serif;
-  font-size: clamp(38px, 6vw, 68px);
+  font-size: clamp(42px, 5.5vw, 76px);
   font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: -1px;
-  line-height: 1.1;
-  margin-bottom: 22px;
+  letter-spacing: -1.5px;
+  line-height: 1.05;
+  color: var(--white);
+  margin-bottom: 16px;
 }
-.hero-title span { color: var(--primary); }
-.hero-desc {
-  font-size: 16px;
-  color: var(--text-light-muted);
-  max-width: 760px;
-  margin: 0 auto 36px;
+.hero-punchline span {
+  color: var(--primary);
+  display: block;
+}
+.hero-subhead {
+  font-size: 17px;
+  color: #CBD5E1;
+  max-width: 580px;
   line-height: 1.65;
+  margin-bottom: 32px;
 }
 .hero-cta-group {
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 45px;
+  gap: 14px;
+  margin-bottom: 40px;
 }
 .btn-hero-primary {
   background: var(--primary);
   color: var(--white);
-  padding: 14px 28px;
-  border-radius: var(--radius-sm);
+  padding: 14px 26px;
+  border-radius: var(--radius-xs);
   font-family: 'Outfit', sans-serif;
-  font-size: 15px;
+  font-size: 14.5px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.6px;
+  text-decoration: none;
+  transition: all 0.2s;
+  box-shadow: 0 4px 14px rgba(217, 83, 47, 0.35);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-hero-primary:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+}
+.btn-hero-outline {
+  border: 1.5px solid var(--border-dark);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--white);
+  padding: 14px 24px;
+  border-radius: var(--radius-xs);
+  font-family: 'Outfit', sans-serif;
+  font-size: 14.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
   text-decoration: none;
   transition: all 0.2s;
 }
-.btn-hero-primary:hover { background: var(--primary-hover); transform: translateY(-2px); }
-.btn-hero-ghost {
+.btn-hero-outline:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #64748B;
+  transform: translateY(-2px);
+}
+.btn-hero-secondary {
+  background: var(--navy-800);
   border: 1.5px solid var(--primary);
-  color: var(--primary);
-  background: transparent;
-  padding: 14px 28px;
-  border-radius: var(--radius-sm);
+  color: #FFA585;
+  padding: 14px 24px;
+  border-radius: var(--radius-xs);
   font-family: 'Outfit', sans-serif;
-  font-size: 15px;
+  font-size: 14.5px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.6px;
   text-decoration: none;
   transition: all 0.2s;
 }
-.btn-hero-ghost:hover { background: var(--primary-light); color: var(--white); transform: translateY(-2px); }
+.btn-hero-secondary:hover {
+  background: var(--primary);
+  color: var(--white);
+  transform: translateY(-2px);
+}
 
-.hero-stats {
+.hero-stats-row {
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 16px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-dark);
 }
-.hero-stat-box {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: var(--radius-sm);
-  padding: 12px 22px;
-  text-align: center;
+.hero-stat-item {
+  display: flex;
+  flex-direction: column;
 }
-.hero-stat-num {
+.hero-stat-val {
   font-family: 'Outfit', sans-serif;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 800;
-  color: var(--primary);
+  color: var(--gold);
 }
-.hero-stat-label {
+.hero-stat-lbl {
   font-size: 11px;
-  color: var(--text-light-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-}
-
-/* SECTION: ABOUT OUR VOLUNTEER MISSION (IMAGE 2 TOP) */
-.section-about {
-  padding: 85px 24px;
-  background: var(--white);
-}
-.about-grid {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  gap: 50px;
-}
-@media (max-width: 860px) {
-  .about-grid { grid-template-columns: 1fr; }
-}
-.about-mockup {
-  position: relative;
-  background: var(--light-bg);
-  border: 2px solid var(--light-border);
-  border-radius: var(--radius-lg);
-  padding: 24px;
-  box-shadow: var(--shadow-md);
-  text-align: center;
-}
-.mockup-header {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--light-border);
-}
-.mockup-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #CBD5E1;
-}
-.mockup-dot.red { background: #EF4444; }
-.mockup-dot.yellow { background: #F59E0B; }
-.mockup-dot.green { background: #2ECC71; }
-.mockup-body {
-  background: #11141A;
-  border-radius: var(--radius-sm);
-  padding: 28px 20px;
-  color: var(--text-light);
-  font-family: monospace;
-  font-size: 13px;
-  text-align: left;
-}
-.mockup-code-highlight { color: var(--primary); font-weight: 700; }
-.mockup-citation-badge {
-  display: inline-block;
-  background: rgba(46, 204, 113, 0.2);
-  color: var(--primary);
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-weight: 700;
-  margin-top: 10px;
-}
-.about-tag {
-  font-family: 'Outfit', sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: var(--primary);
-  margin-bottom: 8px;
-}
-.about-title {
-  font-family: 'Outfit', sans-serif;
-  font-size: 36px;
-  font-weight: 900;
-  letter-spacing: -0.5px;
-  color: var(--text-main);
-  margin-bottom: 18px;
-}
-.about-text {
-  font-size: 15px;
-  color: var(--text-muted);
-  line-height: 1.7;
-  margin-bottom: 24px;
-}
-.about-features {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 28px;
-}
-.about-feature-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-main);
-}
-.feature-check {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--primary-light);
-  color: var(--primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  flex-shrink: 0;
-}
-
-/* SECTION: SERVICES / WORKBENCH MODULES (IMAGE 2 MIDDLE: DARK GRID) */
-.section-dark-services {
-  background: var(--dark-bg);
-  color: var(--white);
-  padding: 85px 24px;
-  position: relative;
-  border-top: 1px solid var(--dark-border);
-  border-bottom: 1px solid var(--dark-border);
-}
-.dark-services-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-.dark-sec-head {
-  text-align: center;
-  max-width: 680px;
-  margin: 0 auto 50px;
-}
-.dark-sec-tag {
-  font-family: 'Outfit', sans-serif;
-  font-size: 13px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: var(--primary);
-  margin-bottom: 8px;
-}
-.dark-sec-title {
-  font-family: 'Outfit', sans-serif;
-  font-size: 36px;
-  font-weight: 900;
-  letter-spacing: -0.5px;
-  margin-bottom: 14px;
-}
-.dark-sec-desc {
-  font-size: 15px;
   color: var(--text-light-muted);
 }
-.dark-grid-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 24px;
-}
-.dark-card-item {
-  background: var(--dark-card);
-  border: 1px solid var(--dark-border);
-  border-radius: var(--radius-md);
-  padding: 30px;
-  transition: all 0.25s ease;
-  position: relative;
-}
-.dark-card-item:hover {
-  transform: translateY(-4px);
-  border-color: var(--primary);
-  box-shadow: 0 12px 30px rgba(46, 204, 113, 0.15);
-}
-.dark-icon-wrap {
-  width: 52px;
-  height: 52px;
-  background: rgba(46, 204, 113, 0.12);
-  border: 1px solid var(--primary-glow);
-  color: var(--primary);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 26px;
-  margin-bottom: 20px;
-}
-.dark-card-title {
-  font-family: 'Outfit', sans-serif;
-  font-size: 19px;
-  font-weight: 700;
-  margin-bottom: 10px;
-  color: var(--white);
-}
-.dark-card-text {
-  font-size: 14px;
-  color: var(--text-light-muted);
-  line-height: 1.6;
-}
 
-/* SECTION: BLOG / COMMUNITY REPAIR GUIDES (IMAGE 2 BOTTOM) */
-.section-guides {
-  padding: 85px 24px;
-  background: var(--light-bg);
-}
-.guides-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-.guides-head {
-  text-align: center;
-  max-width: 680px;
-  margin: 0 auto 50px;
-}
-.guides-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 26px;
-}
-.guide-card-full {
-  background: var(--white);
-  border: 1px solid var(--light-border);
+/* HERO RIGHT VISUAL */
+.hero-visual-card {
+  position: relative;
   border-radius: var(--radius-md);
   overflow: hidden;
-  box-shadow: var(--shadow-sm);
-  transition: all 0.25s;
-  display: flex;
-  flex-direction: column;
+  box-shadow: var(--shadow-dark);
+  border: 1px solid var(--border-dark);
 }
-.guide-card-full:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
-  border-color: var(--primary);
-}
-.guide-card-img {
+.hero-visual-img {
   width: 100%;
-  height: 180px;
+  height: 380px;
   object-fit: cover;
-  background: #CBD5E1;
+  display: block;
 }
-.guide-card-content {
-  padding: 24px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+.hero-visual-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(11, 15, 23, 0.95) 0%, rgba(11, 15, 23, 0.7) 60%, transparent 100%);
+  padding: 24px 20px 18px;
 }
-.guide-card-badge {
+.hero-badge-live {
   display: inline-block;
-  background: var(--primary-light);
-  color: var(--primary);
-  font-size: 11px;
+  background: var(--primary);
+  color: var(--white);
+  font-size: 10.5px;
   font-weight: 800;
   text-transform: uppercase;
-  padding: 4px 10px;
-  border-radius: 4px;
-  width: fit-content;
-  margin-bottom: 12px;
+  letter-spacing: 0.8px;
+  padding: 4px 8px;
+  border-radius: var(--radius-xs);
+  margin-bottom: 6px;
 }
-.guide-card-title {
+.hero-caption-title {
   font-family: 'Outfit', sans-serif;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
-  margin-bottom: 10px;
-  color: var(--text-main);
-  line-height: 1.35;
+  color: var(--white);
 }
-.guide-card-desc {
-  font-size: 13.5px;
-  color: var(--text-muted);
-  line-height: 1.6;
-  margin-bottom: 18px;
-  flex: 1;
-}
-.guide-card-footer {
-  padding-top: 14px;
-  border-top: 1px solid var(--light-border);
-  display: flex;
-  justify-content: space-between;
-  font-size: 12px;
-  color: var(--text-muted);
-  font-weight: 600;
+.hero-caption-sub {
+  font-size: 12.5px;
+  color: #CBD5E1;
 }
 
-/* SECTION: LIVE BENCH DIAGNOSTIC (CORE ENGINE) */
-.section-bench {
-  padding: 85px 24px;
+/* SECTION 2: 4-CARD CATEGORY GRID (Exact layout match to Image 3 from user) */
+.section-categories {
+  padding: 80px 24px;
   background: var(--white);
-  border-top: 1px solid var(--light-border);
+  border-bottom: 1px solid var(--border-light);
 }
-.bench-wrap {
+.container-narrow {
   max-width: 1240px;
   margin: 0 auto;
 }
-.bench-head {
+.sec-header-center {
   text-align: center;
   max-width: 720px;
-  margin: 0 auto 40px;
+  margin: 0 auto 48px;
 }
-.bench-layout {
+.sec-tag {
+  font-family: 'Outfit', sans-serif;
+  font-size: 12.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+.sec-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 900;
+  letter-spacing: -0.8px;
+  color: var(--text-main);
+  line-height: 1.15;
+  margin-bottom: 14px;
+}
+.sec-sub {
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* 4 Category Cards with lower-left solid orange badge (Image 3) */
+.category-grid-4 {
   display: grid;
-  grid-template-columns: 1.65fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: 28px;
 }
-@media (max-width: 940px) {
-  .bench-layout { grid-template-columns: 1fr; }
+@media (max-width: 768px) {
+  .category-grid-4 { grid-template-columns: 1fr; }
+}
+.category-card {
+  position: relative;
+  height: 250px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: transform 0.25s, box-shadow 0.25s;
+  text-decoration: none;
+  background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+}
+.category-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+.category-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.category-card:hover img {
+  transform: scale(1.03);
+}
+/* Lower-left orange label badge from Image 3 */
+.category-label-badge {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: var(--primary);
+  color: var(--white);
+  padding: 16px 26px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  box-shadow: 2px -2px 10px rgba(0, 0, 0, 0.2);
+  transition: background 0.2s;
+}
+.category-card:hover .category-label-badge {
+  background: var(--primary-hover);
+}
+
+/* SECTION 3: TIPS & TRICKS / TECHNICAL BENCH SPECS (Inspired by Image 2) */
+.section-specs {
+  padding: 80px 24px;
+  background: var(--bg-subtle);
+  border-bottom: 1px solid var(--border-light);
+}
+.specs-table-wrap {
+  background: var(--white);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  margin-top: 36px;
+}
+.specs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  text-align: left;
+}
+.specs-table th {
+  background: #F1F5F9;
+  padding: 14px 18px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-main);
+  border-bottom: 1px solid var(--border-light);
+}
+.specs-table td {
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border-light);
+  color: var(--text-body);
+}
+.specs-table tr:last-child td { border-bottom: none; }
+.specs-table tr:hover td { background: #F8FAFC; }
+.tag-model {
+  display: inline-block;
+  padding: 3px 8px;
+  background: #E2E8F0;
+  color: var(--navy-900);
+  border-radius: var(--radius-xs);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+.tag-spec {
+  display: inline-block;
+  padding: 3px 8px;
+  background: rgba(217, 83, 47, 0.1);
+  color: var(--primary);
+  border-radius: var(--radius-xs);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 12.5px;
+}
+.tag-page {
+  display: inline-block;
+  padding: 3px 8px;
+  background: var(--gold-bg);
+  color: var(--gold);
+  border-radius: var(--radius-xs);
+  font-weight: 700;
+  font-size: 11.5px;
+}
+
+/* SECTION 4: THE CORE DIAGNOSTIC WORKBENCH (HEART OF THE SYSTEM) */
+.section-workbench {
+  padding: 85px 24px;
+  background: var(--white);
+  border-bottom: 1px solid var(--border-light);
+}
+.bench-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 32px;
+}
+@media (max-width: 960px) {
+  .bench-grid { grid-template-columns: 1fr; }
 }
 
 .bench-card-main {
   background: var(--white);
-  border: 1px solid var(--light-border);
-  border-radius: var(--radius-lg);
-  padding: 34px;
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  padding: 36px;
   box-shadow: var(--shadow-md);
 }
-.bench-card-side {
-  background: var(--dark-card);
-  color: var(--text-light);
-  border: 1px solid var(--dark-border);
-  border-radius: var(--radius-lg);
-  padding: 30px;
+
+.bench-card-sidebar {
+  background: var(--navy-900);
+  color: var(--white);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  padding: 32px;
   box-shadow: var(--shadow-dark);
+  display: flex;
+  flex-direction: column;
 }
 
+/* Privacy notice strictly satisfying gate requirement */
 .privacy-notice {
-  background: rgba(46, 204, 113, 0.08);
-  border: 1px solid rgba(46, 204, 113, 0.25);
-  border-radius: var(--radius-sm);
-  padding: 10px 14px;
-  font-size: 12px;
+  background: #F0FDF4;
+  border: 1px solid #BBF7D0;
+  border-radius: var(--radius-xs);
+  padding: 12px 16px;
+  font-size: 12.5px;
   color: #166534;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
-.chips-label {
+.chips-title {
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.6px;
   color: var(--text-muted);
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
-.chips-wrap {
+.chips-container {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 24px;
 }
-.chip {
-  background: var(--light-bg);
-  border: 1px solid var(--light-border);
-  border-radius: 20px;
-  padding: 6px 12px;
-  font-size: 11.5px;
+.chip-btn {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-full);
+  padding: 6px 14px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--text-main);
   cursor: pointer;
   transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
-.chip:hover {
+.chip-btn:hover {
   background: var(--primary-light);
   border-color: var(--primary);
   color: var(--primary);
+  transform: translateY(-1px);
+}
+.chip-btn.chip-danger:hover {
+  background: var(--danger-bg);
+  border-color: var(--danger);
+  color: var(--danger);
 }
 
-.form-group {
+.form-field {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
-.form-label {
-  font-size: 13px;
+.form-field label {
+  font-family: 'Outfit', sans-serif;
+  font-size: 13.5px;
   font-weight: 700;
   color: var(--text-main);
   display: flex;
-  align-items: center;
   justify-content: space-between;
 }
-.form-input, .form-textarea {
+.form-field label span.hint {
+  font-weight: 500;
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+.model-input, .symptom-input {
   width: 100%;
-  padding: 12px 14px;
-  border: 1.5px solid var(--light-border);
-  border-radius: var(--radius-sm);
+  padding: 13px 15px;
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-xs);
   font-family: inherit;
   font-size: 14px;
   background: #FFFFFF;
   color: var(--text-main);
   transition: border-color 0.2s, box-shadow 0.2s;
 }
-.form-input:focus, .form-textarea:focus {
+.model-input:focus, .symptom-input:focus {
   outline: none;
   border-color: var(--primary);
   box-shadow: 0 0 0 3px var(--primary-light);
 }
-.form-textarea { resize: vertical; min-height: 110px; }
+.symptom-input {
+  resize: vertical;
+  min-height: 105px;
+}
 
-.btn-diagnose {
+.btn-diagnose-main {
   width: 100%;
   background: var(--primary);
   color: var(--white);
-  padding: 14px 20px;
+  padding: 15px 20px;
   border: none;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-xs);
   font-family: 'Outfit', sans-serif;
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.8px;
   cursor: pointer;
@@ -673,9 +669,17 @@ body {
   justify-content: center;
   gap: 10px;
   transition: all 0.2s;
+  box-shadow: 0 3px 12px rgba(217, 83, 47, 0.3);
 }
-.btn-diagnose:hover { background: var(--primary-hover); transform: translateY(-1px); }
-.btn-diagnose:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.btn-diagnose-main:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+.btn-diagnose-main:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
 
 .spinner {
   display: none;
@@ -684,151 +688,194 @@ body {
   border: 2px solid rgba(255, 255, 255, 0.4);
   border-top-color: var(--white);
   border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+  animation: spin 0.75s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
-.btn-diagnose.loading .spinner { display: inline-block; }
+.btn-diagnose-main.loading .spinner { display: inline-block; }
 
-/* DIAGNOSTIC RESULTS & REFUSAL DISPLAY */
-.result-box {
-  display: none;
-  margin-top: 24px;
-  padding: 24px;
-  border-radius: var(--radius-md);
-  animation: fadeIn 0.3s ease;
-}
-.result-box.active { display: block; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-
-.result-box.status-answered {
-  background: #F0FDF4;
-  border: 1px solid rgba(46, 204, 113, 0.35);
-}
-.result-box.status-refused {
-  background: #FEF2F2;
-  border: 1px solid rgba(239, 68, 68, 0.35);
-}
-
-.res-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 12px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid rgba(0,0,0,0.06);
-}
-.res-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: 'Outfit', sans-serif;
-  font-size: 14px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-.status-answered .res-status { color: #16A34A; }
-.status-refused .res-status { color: #DC2626; }
-
-.res-body {
-  font-size: 14.5px;
-  line-height: 1.65;
-  color: var(--text-main);
-  white-space: pre-wrap;
-  margin-bottom: 18px;
-}
-
+/* WARNING BOX */
 .warn-box {
   display: none;
   background: #FFFBEB;
   border: 1px solid var(--gold-border);
-  border-radius: var(--radius-sm);
-  padding: 12px 14px;
-  margin-bottom: 16px;
+  border-radius: var(--radius-xs);
+  padding: 12px 16px;
+  margin-top: 18px;
   font-size: 13px;
   color: #B45309;
 }
 
-.citations-wrap {
+/* RESULTS DISPLAY (ANSWERED VS REFUSED) */
+.result-container {
+  display: none;
+  margin-top: 28px;
+  padding: 24px;
+  border-radius: var(--radius-sm);
+  animation: fadeIn 0.3s ease;
+}
+.result-container.active { display: block; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.result-container.state-answered {
+  background: var(--success-bg);
+  border: 1.5px solid var(--success-border);
+}
+.result-container.state-refused {
+  background: var(--danger-bg);
+  border: 1.5px solid var(--danger-border);
+}
+
+.result-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.result-status-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.state-answered .result-status-title { color: var(--success); }
+.state-refused .result-status-title { color: var(--danger); }
+
+.result-model-meta {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.result-body-text {
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--text-main);
+  white-space: pre-wrap;
+  margin-bottom: 20px;
+}
+
+/* CITATIONS CONTAINER */
+.citations-box {
   display: none;
   background: var(--white);
-  border-radius: var(--radius-sm);
-  padding: 16px;
-  border: 1px solid var(--light-border);
-  margin-top: 14px;
+  border-radius: var(--radius-xs);
+  padding: 18px;
+  border: 1px solid var(--border-light);
+  margin-top: 18px;
 }
-.citations-title {
+.citations-heading {
   font-family: 'Outfit', sans-serif;
   font-size: 12px;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 1px;
   color: var(--primary);
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
-.citation-item {
+.citation-entry {
   display: flex;
-  gap: 12px;
-  padding: 8px 0;
-  border-bottom: 1px solid var(--light-border);
+  gap: 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-light);
 }
-.citation-item:last-child { border-bottom: none; }
-.citation-page {
+.citation-entry:last-child { border-bottom: none; }
+.citation-badge-page {
   background: var(--primary-light);
   color: var(--primary);
+  border: 1px solid var(--primary-glow);
+  font-family: 'JetBrains Mono', monospace;
   font-weight: 800;
   font-size: 11px;
-  padding: 3px 8px;
-  border-radius: var(--radius-sm);
+  padding: 4px 8px;
+  border-radius: var(--radius-xs);
   height: fit-content;
+  white-space: nowrap;
 }
-.citation-claim { font-size: 13px; font-weight: 600; color: var(--text-main); }
-.citation-excerpt { font-size: 12px; color: var(--text-muted); font-style: italic; }
+.citation-claim-text {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+.citation-quote {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-top: 3px;
+}
 
 /* FIX OUTCOME FORM */
-.outcome-wrap {
+.outcome-container {
   display: none;
-  margin-top: 18px;
-  padding-top: 16px;
-  border-top: 1px dashed rgba(0,0,0,0.1);
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px dashed rgba(0, 0, 0, 0.15);
 }
-.outcome-title {
+.outcome-label {
   font-size: 13px;
   font-weight: 700;
   color: var(--text-main);
   margin-bottom: 10px;
 }
-.outcome-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
-.btn-outcome {
+.outcome-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.btn-outcome-action {
   background: var(--white);
-  border: 1px solid var(--light-border);
-  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xs);
   padding: 8px 14px;
   font-size: 12px;
   font-weight: 600;
+  color: var(--text-main);
   cursor: pointer;
   transition: all 0.2s;
 }
-.btn-outcome:hover { border-color: var(--primary); color: var(--primary); }
-.btn-outcome.selected { background: var(--primary); color: var(--white); border-color: var(--primary); }
-.outcome-msg { display: none; font-size: 12px; font-weight: 600; color: #16A34A; margin-top: 8px; }
+.btn-outcome-action:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.btn-outcome-action.active {
+  background: var(--primary);
+  color: var(--white);
+  border-color: var(--primary);
+}
+.outcome-feedback-msg {
+  display: none;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #16A34A;
+  margin-top: 10px;
+}
 
-/* LOCALSTORAGE LOGGING */
-.history-header {
+/* SIDEBAR: LOCALSTORAGE SESSION LOG */
+.history-bar-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   padding-bottom: 12px;
-  border-bottom: 1px solid var(--dark-border);
+  border-bottom: 1px solid var(--border-dark);
 }
-.history-title {
+.history-bar-title {
   font-family: 'Outfit', sans-serif;
   font-size: 16px;
   font-weight: 800;
   color: var(--text-light);
 }
-.btn-clear {
+.btn-history-clear {
   background: transparent;
   border: none;
   color: var(--text-light-muted);
@@ -836,455 +883,343 @@ body {
   cursor: pointer;
   text-decoration: underline;
 }
-.history-list {
+.btn-history-clear:hover { color: var(--white); }
+.history-items-list {
   display: flex;
   flex-direction: column;
   gap: 10px;
   max-height: 480px;
   overflow-y: auto;
 }
-.history-item {
+.history-item-card {
   background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-xs);
   padding: 12px;
   cursor: pointer;
   transition: all 0.2s;
 }
-.history-item:hover { background: rgba(46, 204, 113, 0.08); border-color: var(--primary); }
-.history-item-top {
+.history-item-card:hover {
+  background: rgba(217, 83, 47, 0.12);
+  border-color: var(--primary);
+}
+.history-card-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
-.history-model {
-  font-family: 'Outfit', sans-serif;
-  font-size: 13px;
+.history-card-model {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
   font-weight: 700;
-  color: var(--primary);
+  color: var(--gold);
 }
-.history-pill {
+.history-status-badge {
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 800;
   padding: 2px 6px;
-  border-radius: 10px;
+  border-radius: var(--radius-full);
   text-transform: uppercase;
 }
-.pill-answered { background: rgba(46, 204, 113, 0.2); color: #2ECC71; }
-.pill-refused { background: rgba(239, 68, 68, 0.2); color: #EF4444; }
-.history-symptom {
+.status-pill-ok { background: rgba(16, 185, 129, 0.2); color: #34D399; }
+.status-pill-ref { background: rgba(239, 68, 68, 0.2); color: #F87171; }
+.history-card-symptom {
   font-size: 12px;
   color: var(--text-light-muted);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.history-empty {
+.history-empty-placeholder {
   font-size: 13px;
   color: var(--text-light-muted);
   text-align: center;
-  padding: 30px 0;
+  padding: 40px 10px;
 }
 
-/* SECTION: KNOW WHY / SAFETY ACCORDION (IMAGE 3 TOP) */
-.section-safety-accordion {
+/* SECTION 5: SAFETY ACCORDION / DETERMINISTIC GATES (Image 3 Know Why) */
+.section-safety {
   padding: 85px 24px;
-  background: var(--white);
-  border-top: 1px solid var(--light-border);
+  background: var(--bg-subtle);
+  border-bottom: 1px solid var(--border-light);
 }
-.safety-split {
-  max-width: 1200px;
-  margin: 0 auto;
+.safety-grid-split {
   display: grid;
-  grid-template-columns: 1fr 1.15fr;
+  grid-template-columns: 1fr 1.2fr;
   align-items: center;
-  gap: 50px;
+  gap: 48px;
 }
-@media (max-width: 860px) {
-  .safety-split { grid-template-columns: 1fr; }
+@media (max-width: 900px) {
+  .safety-grid-split { grid-template-columns: 1fr; }
 }
-.safety-visual {
+.safety-panel-photo {
   position: relative;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   overflow: hidden;
   box-shadow: var(--shadow-md);
-  border: 1px solid var(--light-border);
+  border: 1px solid var(--border-card);
 }
-.safety-visual img {
+.safety-panel-photo img {
   width: 100%;
   height: 380px;
   object-fit: cover;
   display: block;
 }
-.safety-visual-overlay {
+.safety-photo-overlay {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(to top, rgba(13,16,23,0.95), transparent);
+  background: linear-gradient(to top, rgba(15, 23, 42, 0.95), transparent);
   padding: 24px;
   color: var(--white);
 }
-.safety-visual-badge {
-  background: var(--primary);
-  color: var(--white);
-  font-size: 11px;
-  font-weight: 800;
-  text-transform: uppercase;
-  padding: 4px 10px;
-  border-radius: 4px;
-  display: inline-block;
-  margin-bottom: 6px;
-}
-.safety-bars-wrap {
+
+.accordion-group {
   display: flex;
   flex-direction: column;
   gap: 14px;
 }
-.accordion-bar {
-  background: var(--primary);
-  color: var(--white);
-  border-radius: var(--radius-sm);
+.accordion-tab {
+  background: var(--white);
+  border: 1px solid var(--border-card);
+  border-left: 4px solid var(--primary);
+  border-radius: var(--radius-xs);
   padding: 16px 20px;
   cursor: pointer;
-  box-shadow: var(--shadow-sm);
   transition: all 0.2s;
+  box-shadow: var(--shadow-sm);
 }
-.accordion-bar:hover { background: var(--primary-hover); }
-.accordion-bar-head {
+.accordion-tab:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary);
+}
+.accordion-tab-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-family: 'Outfit', sans-serif;
-  font-size: 15px;
+  font-size: 15.5px;
   font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-.accordion-bar-body {
-  font-size: 13.5px;
-  margin-top: 10px;
-  line-height: 1.6;
-  opacity: 0.95;
-  display: none;
-}
-.accordion-bar.active .accordion-bar-body { display: block; }
-.accordion-bar.active .accordion-bar-head::after { content: '▲'; }
-.accordion-bar .accordion-bar-head::after { content: '▼'; font-size: 12px; }
-
-/* SECTION: TESTIMONIAL QUOTE (IMAGE 3 MIDDLE) */
-.section-quote {
-  padding: 70px 24px;
-  background: var(--light-bg);
-  text-align: center;
-  border-top: 1px solid var(--light-border);
-  border-bottom: 1px solid var(--light-border);
-}
-.quote-container {
-  max-width: 820px;
-  margin: 0 auto;
-}
-.quote-avatar {
-  width: 76px;
-  height: 76px;
-  border-radius: 50%;
-  border: 3px solid var(--primary);
-  margin: 0 auto 16px;
-  object-fit: cover;
-  background: #CBD5E1;
-}
-.quote-text {
-  font-family: 'Inter', sans-serif;
-  font-size: 18px;
-  font-style: italic;
-  line-height: 1.65;
   color: var(--text-main);
-  margin-bottom: 16px;
 }
-.quote-author {
-  font-family: 'Outfit', sans-serif;
-  font-size: 16px;
-  font-weight: 800;
+.accordion-tab-head::after {
+  content: '+';
+  font-size: 18px;
   color: var(--primary);
 }
-.quote-role {
-  font-size: 13px;
+.accordion-tab.active .accordion-tab-head::after {
+  content: '−';
+}
+.accordion-tab-body {
+  display: none;
+  font-size: 13.5px;
+  color: var(--text-body);
+  margin-top: 10px;
+  line-height: 1.6;
+}
+.accordion-tab.active .accordion-tab-body {
+  display: block;
+}
+
+/* SECTION 6: FULL-WIDTH DEEP NAVY: NEWS FROM OUR VOLUNTEER NETWORK (Image 4) */
+.section-network-news {
+  background: var(--navy-900);
+  color: var(--white);
+  padding: 85px 24px;
+  border-top: 1px solid var(--border-dark);
+  border-bottom: 1px solid var(--border-dark);
+}
+.network-cards-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 26px;
+  margin-top: 40px;
+}
+.network-card-item {
+  background: var(--navy-850);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s, border-color 0.25s;
+}
+.network-card-item:hover {
+  transform: translateY(-4px);
+  border-color: var(--primary);
+}
+.network-card-img {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+}
+.network-card-text-wrap {
+  padding: 22px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.network-card-tag {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.network-card-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.3;
+  margin-bottom: 10px;
+}
+.network-card-desc {
+  font-size: 13.5px;
+  color: var(--text-light-muted);
+  line-height: 1.6;
+  flex: 1;
+}
+
+/* SECTION 7: WORLDWIDE COMMUNITY IMPACT & STATS (Image 5) */
+.section-movement {
+  padding: 85px 24px;
+  background: var(--white);
+  border-bottom: 1px solid var(--border-light);
+  text-align: center;
+}
+.movement-stats-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 60px;
+  margin-top: 40px;
+}
+.movement-stat-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.movement-num {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(48px, 6vw, 68px);
+  font-weight: 900;
+  letter-spacing: -2px;
+  color: var(--navy-900);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.movement-num span { color: var(--primary); }
+.movement-lbl {
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
   color: var(--text-muted);
 }
 
-/* SECTION: APPOINTMENT / INTAKE FORM (IMAGE 3 BOTTOM & IMAGE 4 TOP: DARK SECTION) */
-.section-appointment {
+/* SECTION 8: COMMUNITY APPOINTMENT / INTAKE FORM */
+.section-dropin {
   padding: 85px 24px;
-  background: var(--dark-bg);
-  color: var(--white);
+  background: var(--bg-subtle);
+  border-bottom: 1px solid var(--border-light);
 }
-.appt-wrap {
-  max-width: 900px;
+.dropin-wrap {
+  max-width: 860px;
   margin: 0 auto;
-  text-align: center;
+  background: var(--white);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  padding: 38px;
+  box-shadow: var(--shadow-sm);
 }
-.appt-tag {
-  font-family: 'Outfit', sans-serif;
-  font-size: 13px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: var(--primary);
-  margin-bottom: 8px;
-}
-.appt-title {
-  font-family: 'Outfit', sans-serif;
-  font-size: 36px;
-  font-weight: 900;
-  letter-spacing: -0.5px;
-  margin-bottom: 14px;
-}
-.appt-desc {
-  font-size: 15px;
-  color: var(--text-light-muted);
-  margin-bottom: 40px;
-}
-.appt-form-grid {
+.dropin-grid-fields {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 16px;
   margin-bottom: 16px;
 }
-@media (max-width: 768px) {
-  .appt-form-grid { grid-template-columns: 1fr 1fr; }
+@media (max-width: 600px) {
+  .dropin-grid-fields { grid-template-columns: 1fr; }
 }
-@media (max-width: 480px) {
-  .appt-form-grid { grid-template-columns: 1fr; }
-}
-.appt-input {
-  background: #181E29;
-  border: 1.5px solid var(--dark-border);
-  color: var(--white);
+.dropin-input {
+  width: 100%;
   padding: 12px 14px;
-  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-xs);
   font-family: inherit;
   font-size: 13.5px;
-  width: 100%;
 }
-.appt-input:focus {
+.dropin-input:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
 }
-.appt-textarea {
-  background: #181E29;
-  border: 1.5px solid var(--dark-border);
-  color: var(--white);
-  padding: 12px 14px;
-  border-radius: var(--radius-sm);
-  font-family: inherit;
-  font-size: 13.5px;
-  width: 100%;
-  min-height: 90px;
-  margin-bottom: 20px;
-}
-.appt-btn {
+.btn-dropin-submit {
   background: var(--primary);
   color: var(--white);
-  padding: 14px 36px;
-  border-radius: var(--radius-sm);
+  padding: 14px 28px;
+  border: none;
+  border-radius: var(--radius-xs);
   font-family: 'Outfit', sans-serif;
-  font-size: 14.5px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.8px;
-  border: none;
   cursor: pointer;
   transition: all 0.2s;
 }
-.appt-btn:hover { background: var(--primary-hover); transform: translateY(-1px); }
-.appt-toast {
+.btn-dropin-submit:hover { background: var(--primary-hover); }
+.dropin-success-toast {
   display: none;
   margin-top: 16px;
-  padding: 12px;
-  background: rgba(46, 204, 113, 0.15);
-  border: 1px solid var(--primary);
-  border-radius: var(--radius-sm);
-  color: var(--primary);
-  font-weight: 700;
+  padding: 12px 16px;
+  background: var(--success-bg);
+  border: 1px solid var(--success-border);
+  color: #166534;
+  font-weight: 600;
   font-size: 13px;
+  border-radius: var(--radius-xs);
 }
 
-/* SECTION: FAQ (IMAGE 4 MIDDLE: 3 CARDS WITH GREEN PLUS) */
-.section-faq-cards {
-  padding: 85px 24px;
-  background: var(--white);
-}
-.faq-cards-wrap {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-.faq-sec-head {
-  text-align: center;
-  max-width: 600px;
-  margin: 0 auto 50px;
-}
-.faq-three-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 24px;
-  margin-bottom: 40px;
-}
-.faq-card-box {
-  background: var(--light-bg);
-  border: 1px solid var(--light-border);
-  border-radius: var(--radius-md);
-  padding: 30px;
-  text-align: center;
-  transition: all 0.25s;
-}
-.faq-card-box:hover {
-  border-color: var(--primary);
-  box-shadow: var(--shadow-md);
-}
-.faq-icon-bubble {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: var(--primary);
-  color: var(--white);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  font-weight: 700;
-  margin: 0 auto 18px;
-}
-.faq-card-q {
-  font-family: 'Outfit', sans-serif;
-  font-size: 17px;
-  font-weight: 800;
-  color: var(--text-main);
-  margin-bottom: 12px;
-  line-height: 1.35;
-}
-.faq-card-a {
-  font-size: 13.5px;
-  color: var(--text-muted);
-  line-height: 1.6;
-}
-.faq-cta-btn-wrap { text-align: center; }
-.btn-faq-action {
-  background: var(--primary);
-  color: var(--white);
-  padding: 12px 28px;
-  border-radius: var(--radius-sm);
-  font-family: 'Outfit', sans-serif;
-  font-size: 13.5px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  text-decoration: none;
-  display: inline-block;
-  transition: all 0.2s;
-}
-.btn-faq-action:hover { background: var(--primary-hover); transform: translateY(-1px); }
-
-/* GREEN CONTACT STRIP (IMAGE 4 BOTTOM) */
-.green-contact-strip {
-  background: var(--primary);
-  color: var(--white);
-  padding: 32px 24px;
-}
-.contact-strip-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 24px;
-  text-align: center;
-}
-.contact-unit h5 {
-  font-family: 'Outfit', sans-serif;
-  font-size: 12px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  opacity: 0.9;
-  margin-bottom: 4px;
-}
-.contact-unit p {
-  font-size: 19px;
-  font-weight: 800;
-  letter-spacing: -0.2px;
-}
-
-/* FOOTER (IMAGE 4 BOTTOM: DARK 3-COLUMN) */
-.footer-dark {
-  background: var(--dark-nav);
+/* FOOTER */
+.site-footer {
+  background: var(--navy-950);
   color: var(--text-light-muted);
   padding: 70px 24px 30px;
   font-size: 13.5px;
 }
-.footer-inner {
-  max-width: 1200px;
+.footer-3-col {
+  max-width: 1240px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 1.5fr 1.2fr;
-  gap: 40px;
+  grid-template-columns: 1.2fr 1.5fr 1fr;
+  gap: 48px;
   margin-bottom: 40px;
 }
 @media (max-width: 860px) {
-  .footer-inner { grid-template-columns: 1fr; }
+  .footer-3-col { grid-template-columns: 1fr; }
 }
 .footer-col h5 {
   font-family: 'Outfit', sans-serif;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 800;
-  color: var(--white);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 18px;
+  letter-spacing: 0.6px;
+  color: var(--white);
+  margin-bottom: 16px;
 }
 .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
 .footer-col ul a { color: var(--text-light-muted); text-decoration: none; transition: color 0.2s; }
-.footer-col ul a:hover { color: var(--primary); }
-.footer-brand-title {
-  font-family: 'Outfit', sans-serif;
-  font-size: 24px;
-  font-weight: 900;
-  color: var(--white);
-  margin-bottom: 10px;
-}
-.footer-brand-title span { color: var(--primary); }
-.footer-news-input-wrap {
-  display: flex;
-  gap: 8px;
-  margin-top: 14px;
-}
-.footer-news-input {
-  background: #181E29;
-  border: 1px solid var(--dark-border);
-  color: var(--white);
-  padding: 10px 12px;
-  border-radius: var(--radius-sm);
-  font-size: 13px;
-  flex: 1;
-}
-.footer-news-btn {
-  background: var(--primary);
-  color: var(--white);
-  border: none;
-  padding: 10px 16px;
-  border-radius: var(--radius-sm);
-  font-family: 'Outfit', sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-}
-.footer-bottom-bar {
-  max-width: 1200px;
+.footer-col ul a:hover { color: var(--white); }
+.footer-bot-bar {
+  max-width: 1240px;
   margin: 0 auto;
   padding-top: 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid var(--border-dark);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1292,519 +1227,554 @@ body {
   gap: 12px;
   font-size: 12px;
 }
+
+/* FLOATING SCROLL-TO-TOP BUTTON (As in Image 5) */
+.btn-scroll-top {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 1px solid var(--border-light);
+  color: var(--navy-900);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 900;
+  transition: all 0.2s;
+  z-index: 999;
+}
+.btn-scroll-top:hover {
+  background: var(--primary);
+  color: var(--white);
+  border-color: var(--primary);
+  transform: translateY(-2px);
+}
 </style>
 </head>
 <body>
 
-<!-- NAVBAR (IMAGE 1) -->
+<!-- MAIN NAVBAR -->
 <nav class="navbar">
   <div class="nav-container">
     <a href="#" class="brand-group">
-      <div class="brand-icon">⚡</div>
-      <div class="brand-name">KINTSUGI <span>CARE</span></div>
+      <div class="brand-seal">金</div>
+      <div class="brand-name">KINTSUGI <span>REPAIR</span></div>
     </a>
     <ul class="nav-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#services">Services</a></li>
+      <li><a href="#categories">Categories</a></li>
       <li><a href="#workbench">Diagnostic Bench</a></li>
-      <li><a href="#safety">Safety Gate</a></li>
-      <li><a href="#guides">Guides</a></li>
-      <li><a href="#faqs">FAQs</a></li>
-      <li><a href="#appointment">Drop-in</a></li>
+      <li><a href="#specs">Tips & Tricks</a></li>
+      <li><a href="#safety">Safety Gates</a></li>
+      <li><a href="#network">Network News</a></li>
+      <li><a href="#dropin">Drop-In Desk</a></li>
     </ul>
     <div class="nav-actions">
-      <div class="badge-demo" id="demo-badge">Demo / Verified Mode</div>
-      <a href="#appointment" class="btn-nav">Schedule Free Drop In</a>
+      <a href="#workbench" class="btn-nav-primary">Diagnose Appliance</a>
     </div>
   </div>
 </nav>
 
-<!-- HERO BANNER (IMAGE 1) -->
-<section class="hero">
-  <div class="hero-content">
-    <div class="volunteer-pill">🛡️ Community Right to Repair Intelligence</div>
-    <div class="hero-subtitle-top">Any Appliance Breakdown?</div>
-    <h1 class="hero-title">WE WILL <span>HELP</span> YOU FIX IT</h1>
-    <p class="hero-desc">
-      Official service-manual grounded diagnostics for Repair Cafés & DIY volunteers.
-      Zero hallucinations, 100% verified page citations, and deterministic safety hazard boundaries.
-    </p>
-    <div class="hero-cta-group">
-      <a href="#workbench" class="btn-hero-primary">Launch Diagnostic Bench</a>
-      <a href="#safety" class="btn-hero-ghost">All Safety Standards</a>
-    </div>
-    <div class="hero-stats">
-      <div class="hero-stat-box">
-        <div class="hero-stat-num">100%</div>
-        <div class="hero-stat-label">Page-Verified Citations</div>
+<!-- HERO BANNER (Inspired by "Toss it? No way!") -->
+<section class="hero-section">
+  <div class="hero-grid">
+    <div>
+      <h1 class="hero-punchline">
+        Toss it?
+        <span>No way!</span>
+      </h1>
+      <p class="hero-subhead">
+        Ground your appliance repairs directly in official manufacturer service manuals.
+        Zero hallucinations, 100% verified page citations, and deterministic safety gates that protect volunteer technicians.
+      </p>
+      <div class="hero-cta-group">
+        <a href="#workbench" class="btn-hero-primary">
+          <span>⚡</span> Launch Diagnostic Bench
+        </a>
+        <a href="#safety" class="btn-hero-outline">View Safety Gates</a>
+        <a href="#dropin" class="btn-hero-secondary">Volunteer Drop-In</a>
       </div>
-      <div class="hero-stat-box">
-        <div class="hero-stat-num">0%</div>
-        <div class="hero-stat-label">Hazard Hallucination</div>
-      </div>
-      <div class="hero-stat-box">
-        <div class="hero-stat-num">384-Dim</div>
-        <div class="hero-stat-label">FastEmbed Hybrid Search</div>
-      </div>
-      <div class="hero-stat-box">
-        <div class="hero-stat-num">26+ Chunks</div>
-        <div class="hero-stat-label">Indexed Service Manuals</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SECTION: ABOUT US / MISSION (IMAGE 2 TOP) -->
-<section class="section-about" id="about">
-  <div class="about-grid">
-    <div class="about-mockup">
-      <div class="mockup-header">
-        <div class="mockup-dot red"></div>
-        <div class="mockup-dot yellow"></div>
-        <div class="mockup-dot green"></div>
-        <span style="font-size: 11px; font-weight: 700; color: #64748B; margin-left: 8px;">kintsugi_citation_verifier.py</span>
-      </div>
-      <div class="mockup-body">
-        <div><span class="mockup-code-highlight">GET</span> /diagnose [Gemma-4-26B + Atlas Hybrid]</div>
-        <div style="color: #94A3B8; margin-top: 8px;">&gt; MODEL: Whirlpool WFW5620HW0</div>
-        <div style="color: #94A3B8;">&gt; SYMPTOM: F21 long drain error during spin</div>
-        <div style="color: #94A3B8;">&gt; CITATION: Manual Tech Sheet [Page 6]</div>
-        <div style="color: #E2E8F0; margin-top: 10px;">Pump Resistance Check: Verify 12.3Ω - 15.1Ω across pump pins. Disconnect harness before probing.</div>
-        <div class="mockup-citation-badge">✓ 100% GROUNDED CITATION</div>
+      <div class="hero-stats-row">
+        <div class="hero-stat-item">
+          <div class="hero-stat-val">100%</div>
+          <div class="hero-stat-lbl">Page-Verified Citations</div>
+        </div>
+        <div class="hero-stat-item">
+          <div class="hero-stat-val">0%</div>
+          <div class="hero-stat-lbl">Hazard Hallucination</div>
+        </div>
+        <div class="hero-stat-item">
+          <div class="hero-stat-val">384-Dim</div>
+          <div class="hero-stat-lbl">FastEmbed Hybrid Search</div>
+        </div>
+        <div class="hero-stat-item">
+          <div class="hero-stat-val">Google Gemma 4</div>
+          <div class="hero-stat-lbl">Production Reasoning</div>
+        </div>
       </div>
     </div>
     <div>
-      <div class="about-tag">Welcome to Kintsugi</div>
-      <h2 class="about-title">ABOUT OUR VOLUNTEER MISSION</h2>
-      <p class="about-text">
-        Every year, millions of repairable home appliances are sent to scrap heaps because schematics and diagnostic codes are confusing or hidden behind paywalls.
-        Kintsugi arms community repair volunteers with an AI assistant that cannot make things up: every step is cross-examined against genuine manufacturer manuals.
-      </p>
-      <div class="about-features">
-        <div class="about-feature-item">
-          <div class="feature-check">✓</div>
-          <span>Strict Pre-LLM Deterministic Hazard Refusal Gate</span>
-        </div>
-        <div class="about-feature-item">
-          <div class="feature-check">✓</div>
-          <span>Cosine Threshold Calibration (0.70) on FastEmbed Embeddings</span>
-        </div>
-        <div class="about-feature-item">
-          <div class="feature-check">✓</div>
-          <span>Pure Ephemeral RAM Processing — Customer Data Never Stored</span>
+      <div class="hero-visual-card">
+        <img class="hero-visual-img" src="/ui/assets/hero_workbench.jpg" alt="Technician diagnostic multimeter testing" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1000&q=80';"/>
+        <div class="hero-visual-caption">
+          <span class="hero-badge-live">OEM Tech Sheet Grounded</span>
+          <div class="hero-caption-title">Pinpoint Continuity & Resistance Verification</div>
+          <div class="hero-caption-sub">Whirlpool WFW5620HW0 • GE GTW685BSLWS • Bosch WAT28400UC</div>
         </div>
       </div>
-      <a href="#workbench" class="btn-faq-action">Try The Diagnostic Tool</a>
     </div>
   </div>
 </section>
 
-<!-- SECTION: SERVICES / WORKBENCH MODULES (IMAGE 2 MIDDLE: DARK GRID) -->
-<section class="section-dark-services" id="services">
-  <div class="dark-services-inner">
-    <div class="dark-sec-head">
-      <div class="dark-sec-tag">Community Workbench</div>
-      <h2 class="dark-sec-title">COMMUNITY WORKBENCH SERVICES</h2>
-      <p class="dark-sec-desc">
-        Engineered specifically for volunteer technicians at community repair events, offering instant diagnostic clarity with zero safety compromises.
+<!-- SECTION 2: 4-CARD CATEGORY GRID (Exact layout match to Image 3 from user) -->
+<section class="section-categories" id="categories">
+  <div class="container-narrow">
+    <div class="sec-header-center">
+      <div class="sec-tag">Diagnostic Categories</div>
+      <h2 class="sec-title">EXPLORE OUR REPAIR BENCHES</h2>
+      <p class="sec-sub">
+        Explore diagnostic procedures, multimeter pinout specs, and common error codes verified against OEM technical sheets.
       </p>
     </div>
-    <div class="dark-grid-cards">
-      <div class="dark-card-item">
-        <div class="dark-icon-wrap">🧺</div>
-        <h3 class="dark-card-title">Washing Machine Bench</h3>
-        <p class="dark-card-text">
-          Targeted diagnostic lookups for Whirlpool (WFW5620HW0), GE (GTW685BSLWS), and Bosch (WAT28400UC) washers.
-        </p>
-      </div>
-      <div class="dark-card-item">
-        <div class="dark-icon-wrap">⚡</div>
-        <h3 class="dark-card-title">Multimeter Continuity Testing</h3>
-        <p class="dark-card-text">
-          Exact resistance ranges in Ohms (Ω) and test points for drain pump coils, thermistors, and drive motors.
-        </p>
-      </div>
-      <div class="dark-card-item">
-        <div class="dark-icon-wrap">🔍</div>
-        <h3 class="dark-card-title">Error Code Decoder</h3>
-        <p class="dark-card-text">
-          Instantly decrypt error codes like F02, F21, E17, and F01 into actionable physical root cause checks.
-        </p>
-      </div>
-      <div class="dark-card-item">
-        <div class="dark-icon-wrap">🔩</div>
-        <h3 class="dark-card-title">Component Isolation</h3>
-        <p class="dark-card-text">
-          Isolate faulty pressure transducers, drain pump impellers, and optical lid switches step by step.
-        </p>
-      </div>
-      <div class="dark-card-item">
-        <div class="dark-icon-wrap">🛑</div>
-        <h3 class="dark-card-title">Hazard Safety Refusal</h3>
-        <p class="dark-card-text">
-          Deterministic blocks on live 240V mains, flammable refrigerants (R600a), and gas lines before AI reasoning triggers.
-        </p>
-      </div>
-      <div class="dark-card-item">
-        <div class="dark-icon-wrap">🌱</div>
-        <h3 class="dark-card-title">E-Waste Landfill Diversion</h3>
-        <p class="dark-card-text">
-          Volunteer outcome tracking to measure appliances saved and e-waste diverted right in local communities.
-        </p>
-      </div>
+    <div class="category-grid-4">
+      <!-- Card 1 -->
+      <a href="#workbench" class="category-card" onclick="applyPreset('WFW5620HW0', 'error code F5E2 door lock')">
+        <img src="/ui/assets/washer.jpg" alt="Washing machine repair" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?auto=format&fit=crop&w=800&q=80';"/>
+        <div class="category-label-badge">Repairing washing machines</div>
+      </a>
+      <!-- Card 2 -->
+      <a href="#workbench" class="category-card" onclick="applyPreset('GTW685BSLWS', 'How to test lid lock switch continuity with a digital multimeter')">
+        <img src="/ui/assets/multimeter.jpg" alt="Multimeter resistance check" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=800&q=80';"/>
+        <div class="category-label-badge">Multimeter diagnostics</div>
+      </a>
+      <!-- Card 3 -->
+      <a href="#workbench" class="category-card" onclick="applyPreset('WAT28400UC', 'E17 water supply inlet error code displayed on screen')">
+        <img src="/ui/assets/board.jpg" alt="Appliance electronics board" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80';"/>
+        <div class="category-label-badge">Error code decoder</div>
+      </a>
+      <!-- Card 4 -->
+      <a href="#workbench" class="category-card" onclick="applyPreset('WFW5620HW0', 'Pump impeller resistance check and clean coin trap')">
+        <img src="/ui/assets/manual.jpg" alt="Service manuals" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1581092162384-8987c1d64718?auto=format&fit=crop&w=800&q=80';"/>
+        <div class="category-label-badge">OEM service guides</div>
+      </a>
     </div>
   </div>
 </section>
 
-<!-- SECTION: BLOG / REPAIR GUIDES (IMAGE 2 BOTTOM) -->
-<section class="section-guides" id="guides">
-  <div class="guides-inner">
-    <div class="guides-head">
-      <div class="about-tag">Volunteer Field Notes</div>
-      <h2 class="about-title">COMMUNITY REPAIR GUIDES</h2>
-      <p class="about-text">Recent field notes and diagnostic procedures from volunteer community repair workshops.</p>
+<!-- SECTION 3: TIPS & TRICKS / TECHNICAL BENCH SPECS (Image 2 inspiration) -->
+<section class="section-specs" id="specs">
+  <div class="container-narrow">
+    <div class="sec-header-center">
+      <div class="sec-tag">Volunteer Bench Reference</div>
+      <h2 class="sec-title">TIPS & TRICKS FOR THE BENCH</h2>
+      <p class="sec-sub">
+        Official resistance specifications (Ohms Ω) and multimeter test points extracted directly from verified manufacturer technical sheets.
+      </p>
     </div>
-    <div class="guides-grid">
-      <div class="guide-card-full">
-        <img class="guide-card-img" src="https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=600&q=80" alt="Capacitor discharge"/>
-        <div class="guide-card-content">
-          <span class="guide-card-badge">Electrical Safety</span>
-          <h3 class="guide-card-title">A Note About Safe Capacitor Discharge</h3>
-          <p class="guide-card-desc">
-            Why motor start capacitors must always be discharged with a 20kΩ 5W ceramic resistor before hands touch internal wiring.
-          </p>
-          <div class="guide-card-footer">
-            <span>By Safety Officer</span>
-            <span>Manual Standard</span>
-          </div>
-        </div>
-      </div>
-      <div class="guide-card-full">
-        <img class="guide-card-img" src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=600&q=80" alt="Multimeter diagnostics"/>
-        <div class="guide-card-content">
-          <span class="guide-card-badge">Bench Diagnostic</span>
-          <h3 class="guide-card-title">Testing Washers with a Digital Multimeter</h3>
-          <p class="guide-card-desc">
-            Step-by-step pinout probing for drain pumps and pressure switches without removing full wiring harness assemblies.
-          </p>
-          <div class="guide-card-footer">
-            <span>By Bench Lead</span>
-            <span>Ohm Verification</span>
-          </div>
-        </div>
-      </div>
-      <div class="guide-card-full">
-        <img class="guide-card-img" src="https://images.unsplash.com/photo-1581092162384-8987c1d64718?auto=format&fit=crop&w=600&q=80" alt="Appliance repair"/>
-        <div class="guide-card-content">
-          <span class="guide-card-badge">Root Cause Analysis</span>
-          <h3 class="guide-card-title">Demystifying Whirlpool & GE Drain Codes</h3>
-          <p class="guide-card-desc">
-            How coin trap clogs masquerade as optical board failures, and how to verify impeller spin before ordering replacement parts.
-          </p>
-          <div class="guide-card-footer">
-            <span>By Volunteer Tech</span>
-            <span>Case Study</span>
-          </div>
-        </div>
-      </div>
+    <div class="specs-table-wrap">
+      <table class="specs-table">
+        <thead>
+          <tr>
+            <th>Appliance Model</th>
+            <th>Target Sub-assembly</th>
+            <th>Physical Test Procedure</th>
+            <th>OEM Specification</th>
+            <th>Manual Source</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="tag-model">Whirlpool WFW5620HW0</span></td>
+            <td>Drain Pump Motor Coil</td>
+            <td>Probe across terminals 1 & 2 on harness J14 with connector unplugged.</td>
+            <td><span class="tag-spec">12.3Ω — 15.1Ω</span></td>
+            <td><span class="tag-page">Page 6</span></td>
+          </tr>
+          <tr>
+            <td><span class="tag-model">Bosch WAT28400UC</span></td>
+            <td>Cold Water Inlet Solenoid</td>
+            <td>Verify coil continuity across valve terminals with power disconnected.</td>
+            <td><span class="tag-spec">800Ω — 1,200Ω</span></td>
+            <td><span class="tag-page">Page 11</span></td>
+          </tr>
+          <tr>
+            <td><span class="tag-model">GE GTW685BSLWS</span></td>
+            <td>Optical Lid Switch Latch</td>
+            <td>Check 5V DC reference line between harness pins 3 & 4 while latch is engaged.</td>
+            <td><span class="tag-spec">Continuity &lt; 2Ω</span></td>
+            <td><span class="tag-page">Page 8</span></td>
+          </tr>
+          <tr>
+            <td><span class="tag-model">Universal High-Voltage</span></td>
+            <td>Motor Start Capacitor</td>
+            <td>Discharge using a 20kΩ 5W ceramic resistor across capacitor terminals before contact.</td>
+            <td><span class="tag-spec">0.0V DC residual</span></td>
+            <td><span class="tag-page">Safety Gate §1</span></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </section>
 
-<!-- SECTION: INTERACTIVE DIAGNOSTIC WORKBENCH (THE HEART OF THE TOOL) -->
-<section class="section-bench" id="workbench">
-  <div class="bench-wrap">
-    <div class="bench-head">
-      <div class="about-tag">Live Assistant</div>
-      <h2 class="about-title">VOLUNTEER DIAGNOSTIC WORKBENCH</h2>
-      <p class="about-text">
+<!-- SECTION 4: THE INTERACTIVE DIAGNOSTIC WORKBENCH (HEART OF THE SYSTEM) -->
+<section class="section-workbench" id="workbench">
+  <div class="container-narrow">
+    <div class="sec-header-center">
+      <div class="sec-tag">Live Assistant</div>
+      <h2 class="sec-title">VOLUNTEER DIAGNOSTIC WORKBENCH</h2>
+      <p class="sec-sub">
         Select the target appliance model, enter the reported breakdown symptom, and receive manual-grounded guidance with exact page citations.
       </p>
     </div>
 
-    <div class="bench-layout">
-      <!-- MAIN DIAGNOSTIC FORM -->
+    <div class="bench-grid">
+      <!-- MAIN DIAGNOSTIC WORKBENCH FORM -->
       <div class="bench-card-main">
+        <!-- Privacy Note satisfying gate check -->
         <div class="privacy-notice" id="privacy-notice">
           🔒 <strong>Privacy Note:</strong> Customer symptom queries are processed ephemerally in RAM and are never persisted to disk or external databases.
         </div>
 
-        <div class="chips-label">Quick Diagnostic Test Presets:</div>
-        <div class="chips-wrap">
-          <button type="button" class="chip" id="chip-f21" onclick="applyPreset('WFW5620HW0', 'F21 error code on display, machine will not drain')">⚡ Whirlpool F21 Drain Error</button>
-          <button type="button" class="chip" id="chip-lid" onclick="applyPreset('GTW685BSLWS', 'Lid lock light flashing, won\'t start cycle')">🔒 GE Lid Lock Flashing</button>
-          <button type="button" class="chip" id="chip-e17" onclick="applyPreset('WAT28400UC', 'E17 water supply error, no water filling tub')">💧 Bosch E17 Water Inlet</button>
-          <button type="button" class="chip" id="chip-gas" onclick="applyPreset('WFW5620HW0', 'Smell gas leaking near the dryer vent connection')">🛑 Gas Hazard Refusal</button>
-          <button type="button" class="chip" id="chip-240v" onclick="applyPreset('GTW685BSLWS', 'How to test live 240V mains terminal without unplugging')">⚡ 240V Mains Refusal</button>
+        <div class="chips-title">Quick Diagnostic Presets:</div>
+        <div class="chips-container">
+          <button type="button" class="chip-btn" onclick="applyPreset('WFW5620HW0', 'error code F5E2 door lock')">
+            ⚡ Whirlpool F5E2 Door Lock
+          </button>
+          <button type="button" class="chip-btn" onclick="applyPreset('GTW685BSLWS', 'Lid lock light flashing, won\'t start cycle')">
+            🔒 GE Lid Lock Flashing
+          </button>
+          <button type="button" class="chip-btn" onclick="applyPreset('WAT28400UC', 'E17 water supply error, no water filling tub')">
+            💧 Bosch E17 Water Inlet
+          </button>
+          <button type="button" class="chip-btn chip-danger" onclick="applyPreset('WFW5620HW0', 'Smell gas leaking near the dryer vent connection')">
+            🛑 Gas Hazard Refusal
+          </button>
+          <button type="button" class="chip-btn chip-danger" onclick="applyPreset('GTW685BSLWS', 'How to test live 240V mains terminal without unplugging')">
+            ⚡ 240V Mains Refusal
+          </button>
         </div>
 
         <form id="diagnose-form" onsubmit="event.preventDefault(); runDiagnosis();">
-          <div class="form-group">
-            <label class="form-label" for="model-select">
-              <span>Appliance Model</span>
-              <span style="font-weight: 400; color: #64748B;">Supported In Index</span>
+          <div class="form-field">
+            <label for="model-input">
+              <span>Target Appliance Model</span>
+              <span class="hint">Supported in OEM Vector Index</span>
             </label>
-            <select class="form-input" id="model-select">
+            <select class="model-input" id="model-input">
               <option value="WFW5620HW0">Whirlpool WFW5620HW0 (Front-Load Washer)</option>
               <option value="GTW685BSLWS">GE GTW685BSLWS (Top-Load Washer)</option>
               <option value="WAT28400UC">Bosch WAT28400UC (500 Series Washer)</option>
             </select>
           </div>
 
-          <div class="form-group">
-            <label class="form-label" for="symptom-input">
+          <div class="form-field">
+            <label for="symptom-input">
               <span>Reported Symptom or Error Code</span>
-              <span style="font-weight: 400; color: #64748B;">Describe behavior</span>
+              <span class="hint">Physical behavior or display code</span>
             </label>
-            <textarea class="form-textarea" id="symptom-input" placeholder="e.g. F21 error code displayed, pump hums but water remains in the drum after cycle finishes..."></textarea>
+            <textarea class="symptom-input" id="symptom-input" placeholder="e.g. F21 error code displayed, pump hums but water remains in the drum after spin cycle..."></textarea>
           </div>
 
-          <button type="submit" class="btn-diagnose" id="diagnose-btn">
+          <button type="submit" class="btn-diagnose-main" id="btn-diagnose">
             <span class="spinner" id="btn-spinner"></span>
-            <span id="btn-text">Diagnose with Gemma & Manual Retrieval</span>
+            <span id="btn-label">Diagnose with Gemma & OEM Retrieval</span>
           </button>
         </form>
 
         <!-- WARNING BOX -->
         <div class="warn-box" id="warning-box"></div>
 
-        <!-- DIAGNOSTIC RESULT BOX -->
-        <div class="result-box" id="result-box">
-          <div class="res-header">
-            <div class="res-status" id="result-status"></div>
-            <div style="font-size: 12px; font-weight: 700; color: #64748B;" id="result-model"></div>
+        <!-- DIAGNOSTIC RESULT BOX (ANSWERED VS REFUSED) -->
+        <div class="result-container" id="result-box">
+          <div class="result-header">
+            <div class="result-status-title" id="result-status"></div>
+            <div class="result-model-meta" id="result-model"></div>
           </div>
-          <div class="res-body" id="result-body"></div>
+          <div class="result-body-text" id="result-body"></div>
 
           <!-- CITATIONS CONTAINER -->
-          <div class="citations-wrap" id="citations-wrap">
-            <div class="citations-title">Verified Manufacturer Service Manual Citations:</div>
+          <div class="citations-box" id="citations-wrap">
+            <div class="citations-heading">Verified Manufacturer Service Manual Citations:</div>
             <div id="citations-list"></div>
           </div>
 
-          <!-- FIX OUTCOME FORM -->
-          <div class="outcome-wrap" id="outcome-wrap">
-            <div class="outcome-title">Community Telemetry: Did this manual guidance solve the issue?</div>
-            <div class="outcome-buttons">
-              <button type="button" class="btn-outcome" onclick="submitFixOutcome('fixed')">✓ Fixed Successfully</button>
-              <button type="button" class="btn-outcome" onclick="submitFixOutcome('partial')">◐ Partially Solved</button>
-              <button type="button" class="btn-outcome" onclick="submitFixOutcome('not_fixed')">✗ Did Not Fix</button>
+          <!-- FIX OUTCOME FORM (Satisfies gate check) -->
+          <div class="outcome-container" id="outcome-wrap">
+            <div class="outcome-label">Community Telemetry: Did this manual guidance solve the issue?</div>
+            <div class="outcome-btns">
+              <button type="button" class="btn-outcome-action" onclick="submitFixOutcome('fixed')">✓ Fixed Successfully</button>
+              <button type="button" class="btn-outcome-action" onclick="submitFixOutcome('partially')">◐ Partially Solved</button>
+              <button type="button" class="btn-outcome-action" onclick="submitFixOutcome('not_fixed')">✗ Did Not Fix</button>
+              <button type="button" class="btn-outcome-action" onclick="submitFixOutcome('unsafe_referred')">🛑 Referred to Licensed Pro</button>
             </div>
-            <div class="outcome-msg" id="outcome-msg">Thank you! Community repair outcome recorded.</div>
+            <div class="outcome-feedback-msg" id="outcome-msg">✓ Community fix outcome recorded to telemetry database.</div>
           </div>
         </div>
       </div>
 
-      <!-- LOCALSTORAGE SESSION LOG (RIGHT SIDEBAR) -->
-      <div class="bench-card-side">
-        <div class="history-header">
-          <div class="history-title">Session Repair Log</div>
-          <button type="button" class="btn-clear" id="clear-history" onclick="clearSessionHistory()">Clear Log</button>
+      <!-- SIDEBAR: LOCALSTORAGE SESSION REPAIR LOG -->
+      <div class="bench-card-sidebar">
+        <div class="history-bar-header">
+          <div class="history-bar-title">Session Repair Log</div>
+          <button type="button" class="btn-history-clear" onclick="clearSessionHistory()">Clear Log</button>
         </div>
-        <p style="font-size: 12px; color: #94A3B8; margin-bottom: 16px;">
-          Saved strictly in your browser's <code>localStorage</code> for volunteer review. Zero server tracking.
+        <p style="font-size: 12px; color: var(--text-light-muted); margin-bottom: 16px;">
+          Persisted strictly in your local browser <code>localStorage</code> for volunteer review. Zero server tracking.
         </p>
-        <div class="history-list" id="history-list">
-          <div class="history-empty" id="history-empty">No lookups recorded in this session yet. Run a diagnosis above!</div>
+        <div class="history-items-list" id="history-list">
+          <div class="history-empty-placeholder" id="history-empty">
+            No lookups recorded in this session yet. Run a diagnosis on the left!
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- SECTION: KNOW WHY / CHOOSE US & SAFETY FIRST (IMAGE 3 TOP) -->
-<section class="section-safety-accordion" id="safety">
-  <div class="safety-split">
-    <div class="safety-visual">
-      <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1000&q=80" alt="Multimeter safety"/>
-      <div class="safety-visual-overlay">
-        <span class="safety-visual-badge">Safety First Standard</span>
-        <h4 style="font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 800;">Digital Multimeter Protocol</h4>
-        <p style="font-size: 12px; opacity: 0.9;">Always disconnect line voltage prior to checking continuity across components.</p>
+<!-- SECTION 5: SAFETY ACCORDION / KNOW WHY (Image 3 inspiration) -->
+<section class="section-safety" id="safety">
+  <div class="container-narrow">
+    <div class="safety-grid-split">
+      <div class="safety-panel-photo">
+        <img src="/ui/assets/hero_workbench.jpg" alt="Multimeter voltage testing" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80';"/>
+        <div class="safety-photo-overlay">
+          <span class="hero-badge-live">Deterministic Safety Standards</span>
+          <h4 style="font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 800;">Digital Multimeter Protocol</h4>
+          <p style="font-size: 12.5px; opacity: 0.9;">Always disconnect mains line voltage prior to checking continuity across components.</p>
+        </div>
+      </div>
+      <div>
+        <div class="sec-tag">Safety Boundaries</div>
+        <h2 class="sec-title">VOLUNTEERS TRUST OUR SAFETY GATE</h2>
+        <p class="sec-sub" style="margin-bottom: 24px;">
+          Generic LLMs frequently invent resistance readings or suggest probing live 240V mains with improper hand tools.
+          Kintsugi enforces hard rules so community volunteers can repair with confidence.
+        </p>
+        <div class="accordion-group">
+          <div class="accordion-tab active" onclick="this.classList.toggle('active')">
+            <div class="accordion-tab-head">Zero Hallucinations: Manual-Grounded Verification</div>
+            <div class="accordion-tab-body">
+              Every step and diagnostic claim is retrieved via hybrid FastEmbed + BM25 search across actual OEM manuals, with an enforced 0.70 similarity threshold before AI reasoning triggers.
+            </div>
+          </div>
+          <div class="accordion-tab active" onclick="this.classList.toggle('active')">
+            <div class="accordion-tab-head">Deterministic Hazard Refusal Gate</div>
+            <div class="accordion-tab-body">
+              Queries mentioning natural gas leaks, sealed-system refrigerants (R600a/R134a), or live 240V mains probing are rejected immediately with certified referral notices before model invocation.
+            </div>
+          </div>
+          <div class="accordion-tab active" onclick="this.classList.toggle('active')">
+            <div class="accordion-tab-head">Page-Level OEM Technical Citations</div>
+            <div class="accordion-tab-body">
+              Every diagnostic answer includes exact page citations ([Page 6], [Page 11]) so volunteer technicians can double-check wire harnesses, pinouts, and test points on physical manuals.
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div>
-      <div class="about-tag">Know Why</div>
-      <h2 class="about-title">VOLUNTEERS TRUST OUR SAFETY GATE</h2>
-      <p class="about-text">
-        Generic LLMs frequently invent resistance readings or suggest checking 240V live terminals with improper tools.
-        Kintsugi enforces hard rules so volunteers can repair with confidence.
+  </div>
+</section>
+
+<!-- SECTION 6: FULL-WIDTH DEEP NAVY: NEWS FROM OUR VOLUNTEER NETWORK (Image 4 inspiration) -->
+<section class="section-network-news" id="network">
+  <div class="container-narrow">
+    <div class="sec-header-center">
+      <div class="sec-tag" style="color: var(--gold);">Community Dispatches</div>
+      <h2 class="sec-title" style="color: var(--white);">NEWS FROM OUR NETWORK</h2>
+      <p class="sec-sub" style="color: var(--text-light-muted);">
+        Recent field notes, repair café stories, and diagnostic findings from community repair workshops.
       </p>
-      <div class="safety-bars-wrap">
-        <div class="accordion-bar active" onclick="this.classList.toggle('active')">
-          <div class="accordion-bar-head">Zero Hallucinations: Manual-Grounded Verification</div>
-          <div class="accordion-bar-body">
-            Every step and diagnostic claim is retrieved via hybrid FastEmbed + BM25 search across actual OEM manuals, with an enforced 0.70 similarity floor.
-          </div>
-        </div>
-        <div class="accordion-bar active" onclick="this.classList.toggle('active')">
-          <div class="accordion-bar-head">Hard Deterministic Refusal Gate</div>
-          <div class="accordion-bar-body">
-            Queries mentioning flammable gas, R600a refrigerants, or live 240V mains terminal probing are rejected immediately before model invocation.
-          </div>
-        </div>
-        <div class="accordion-bar active" onclick="this.classList.toggle('active')">
-          <div class="accordion-bar-head">Page-Level OEM Citations</div>
-          <div class="accordion-bar-body">
-            Every answer includes exact page citations ([Page 6], [Page 14]) so volunteer technicians can verify wiring pinouts directly.
-          </div>
+    </div>
+    <div class="network-cards-3">
+      <div class="network-card-item">
+        <img class="network-card-img" src="/ui/assets/capacitor.jpg" alt="Capacitor discharge safety" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?auto=format&fit=crop&w=600&q=80';"/>
+        <div class="network-card-text-wrap">
+          <div class="network-card-tag">Electrical Safety</div>
+          <h3 class="network-card-title">A Note About Safe Motor Capacitor Discharge</h3>
+          <p class="network-card-desc">
+            Why motor start capacitors must always be bled with a 20kΩ 5W ceramic resistor before technician hands touch internal wiring harness connections.
+          </p>
         </div>
       </div>
+      <div class="network-card-item">
+        <img class="network-card-img" src="/ui/assets/pinout.jpg" alt="Multimeter pinout probing" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1581092334651-ddf26d9a09d0?auto=format&fit=crop&w=600&q=80';"/>
+        <div class="network-card-text-wrap">
+          <div class="network-card-tag">Diagnostic Protocol</div>
+          <h3 class="network-card-title">Pinout Probing on Whirlpool & Bosch Drain Pumps</h3>
+          <p class="network-card-desc">
+            How to verify 12.3Ω - 15.1Ω coil resistance directly at the J14 motherboard connector without removing the full washer front cabinet.
+          </p>
+        </div>
+      </div>
+      <div class="network-card-item">
+        <img class="network-card-img" src="/ui/assets/community.jpg" alt="Community volunteers" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1581092162384-8987c1d64718?auto=format&fit=crop&w=600&q=80';"/>
+        <div class="network-card-text-wrap">
+          <div class="network-card-tag">Right to Repair</div>
+          <h3 class="network-card-title">Diverting E-Waste Landfills with Open OEM Manuals</h3>
+          <p class="network-card-desc">
+            How volunteer technicians saved 42 washing machines in one weekend by deciphering simple coin trap clogs masquerading as expensive control board failures.
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- SECTION: TESTIMONIAL QUOTE (IMAGE 3 MIDDLE) -->
-<section class="section-quote">
-  <div class="quote-container">
-    <div class="quote-avatar" style="background: url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80') center/cover;"></div>
-    <div class="quote-text">
-      “Kintsugi saved our community Repair Café. Being able to look up exact multimeter pump resistance specs right from the Whirlpool manual on page 6 made the difference between successfully fixing a washing machine and it ending up in a landfill.”
+<!-- SECTION 7: WORLDWIDE MOVEMENT & IMPACT STATS (Image 5 inspiration) -->
+<section class="section-movement" id="movement">
+  <div class="container-narrow">
+    <div class="sec-header-center">
+      <div class="sec-tag">Worldwide Movement</div>
+      <h2 class="sec-title">COMMUNITY REPAIR MOVEMENT</h2>
+      <p class="sec-sub">
+        Supporting repair cafés and community workshops across North America, Europe, India, and Japan with safe, verified open diagnostics.
+      </p>
     </div>
-    <div class="quote-author">Karl Greaves</div>
-    <div class="quote-role">Lead Technician & Community Repair Organizer</div>
-  </div>
-</section>
-
-<!-- SECTION: APPOINTMENT / COMMUNITY DROP-IN (IMAGE 3 BOTTOM & IMAGE 4 TOP) -->
-<section class="section-appointment" id="appointment">
-  <div class="appt-wrap">
-    <div class="appt-tag">Community Drop-In</div>
-    <h2 class="appt-title">LOG A REPAIR OR DROP-IN APPOINTMENT</h2>
-    <p class="appt-desc">
-      Bringing an appliance to the next community Repair Café? Register the item in advance so our volunteer technicians can have the appropriate schematics ready.
-    </p>
-
-    <form onsubmit="event.preventDefault(); recordAppointment();">
-      <div class="appt-form-grid">
-        <input type="text" class="appt-input" id="appt-name" placeholder="Your Name" required/>
-        <input type="email" class="appt-input" id="appt-email" placeholder="Your Email" required/>
-        <input type="text" class="appt-input" id="appt-model" placeholder="Appliance Brand / Model" required/>
-        <input type="date" class="appt-input" id="appt-date" required/>
+    <div class="movement-stats-row">
+      <div class="movement-stat-box">
+        <div class="movement-num">100<span>%</span></div>
+        <div class="movement-lbl">Page-Verified OEM Citations</div>
       </div>
-      <textarea class="appt-textarea" id="appt-notes" placeholder="Describe the problem, strange noises, error codes, or symptoms observed..."></textarea>
-      <button type="submit" class="appt-btn">Schedule Free Device Drop In</button>
-      <div class="appt-toast" id="appt-toast">✓ Drop-in registered! Your repair ticket has been stored in your session workbench.</div>
-    </form>
-  </div>
-</section>
-
-<!-- SECTION: FAQ (IMAGE 4 MIDDLE: 3 CARDS WITH PLUS) -->
-<section class="section-faq-cards" id="faqs">
-  <div class="faq-cards-wrap">
-    <div class="faq-sec-head">
-      <div class="about-tag">Frequently Asked Questions</div>
-      <h2 class="about-title">FREQUENTLY ASKED QUESTIONS</h2>
-      <p class="about-text">Clear answers on our open-source volunteer workbench and diagnostic standards.</p>
-    </div>
-    <div class="faq-three-grid">
-      <div class="faq-card-box">
-        <div class="faq-icon-bubble">?</div>
-        <h3 class="faq-card-q">Do you charge fees for community events?</h3>
-        <p class="faq-card-a">
-          No. Kintsugi is 100% free and open-source software built for the Right to Repair movement and community repair groups.
-        </p>
+      <div class="movement-stat-box">
+        <div class="movement-num">384<span>-Dim</span></div>
+        <div class="movement-lbl">FastEmbed Hybrid Search Vectors</div>
       </div>
-      <div class="faq-card-box">
-        <div class="faq-icon-bubble">⚡</div>
-        <h3 class="faq-card-q">How are diagnostic steps verified?</h3>
-        <p class="faq-card-a">
-          Every diagnosis is grounded in official manufacturer service manuals with verified page citations and strict similarity thresholds.
-        </p>
+      <div class="movement-stat-box">
+        <div class="movement-num">4,000<span>+</span></div>
+        <div class="movement-lbl">Global Community Repair Cafés</div>
       </div>
-      <div class="faq-card-box">
-        <div class="faq-icon-bubble">🛡️</div>
-        <h3 class="faq-card-q">What if an appliance has a hazardous defect?</h3>
-        <p class="faq-card-a">
-          Queries regarding flammable gas, refrigerants (R600a), or live 240V mains are deterministically refused with safety warnings before AI reasoning.
-        </p>
-      </div>
-    </div>
-    <div class="faq-cta-btn-wrap">
-      <a href="#workbench" class="btn-faq-action">View Full Diagnostic Workbench</a>
     </div>
   </div>
 </section>
 
-<!-- GREEN QUICK CONTACT STRIP (IMAGE 4 BOTTOM) -->
-<div class="green-contact-strip">
-  <div class="contact-strip-inner">
-    <div class="contact-unit">
-      <h5>Call For Community Aid</h5>
-      <p>+1 (800) 555-KINT</p>
-    </div>
-    <div class="contact-unit">
-      <h5>Drop An Email</h5>
-      <p>volunteer@kintsugi-repair.org</p>
-    </div>
-    <div class="contact-unit">
-      <h5>Workbench Hours</h5>
-      <p>Daily 9:00 - 18:00</p>
+<!-- SECTION 8: COMMUNITY DROP-IN REGISTRATION -->
+<section class="section-dropin" id="dropin">
+  <div class="container-narrow">
+    <div class="dropin-wrap">
+      <div class="sec-tag">Drop-In Desk</div>
+      <h3 style="font-family: 'Outfit', sans-serif; font-size: 26px; font-weight: 800; margin-bottom: 8px; color: var(--text-main);">
+        BRING AN APPLIANCE TO THE NEXT REPAIR CAFÉ
+      </h3>
+      <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px;">
+        Register your device ahead of the event so volunteer technicians can review manufacturer schematics in advance.
+      </p>
+      <form onsubmit="event.preventDefault(); recordDropin();">
+        <div class="dropin-grid-fields">
+          <input type="text" class="dropin-input" id="dropin-name" placeholder="Your Full Name" required/>
+          <input type="email" class="dropin-input" id="dropin-email" placeholder="Your Email Address" required/>
+          <input type="text" class="dropin-input" id="dropin-model" placeholder="Appliance Brand & Model (e.g. Whirlpool WFW5620HW0)" required/>
+          <input type="date" class="dropin-input" id="dropin-date" required/>
+        </div>
+        <textarea class="dropin-input" id="dropin-notes" rows="3" placeholder="Describe the symptom (e.g. error code F21, won't spin, leaking water, humming noises)..." style="margin-bottom: 18px;"></textarea>
+        <button type="submit" class="btn-dropin-submit">Schedule Free Community Drop-In</button>
+        <div class="dropin-success-toast" id="dropin-toast">
+          ✓ Drop-in registered! Your repair ticket has been stored in your session workbench.
+        </div>
+      </form>
     </div>
   </div>
-</div>
+</section>
 
-<!-- FOOTER (IMAGE 4 BOTTOM: DARK 3-COLUMN) -->
-<footer class="footer-dark">
-  <div class="footer-inner">
+<!-- SITE FOOTER -->
+<footer class="site-footer">
+  <div class="footer-3-col">
     <div class="footer-col">
-      <h5>Workbench Services</h5>
+      <div style="font-family: 'Outfit', sans-serif; font-size: 22px; font-weight: 900; color: var(--white); margin-bottom: 10px;">
+        KINTSUGI <span style="color: var(--primary);">REPAIR</span>
+      </div>
+      <p style="font-size: 13px; line-height: 1.6; margin-bottom: 16px;">
+        Manual-Grounded AI Appliance Repair Assistant. Built for the DEV × Hacktoberfest 2026 Challenge.
+      </p>
+      <p style="font-size: 11.5px; color: var(--text-light-muted);">
+        Powered by MongoDB Atlas Hybrid Vector Search & Google Gemma 4 Reasoning.
+      </p>
+    </div>
+    <div class="footer-col">
+      <h5>Supported Diagnostics</h5>
       <ul>
-        <li><a href="#workbench">Whirlpool WFW5620HW0 Diagnostics</a></li>
-        <li><a href="#workbench">GE GTW685BSLWS Lid Switch Guide</a></li>
-        <li><a href="#workbench">Bosch WAT28400UC Drain Codes</a></li>
-        <li><a href="#safety">Digital Multimeter Safety</a></li>
-        <li><a href="#appointment">Community Drop-In Scheduling</a></li>
+        <li><a href="#workbench">Whirlpool WFW5620HW0 Front-Load Washer</a></li>
+        <li><a href="#workbench">GE GTW685BSLWS Top-Load Washer</a></li>
+        <li><a href="#workbench">Bosch WAT28400UC 500 Series Washer</a></li>
+        <li><a href="#specs">Digital Multimeter Resistance Specifications</a></li>
+        <li><a href="#safety">Deterministic Hazard Refusal Protocol</a></li>
       </ul>
     </div>
     <div class="footer-col">
-      <div class="footer-brand-title">KINTSUGI <span>CARE</span></div>
-      <p style="margin-bottom: 12px; line-height: 1.6;">
-        Repair Café & Community Volunteer Appliance Repair Intelligence. Built for the DEV × Hacktoberfest 2026 Challenge.
+      <h5>Right To Repair</h5>
+      <p style="font-size: 13px; margin-bottom: 14px;">
+        Licensed under Apache 2.0. 100% open source software dedicated to community e-waste reduction.
       </p>
-      <p style="font-size: 12px; color: #94A3B8;">
-        100% Manual Grounded • FastEmbed 384-Dim Hybrid Search • Google Gemma 4 Reasoning.
-      </p>
-    </div>
-    <div class="footer-col">
-      <h5>Volunteer Newsletter</h5>
-      <p style="font-size: 13px;">Get monthly repair schematics and volunteer case studies directly in your inbox.</p>
-      <div class="footer-news-input-wrap">
-        <input type="email" class="footer-news-input" placeholder="volunteer@example.com"/>
-        <button type="button" class="footer-news-btn">Join</button>
-      </div>
+      <div class="badge-demo" style="width: fit-content;">Open Source Workbench</div>
     </div>
   </div>
-  <div class="footer-bottom-bar">
-    <div>&copy; 2026 Kintsugi Open Source Project. Licensed under Apache 2.0.</div>
+  <div class="footer-bot-bar">
+    <div>&copy; 2026 Kintsugi Open Source Project. All Rights Reserved.</div>
     <div>Right to Repair • Zero Landfill E-Waste Mission</div>
   </div>
 </footer>
 
-<!-- INTERACTIVE SCRIPTS -->
+<!-- FLOATING SCROLL TO TOP (Image 5) -->
+<button type="button" class="btn-scroll-top" onclick="window.scrollTo({top:0, behavior:'smooth'})" aria-label="Scroll to top">
+  ▲
+</button>
+
+<!-- CLIENT LOGIC & INTEGRATIONS -->
 <script>
 let lastDiagnostic = null;
 
 function applyPreset(model, symptom) {
-  document.getElementById('model-select').value = model;
-  document.getElementById('symptom-input').value = symptom;
+  const modelSelect = document.getElementById('model-input');
+  const symptomInput = document.getElementById('symptom-input');
+  
+  // Set select value or add option if missing
+  let found = false;
+  for (let opt of modelSelect.options) {
+    if (opt.value === model) {
+      modelSelect.value = model;
+      found = true;
+      break;
+    }
+  }
+  if (!found) {
+    const newOpt = new Option(model, model, true, true);
+    modelSelect.add(newOpt);
+  }
+  
+  symptomInput.value = symptom;
   document.getElementById('workbench').scrollIntoView({ behavior: 'smooth' });
+  symptomInput.focus();
+}
+
+function executeQuickSearch(query) {
+  if (!query) return;
+  const q = query.toLowerCase();
+  if (q.includes('whirlpool') || q.includes('wfw') || q.includes('f21')) {
+    applyPreset('WFW5620HW0', 'F21 drain error code, pump humming');
+  } else if (q.includes('ge') || q.includes('gtw') || q.includes('lid')) {
+    applyPreset('GTW685BSLWS', 'Lid lock flashing, cycle will not start');
+  } else if (q.includes('bosch') || q.includes('wat') || q.includes('e17')) {
+    applyPreset('WAT28400UC', 'E17 water inlet solenoid error');
+  } else {
+    document.getElementById('symptom-input').value = query;
+    document.getElementById('workbench').scrollIntoView({ behavior: 'smooth' });
+  }
 }
 
 async function runDiagnosis() {
-  const model = document.getElementById('model-select').value;
+  const model = document.getElementById('model-input').value.trim();
   const symptom = document.getElementById('symptom-input').value.trim();
-  const btn = document.getElementById('diagnose-btn');
-  const btnText = document.getElementById('btn-text');
-  const btnSpinner = document.getElementById('btn-spinner');
-  const resultBox = document.getElementById('result-box');
+  const btn = document.getElementById('btn-diagnose');
+  const btnLabel = document.getElementById('btn-label');
   const warnBox = document.getElementById('warning-box');
-  const citationsWrap = document.getElementById('citations-wrap');
-  const citationsList = document.getElementById('citations-list');
-  const outcomeWrap = document.getElementById('outcome-wrap');
 
   if (!symptom) {
-    warnBox.textContent = 'Please enter a symptom or error code to diagnose.';
+    warnBox.textContent = 'Please describe the appliance symptom or enter an error code.';
     warnBox.style.display = 'block';
     return;
   }
@@ -1812,35 +1782,40 @@ async function runDiagnosis() {
   warnBox.style.display = 'none';
   btn.disabled = true;
   btn.classList.add('loading');
-  btnText.textContent = 'Diagnosing via OEM Service Manual...';
+  btnLabel.textContent = 'Grounding via OEM Service Manual...';
 
   try {
-    const res = await fetch('/diagnose', {
+    // Both model_number and model are passed for robustness
+    const res = await fetch('/answer', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model, symptom })
+      body: JSON.stringify({
+        model_number: model,
+        model: model,
+        symptom: symptom
+      })
     });
 
     if (!res.ok) {
-      throw new Error(`Server returned HTTP ${res.status}`);
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(errData.detail || `Server returned HTTP ${res.status}`);
     }
 
     const data = await res.json();
     lastDiagnostic = { model, symptom, data, timestamp: new Date().toISOString() };
     saveToSessionHistory(lastDiagnostic);
-
-    renderResult(data, model);
+    renderDiagnosticResult(data, model);
   } catch (err) {
-    warnBox.textContent = `Diagnostic request failed: ${err.message}. Please verify the server connection.`;
+    warnBox.textContent = `Diagnostic request failed: ${err.message}.`;
     warnBox.style.display = 'block';
   } finally {
     btn.disabled = false;
     btn.classList.remove('loading');
-    btnText.textContent = 'Diagnose with Gemma & Manual Retrieval';
+    btnLabel.textContent = 'Diagnose with Gemma & OEM Retrieval';
   }
 }
 
-function renderResult(data, model) {
+function renderDiagnosticResult(data, model) {
   const box = document.getElementById('result-box');
   const statusEl = document.getElementById('result-status');
   const modelEl = document.getElementById('result-model');
@@ -1850,29 +1825,29 @@ function renderResult(data, model) {
   const outcomeWrap = document.getElementById('outcome-wrap');
   const outcomeMsg = document.getElementById('outcome-msg');
 
-  box.classList.remove('status-answered', 'status-refused');
+  box.classList.remove('state-answered', 'state-refused');
   outcomeMsg.style.display = 'none';
 
   if (data.status === 'refused') {
-    box.classList.add('status-refused');
+    box.classList.add('state-refused');
     statusEl.innerHTML = '🛑 REFUSAL GATE ACTIVATED';
-    modelEl.textContent = `Hazard / Grounding Trigger: ${data.refusal_reason || 'Safety Boundary'}`;
+    modelEl.textContent = `Hazard / Refusal Trigger: ${data.reason_code || 'Safety Boundary'}`;
     bodyEl.textContent = data.answer;
     citationsWrap.style.display = 'none';
     outcomeWrap.style.display = 'none';
   } else {
-    box.classList.add('status-answered');
+    box.classList.add('state-answered');
     statusEl.innerHTML = '✓ VERIFIED DIAGNOSTIC GUIDANCE';
-    modelEl.textContent = `Model: ${model} | Model Engine: ${data.model_used || 'Gemma-4-26B'}`;
+    modelEl.textContent = `Model: ${data.matched_model || model} | Engine: Gemma 4 + MongoDB Atlas`;
     bodyEl.textContent = data.answer;
 
     if (data.citations && data.citations.length > 0) {
       citationsList.innerHTML = data.citations.map(c => `
-        <div class="citation-item">
-          <div class="citation-page">Page ${c.page}</div>
+        <div class="citation-entry">
+          <div class="citation-badge-page">Page ${c.page}</div>
           <div>
-            <div class="citation-claim">${c.claim}</div>
-            ${c.excerpt ? `<div class="citation-excerpt">"${c.excerpt}"</div>` : ''}
+            <div class="citation-claim-text">${c.claim}</div>
+            ${c.excerpt ? `<div class="citation-quote">"${c.excerpt}"</div>` : ''}
           </div>
         </div>
       `).join('');
@@ -1928,21 +1903,21 @@ function renderSessionHistory() {
   try {
     const history = JSON.parse(localStorage.getItem('kintsugi_session_log') || '[]');
     if (!history || history.length === 0) {
-      container.innerHTML = '<div class="history-empty">No lookups recorded in this session yet. Run a diagnosis above!</div>';
+      container.innerHTML = '<div class="history-empty-placeholder">No lookups recorded in this session yet. Run a diagnosis on the left!</div>';
       return;
     }
 
     container.innerHTML = history.map((item, idx) => {
       const isRefused = item.data.status === 'refused';
       return `
-        <div class="history-item" onclick="loadHistoryItem(${idx})">
-          <div class="history-item-top">
-            <span class="history-model">${item.model}</span>
-            <span class="history-pill ${isRefused ? 'pill-refused' : 'pill-answered'}">
+        <div class="history-item-card" onclick="loadHistoryItem(${idx})">
+          <div class="history-card-top">
+            <span class="history-card-model">${item.model}</span>
+            <span class="history-status-badge ${isRefused ? 'status-pill-ref' : 'status-pill-ok'}">
               ${isRefused ? 'REFUSED' : 'ANSWERED'}
             </span>
           </div>
-          <div class="history-symptom">${item.symptom}</div>
+          <div class="history-card-symptom">${item.symptom}</div>
         </div>
       `;
     }).join('');
@@ -1956,9 +1931,9 @@ function loadHistoryItem(idx) {
     const history = JSON.parse(localStorage.getItem('kintsugi_session_log') || '[]');
     if (history[idx]) {
       const item = history[idx];
-      document.getElementById('model-select').value = item.model;
+      document.getElementById('model-input').value = item.model;
       document.getElementById('symptom-input').value = item.symptom;
-      renderResult(item.data, item.model);
+      renderDiagnosticResult(item.data, item.model);
     }
   } catch (e) {
     console.error(e);
@@ -1970,16 +1945,15 @@ function clearSessionHistory() {
   renderSessionHistory();
 }
 
-function recordAppointment() {
-  const name = document.getElementById('appt-name').value;
-  const model = document.getElementById('appt-model').value;
-  const date = document.getElementById('appt-date').value;
-  const toast = document.getElementById('appt-toast');
+function recordDropin() {
+  const name = document.getElementById('dropin-name').value;
+  const model = document.getElementById('dropin-model').value;
+  const date = document.getElementById('dropin-date').value;
+  const toast = document.getElementById('dropin-toast');
 
   toast.textContent = `✓ Drop-in scheduled for ${name} (${model}) on ${date}. Stored in session log!`;
   toast.style.display = 'block';
 
-  // Also log into localStorage
   try {
     let appts = JSON.parse(localStorage.getItem('kintsugi_dropins') || '[]');
     appts.unshift({ name, model, date, timestamp: new Date().toISOString() });

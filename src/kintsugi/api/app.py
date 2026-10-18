@@ -101,6 +101,7 @@ def create_app() -> FastAPI:
             embedding_model=cfg.embedding_model,
         )
 
+    @app.post("/diagnose", response_model=AnswerResponse)
     @app.post("/answer", response_model=AnswerResponse)
     async def answer(req: AnswerRequest, request: Request):
         forwarded = request.headers.get("x-forwarded-for")
@@ -114,7 +115,7 @@ def create_app() -> FastAPI:
         if not allowed:
             raise HTTPException(status_code=429, detail=rate_msg)
 
-        model_number = req.model_number.strip()
+        model_number = (req.model_number or req.model).strip()
         symptom = req.symptom.strip()
         brand = req.brand.strip() if req.brand else ""
 

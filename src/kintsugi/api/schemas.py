@@ -25,7 +25,8 @@ class CitationOut(BaseModel):
 
 
 class AnswerRequest(BaseModel):
-    model_number: str = Field(..., min_length=1, max_length=64, description="Appliance model number")
+    model_number: str = Field(default="", max_length=64, description="Appliance model number")
+    model: str = Field(default="", max_length=64, description="Alias for model_number")
     symptom: str = Field(..., min_length=1, max_length=500, description="Symptom or question")
     brand: str = Field(default="", max_length=64, description="Optional brand hint")
 

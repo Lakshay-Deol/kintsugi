@@ -29,6 +29,10 @@ Kintsugi retrieves exclusively from the matched manufacturer service manual of t
 - **Health Check Endpoint:** [https://kintsugi-hx3b.onrender.com/health](https://kintsugi-hx3b.onrender.com/health)
 - **GitHub Repository:** [https://github.com/Lakshay-Deol/kintsugi](https://github.com/Lakshay-Deol/kintsugi)
 
+<p align="center">
+  <img src="docs/app_main_page.png" alt="Kintsugi Appliance Diagnostic Workbench" width="100%"/>
+</p>
+
 ---
 
 ## 3. How Challenge Sponsors are Integrated
